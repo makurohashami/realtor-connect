@@ -1,0 +1,31 @@
+spring:
+  application.name: realtor-connect
+  jpa.properties.hibernate:
+    hbm2ddl.auto: validate
+  datasource:
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost:5432}/${spring.application.name}
+    username: ${POSTGRES_USER:postgres}
+    password: ${POSTGRES_PASSWORD:postgres}
+    driver-class-name: org.postgresql.Driver
+  flyway:
+    baseline-on-migrate: true
+  logging:
+    level:
+      com.kotyk.realtorconnect: info
+      org.springframework: info
+      org.hibernate: info
+      org.flywaydb: info
+
+server:
+  port: 8080
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    env:
+      show-values: ALWAYS
+    configprops:
+      show-values: ALWAYS
