@@ -7,7 +7,7 @@
 
 ---
 
-Realtor Connect is an app that helps connect realtors and home-seekers!
+**Realtor Connect** - is an app that helps connect realtors and home-seekers!
 
 It is a tool that gives you, as a realtor, the ability to store your own properties, easily manage them, and share them with potential clients.
 In turn, users can easily search for the properties they want and communicate with realtors.
