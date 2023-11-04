@@ -29,3 +29,8 @@ management:
       show-values: ALWAYS
     configprops:
       show-values: ALWAYS
+
+openapi:
+  title: Realtor Connect
+  version: 1.0
+  description: An application that helps realtors to more easily control their objects and find clients
