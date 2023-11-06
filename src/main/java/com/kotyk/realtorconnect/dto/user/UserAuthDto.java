@@ -15,8 +15,11 @@ import java.time.Instant;
 public class UserAuthDto {
 
     private Long id;
-    private String email;
     private String username;
+    private String name;
+    private String email;
+    private String phone;
+    private String avatar;
     private Role role;
     private Instant lastLogin;
 
