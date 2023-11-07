@@ -1,4 +1,4 @@
-package com.kotyk.realtorconnect.enumconverter;
+package com.kotyk.realtorconnect.enumconverter.userrealtor;
 
 import com.kotyk.realtorconnect.entity.user.Role;
 import jakarta.persistence.AttributeConverter;

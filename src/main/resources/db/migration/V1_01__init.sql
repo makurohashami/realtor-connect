@@ -7,8 +7,8 @@ create table if not exists users
     password   varchar(255)  not null,
     avatar     varchar(2048) null,
     phone      varchar(50)   null unique,
-    role_id    smallint      not null default 0,
-    is_blocked boolean       not null default 'false',
+    role_id    smallint      not null,
+    is_blocked boolean       not null,
     last_login timestamp     null,
     created    timestamp     null
 );
@@ -19,9 +19,9 @@ create table if not exists realtors_info
         constraint pk_users_id references users,
     agency                    varchar(50)   null,
     agency_site               varchar(2048) null,
-    subscription_type         smallint      not null default 0,
-    announcement_count        integer       not null default 0,
-    public_announcement_count integer       not null default 0
+    subscription_type         smallint      not null,
+    announcement_count        integer       not null,
+    public_announcement_count integer       not null
 );
 
 create index username_idx on users (username);
