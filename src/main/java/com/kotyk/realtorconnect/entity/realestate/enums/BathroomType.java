@@ -12,8 +12,8 @@ import java.util.stream.Stream;
 public enum BathroomType {
 
     TOILET_BATH(0),
-    TOILET_SHOWER(2),
-    TOILET_SHOWER_LADDER(3);
+    TOILET_SHOWER(1),
+    TOILET_SHOWER_LADDER(2);
 
     private final int typeId;
     private static final Map<Integer, BathroomType> TYPE_BY_ID_MAP = Collections.unmodifiableMap(initialiseValueMapping());

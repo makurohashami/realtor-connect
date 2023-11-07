@@ -15,7 +15,8 @@ public enum HotWaterType {
     ROOF_BOILER(1),
     ELECTRIC_BOILER(2),
     GAS_COLUMN(3),
-    DOUBLE_CIRCUIT_GAS_BOILER(4);
+    DOUBLE_CIRCUIT_GAS_BOILER(4),
+    NO_HOT_WATER(5);
 
     private final int typeId;
     private static final Map<Integer, HotWaterType> TYPE_BY_ID_MAP = Collections.unmodifiableMap(initialiseValueMapping());

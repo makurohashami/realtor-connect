@@ -17,7 +17,7 @@ public class Loggia {
     private LoggiaType type;
     @Column(name = "loggias_count")
     private byte count;
-    @Column(name = "is_glassed")
+    @Column(name = "is_loggia_glassed")
     private boolean glassed;
 
 }

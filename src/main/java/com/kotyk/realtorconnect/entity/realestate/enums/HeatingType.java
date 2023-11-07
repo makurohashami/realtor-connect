@@ -15,7 +15,7 @@ public enum HeatingType {
     OWN_GAS(1),
     ELECTRICITY(2),
     ROOF_BOILER(3),
-    CENTRALIZED(3);
+    CENTRALIZED(4);
 
     private final int typeId;
     private static final Map<Integer, HeatingType> TYPE_BY_ID_MAP = Collections.unmodifiableMap(initialiseValueMapping());

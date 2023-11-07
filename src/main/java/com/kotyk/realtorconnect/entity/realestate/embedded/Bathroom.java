@@ -17,7 +17,7 @@ public class Bathroom {
     private BathroomType type;
     @Column(name = "bathrooms_count")
     private byte count;
-    @Column(name = "is_combined")
+    @Column(name = "is_bathroom_combined")
     private boolean combined;
 
 }

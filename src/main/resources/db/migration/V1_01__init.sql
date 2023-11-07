@@ -6,7 +6,7 @@ create table if not exists users
     username   varchar(50)   not null unique,
     password   varchar(255)  not null,
     avatar     varchar(2048) null,
-    phone      varchar(50)   null unique,
+    phone      varchar(20)   null unique,
     role_id    smallint      not null,
     is_blocked boolean       not null,
     last_login timestamp     null,
