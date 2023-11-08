@@ -20,8 +20,8 @@ create table if not exists realtors_info
     agency                    varchar(50)   null,
     agency_site               varchar(2048) null,
     subscription_type         smallint      not null,
-    announcement_count        integer       not null,
-    public_announcement_count integer       not null
+    real_estates_count        integer       not null,
+    public_real_estates_count integer       not null
 );
 
 create index username_idx on users (username);
