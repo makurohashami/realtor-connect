@@ -30,7 +30,7 @@ public class Realtor extends User {
     @OrderBy("id asc")
     private Set<RealEstate> realEstates = new HashSet<>();
     private SubscriptionType subscriptionType;
-    private Integer realEstatesCount;
-    private Integer publicRealEstatesCount;
+    private int realEstatesCount;
+    private int publicRealEstatesCount;
 
 }

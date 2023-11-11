@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.Instant;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -43,7 +44,7 @@ public class User implements UserDetails {
     @JoinTable(name = "favorite_real_estates",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "real_estate_id"))
-    private Set<RealEstate> favoriteRealEstates;
+    private Set<RealEstate> favoriteRealEstates = new HashSet<>();
 
     public User(String username, Role role) {
         this.username = username;

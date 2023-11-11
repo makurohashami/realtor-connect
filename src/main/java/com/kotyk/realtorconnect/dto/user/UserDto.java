@@ -12,7 +12,7 @@ import java.time.Instant;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserAuthDto {
+public class UserDto {
 
     private Long id;
     private String username;
@@ -22,5 +22,6 @@ public class UserAuthDto {
     private String avatar;
     private Role role;
     private Instant lastLogin;
+    private Boolean blocked;
 
 }

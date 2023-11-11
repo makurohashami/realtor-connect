@@ -68,5 +68,6 @@ public class RealEstate {
     private Realtor realtor;
     @ManyToMany(mappedBy = "favoriteRealEstates")
     @EqualsAndHashCode.Exclude
-    private Set<User> favorites;
+    private Set<User> favorites = new HashSet<>();
+
 }
