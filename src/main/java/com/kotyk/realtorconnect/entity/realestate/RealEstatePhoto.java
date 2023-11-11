@@ -15,7 +15,7 @@ public class RealEstatePhoto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String photo;
-    private boolean isPrivate = false;
+    private boolean isPrivate;
     @ManyToOne
     @EqualsAndHashCode.Exclude
     @JoinColumn(name = "real_estate_id", nullable = false)
