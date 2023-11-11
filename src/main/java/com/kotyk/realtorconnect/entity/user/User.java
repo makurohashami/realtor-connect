@@ -37,9 +37,9 @@ public class User implements UserDetails {
     @Column(name = "role_id")
     private Role role;
     @Column(name = "is_blocked")
-    private Boolean blocked;
+    private boolean blocked = false;
     private Instant lastLogin;
-    private Instant created;
+    private Instant created = Instant.now();
     @ManyToMany
     @JoinTable(name = "favorite_real_estates",
             joinColumns = @JoinColumn(name = "user_id"),

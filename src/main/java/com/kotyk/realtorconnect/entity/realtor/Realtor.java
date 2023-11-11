@@ -29,8 +29,8 @@ public class Realtor extends User {
     @OneToMany(mappedBy = "realtor", cascade = CascadeType.REMOVE)
     @OrderBy("id asc")
     private Set<RealEstate> realEstates = new HashSet<>();
-    private SubscriptionType subscriptionType;
-    private int realEstatesCount;
-    private int publicRealEstatesCount;
+    private SubscriptionType subscriptionType = SubscriptionType.FREE;
+    private int realEstatesCount = 0;
+    private int publicRealEstatesCount = 0;
 
 }

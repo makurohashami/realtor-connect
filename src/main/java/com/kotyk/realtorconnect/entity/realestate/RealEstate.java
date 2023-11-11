@@ -26,7 +26,7 @@ public class RealEstate {
     private String name;
     private String description;
     private BigDecimal price;
-    private boolean verified;
+    private boolean verified = false;
     @OneToMany(mappedBy = "realEstate", cascade = CascadeType.REMOVE)
     @OrderBy("id asc")
     private Set<RealEstatePhoto> photos = new HashSet<>();
@@ -57,10 +57,10 @@ public class RealEstate {
     private byte roomsCount;
     private double ceilingHeight;
     private String documents;
-    private boolean isPrivate;
-    private byte countPublicPhotos;
-    private byte countPhotos;
-    private boolean called;
+    private boolean isPrivate = true;
+    private byte countPublicPhotos = 0;
+    private byte countPhotos = 0;
+    private Boolean called;
     private Instant called_at;
     @ManyToOne
     @EqualsAndHashCode.Exclude
