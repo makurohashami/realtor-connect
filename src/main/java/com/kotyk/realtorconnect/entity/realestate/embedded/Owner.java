@@ -21,7 +21,7 @@ public class Owner {
     @Column(name = "owner_name")
     private String name;
     @Size(max = 20)
-    @Pattern(regexp = "\\+380\\d{9}")
+    @Pattern(regexp = "\\+380\\d{9}", message = "must match '+380111111111'")
     @Column(name = "owner_phone")
     private String phone;
     @Email

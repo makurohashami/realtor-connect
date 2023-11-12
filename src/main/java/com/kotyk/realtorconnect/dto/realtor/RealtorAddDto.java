@@ -29,7 +29,7 @@ public class RealtorAddDto {
     @Size(min = 3, max = 255)
     private String password;
     @Size(max = 20)
-    @Pattern(regexp = "\\+380\\d{9}")
+    @Pattern(regexp = "\\+380\\d{9}", message = "must match '+380111111111'")
     private String phone;
     @Size(min = 3, max = 50)
     private String agency;
