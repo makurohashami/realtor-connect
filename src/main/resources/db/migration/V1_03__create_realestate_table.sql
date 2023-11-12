@@ -2,7 +2,7 @@ create table if not exists real_estates
 (
     id                   bigserial        not null primary key,
     name                 varchar(255)     not null,
-    description          varchar(512)     null,
+    description          varchar(512)     not null,
     price                numeric(38, 2)   not null,
     verified             boolean          not null,
     owner_name           varchar(255)     not null,
@@ -14,7 +14,7 @@ create table if not exists real_estates
     street               varchar(255)     not null,
     housing_estate       varchar(255)     null,
     house_number         integer          not null,
-    block                varchar(255)     null,
+    block                varchar(50)      null,
     apartment_number     integer          null,
     landmark             varchar(255)     null,
     loggia_type_id       integer          null,
@@ -42,6 +42,7 @@ create table if not exists real_estates
     is_private           boolean          not null,
     called               boolean          not null,
     called_at            timestamp(6)     null,
+    created_at           timestamp(6)     null,
     realtor_id           bigint           not null
         constraint to_realtor_id
             references realtors_info
