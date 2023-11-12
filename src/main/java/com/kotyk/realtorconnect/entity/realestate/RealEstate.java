@@ -61,12 +61,14 @@ public class RealEstate {
     private byte countPublicPhotos;
     private byte countPhotos;
     private boolean called;
-    private Instant called_at;
+    private Instant calledAt;
+    private Instant createdAt;
     @ManyToOne
     @EqualsAndHashCode.Exclude
     @JoinColumn(name = "realtor_id", nullable = false)
     private Realtor realtor;
     @ManyToMany(mappedBy = "favoriteRealEstates")
     @EqualsAndHashCode.Exclude
-    private Set<User> favorites;
+    private Set<User> favorites = new HashSet<>();
+
 }

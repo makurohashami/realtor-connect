@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
+import java.time.Instant;
 import java.util.Date;
 import java.util.Map;
 
@@ -38,7 +39,7 @@ public class JwtService {
     }
 
     public boolean isTokenValid(JwtToken token) {
-        return token.getExpiration().after(new Date());
+        return token.getExpiration().isAfter(Instant.now());
     }
 
     public JwtToken parseToken(String token) {
@@ -51,7 +52,7 @@ public class JwtService {
         return new JwtToken(
                 claims.getSubject(),
                 Role.valueOf((String) claims.get(ROLE_CLAIM)),
-                claims.getExpiration()
+                claims.getExpiration().toInstant()
         );
     }
 
