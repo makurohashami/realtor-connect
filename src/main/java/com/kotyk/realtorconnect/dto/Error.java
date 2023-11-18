@@ -1,4 +1,4 @@
-package com.kotyk.realtorconnect.util.exception;
+package com.kotyk.realtorconnect.dto;
 
 import java.time.Instant;
 
