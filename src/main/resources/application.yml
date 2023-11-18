@@ -3,9 +3,9 @@ spring:
   jpa.properties.hibernate:
     hbm2ddl.auto: validate
   datasource:
-    url: jdbc:postgresql://${POSTGRES_HOST:localhost:5432}/${spring.application.name}
-    username: ${POSTGRES_USER:postgres}
-    password: ${POSTGRES_PASSWORD:postgres}
+    url: jdbc:postgresql://${POSTGRES_HOST}/${spring.application.name}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
     driver-class-name: org.postgresql.Driver
   flyway:
     baseline-on-migrate: true
@@ -37,4 +37,4 @@ openapi:
 
 security.jwt:
   token-ttl: 18000000 # 5h
-  secret: 4E7DF100807D059CDB6AC078B795DA9A3908AA2EECC0211620A86E41B87FD8E7
+  secret: ${JWT_SECRET}
