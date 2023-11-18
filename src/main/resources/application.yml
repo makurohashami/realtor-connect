@@ -1,7 +1,9 @@
 spring:
   application.name: realtor-connect
-  jpa.properties.hibernate:
-    hbm2ddl.auto: validate
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
   datasource:
     url: jdbc:postgresql://${POSTGRES_HOST}/${spring.application.name}
     username: ${POSTGRES_USER}

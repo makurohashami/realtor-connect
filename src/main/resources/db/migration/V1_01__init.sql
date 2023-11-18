@@ -7,7 +7,7 @@ create table if not exists users
     password   varchar(255)  not null,
     avatar     varchar(2048) null,
     phone      varchar(20)   null unique,
-    role_id    smallint      not null,
+    role_id    integer       not null,
     is_blocked boolean       not null,
     last_login timestamp     null,
     created    timestamp     null
@@ -19,7 +19,7 @@ create table if not exists realtors_info
         constraint pk_users_id references users,
     agency                    varchar(50)   null,
     agency_site               varchar(2048) null,
-    subscription_type         smallint      not null,
+    subscription_type         integer       not null,
     real_estates_count        integer       not null,
     public_real_estates_count integer       not null
 );
