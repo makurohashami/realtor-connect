@@ -31,5 +31,5 @@ insert into users (name, email, username, password,
                    is_blocked, last_login, created)
 values ('Admin', 'makurohashami@gmail.com', 'admin',
         '$2a$12$BPdZng5Zle584HCtKfxeoul4TiM0ngA/UyNCBcOsmsYqd.bdIMFaq',
-        '+38(099)-000-00-00', 'https://i.imgur.com/meePOPU.png',
+        '+380990000000', 'https://i.imgur.com/meePOPU.png',
         2, false, null, now());
