@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import static com.kotyk.realtorconnect.util.ApiResponseUtil.ok;
+
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
@@ -20,7 +22,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticate(@RequestBody AuthRequest request) {
-        return ResponseEntity.ok(authService.authenticate(request));
+        return ok(authService.authenticate(request));
     }
 
 }
