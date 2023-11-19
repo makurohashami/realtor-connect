@@ -20,7 +20,7 @@ public class Loggia {
     @Min(1)
     @Max(127)
     @Column(name = "loggias_count")
-    private byte count;
+    private short count;
     @Column(name = "is_loggia_glassed")
     private boolean glassed;
 

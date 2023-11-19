@@ -40,8 +40,8 @@ public class RealEstate {
     private Bathroom bathroom;
     @Embedded
     private Area area;
-    private byte floor;
-    private byte floorsInBuilding;
+    private short floor;
+    private short floorsInBuilding;
     @Column(name = "building_type_id")
     private BuildingType buildingType;
     @Column(name = "heating_type_id")
@@ -54,12 +54,12 @@ public class RealEstate {
     private StateType stateType;
     @Column(name = "announcement_type_id")
     private AnnouncementType announcementType;
-    private byte roomsCount;
+    private short roomsCount;
     private double ceilingHeight;
     private String documents;
     private boolean isPrivate;
-    private byte countPublicPhotos;
-    private byte countPhotos;
+    private short countPublicPhotos;
+    private short countPhotos;
     private boolean called;
     private Instant calledAt;
     private Instant createdAt;
