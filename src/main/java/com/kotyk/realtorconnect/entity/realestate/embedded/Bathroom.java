@@ -23,7 +23,7 @@ public class Bathroom {
     @Min(1)
     @Max(127)
     @Column(name = "bathrooms_count")
-    private byte count;
+    private short count;
     @NotNull
     @Column(name = "is_bathroom_combined")
     private boolean combined;

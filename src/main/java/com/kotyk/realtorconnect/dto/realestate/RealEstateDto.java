@@ -29,15 +29,15 @@ public class RealEstateDto {
     private Loggia loggia;
     private Bathroom bathroom;
     private Area area;
-    private byte floor;
-    private byte floorsInBuilding;
+    private short floor;
+    private short floorsInBuilding;
     private BuildingType buildingType;
     private HeatingType heatingType;
     private WindowsType windowsType;
     private HotWaterType hotWaterType;
     private StateType stateType;
     private AnnouncementType announcementType;
-    private byte roomsCount;
+    private short roomsCount;
     private double ceilingHeight;
     private Instant called_at;
     private List<RealEstatePhotoDto> photos = new ArrayList<>();

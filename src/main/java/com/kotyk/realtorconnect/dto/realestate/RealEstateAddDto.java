@@ -43,11 +43,11 @@ public class RealEstateAddDto {
     @NotNull
     @Min(1)
     @Max(127)
-    private byte floor;
+    private short floor;
     @NotNull
     @Min(1)
     @Max(127)
-    private byte floorsInBuilding;
+    private short floorsInBuilding;
     @NotNull
     private BuildingType buildingType;
     @NotNull
@@ -63,7 +63,7 @@ public class RealEstateAddDto {
     @NotNull
     @Min(1)
     @Max(127)
-    private byte roomsCount;
+    private short roomsCount;
     @Min(0)
     private double ceilingHeight;
     @Size(max = 512)
