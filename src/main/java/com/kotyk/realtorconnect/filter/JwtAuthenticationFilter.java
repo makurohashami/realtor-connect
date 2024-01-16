@@ -3,6 +3,7 @@ package com.kotyk.realtorconnect.filter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.kotyk.realtorconnect.dto.Error;
+import com.kotyk.realtorconnect.dto.apiresponse.ApiError;
 import com.kotyk.realtorconnect.dto.auth.JwtToken;
 import com.kotyk.realtorconnect.entity.user.User;
 import com.kotyk.realtorconnect.service.JwtService;
@@ -13,6 +14,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -27,6 +29,7 @@ import java.time.Instant;
 
 import static com.kotyk.realtorconnect.util.ApiResponseUtil.wrapError;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -60,7 +63,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     ex.getMessage(),
                     request.getRequestURI()
             );
-            ResponseEntity<?> apiResponse = wrapError(error, HttpStatus.UNAUTHORIZED);
+            log.warn("ExpiredJwtException - {}", error.details());
+            ResponseEntity<ApiError<Error>> apiResponse = wrapError(error, HttpStatus.UNAUTHORIZED);
             ObjectMapper mapper = new ObjectMapper();
             mapper.registerModule(new JavaTimeModule());
             response.setStatus(HttpStatus.UNAUTHORIZED.value());

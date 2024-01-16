@@ -23,10 +23,10 @@ public class Realtor extends User {
 
     private String agency;
     private String agencySite;
-    @OneToMany(mappedBy = "realtor", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "realtor", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     @OrderBy("type asc")
     private Set<Contact> contacts = new HashSet<>();
-    @OneToMany(mappedBy = "realtor", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "realtor", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     @OrderBy("id asc")
     private Set<RealEstate> realEstates = new HashSet<>();
     private SubscriptionType subscriptionType;

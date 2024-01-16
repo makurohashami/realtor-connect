@@ -6,7 +6,7 @@ import com.kotyk.realtorconnect.dto.apiresponse.ApiSuccess;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-public class ApiResponseUtil<T> {
+public class ApiResponseUtil {
 
     public static <T> ResponseEntity<ApiSuccess<T>> wrapSuccess(T body, HttpStatus status) {
         ApiSuccess<T> response = new ApiSuccess<>(body, new ApiHttpStatus(status));
@@ -24,6 +24,10 @@ public class ApiResponseUtil<T> {
 
     public static <T> ResponseEntity<ApiSuccess<T>> created(T body) {
         return wrapSuccess(body, HttpStatus.CREATED);
+    }
+
+    public static <T> ResponseEntity<ApiSuccess<T>> noContent(T body) {
+        return wrapSuccess(body, HttpStatus.NO_CONTENT);
     }
 
     public static <T> ResponseEntity<ApiError<T>> badRequest(T body) {

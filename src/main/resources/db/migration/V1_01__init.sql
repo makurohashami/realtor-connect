@@ -32,4 +32,4 @@ insert into users (name, email, username, password,
 values ('Admin', 'makurohashami@gmail.com', 'admin',
         '$2a$12$BPdZng5Zle584HCtKfxeoul4TiM0ngA/UyNCBcOsmsYqd.bdIMFaq',
         '+380990000000', 'https://i.imgur.com/meePOPU.png',
-        2, false, null, now());
+        0, false, null, now());

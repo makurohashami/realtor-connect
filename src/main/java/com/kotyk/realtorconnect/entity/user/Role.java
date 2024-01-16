@@ -5,14 +5,16 @@ import lombok.Getter;
 import java.util.*;
 import java.util.stream.Stream;
 
-import static com.kotyk.realtorconnect.entity.user.Permission.*;
+import static com.kotyk.realtorconnect.entity.user.Permission.MANAGE_ADMINS;
+import static com.kotyk.realtorconnect.entity.user.Permission.MANAGE_USERS;
 
 @Getter
 public enum Role {
 
-    USER(0, List.of(ROLE_USER)),
-    REALTOR(1, List.of(ROLE_USER, ROLE_REALTOR)),
-    ADMIN(2, List.of(ROLE_USER, ROLE_REALTOR, ROLE_ADMIN));
+    CHIEF_ADMIN(0, List.of(MANAGE_ADMINS, MANAGE_USERS)),
+    ADMIN(10, List.of(MANAGE_USERS)),
+    REALTOR(20, List.of()),
+    USER(30, List.of());
 
     private final int roleId;
     private final List<Permission> permissions;
