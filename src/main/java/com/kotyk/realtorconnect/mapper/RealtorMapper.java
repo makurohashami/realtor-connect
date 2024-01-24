@@ -6,6 +6,7 @@ import com.kotyk.realtorconnect.dto.realtor.RealtorFullDto;
 import com.kotyk.realtorconnect.entity.realtor.Realtor;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring", uses = {RealEstateMapper.class, UserMapper.class})
 public interface RealtorMapper {
@@ -23,4 +24,5 @@ public interface RealtorMapper {
     @Mapping(target = "publicRealEstatesCount", constant = "0")
     Realtor toEntity(RealtorAddDto dto);
 
+    Realtor update(@MappingTarget Realtor realtor, RealtorAddDto dto);
 }

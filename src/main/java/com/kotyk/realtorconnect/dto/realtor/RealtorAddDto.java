@@ -1,5 +1,6 @@
 package com.kotyk.realtorconnect.dto.realtor;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -21,6 +22,7 @@ public class RealtorAddDto {
     @Email
     @NotNull
     @Size(min = 3, max = 255)
+    @Schema(example = "example@mail.com")
     private String email;
     @NotNull
     @Size(min = 3, max = 50)
