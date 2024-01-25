@@ -29,5 +29,6 @@ public interface UserMapper {
     @Mapping(target = "created", expression = "java( java.time.Instant.now() )")
     User toEntity(UserAddDto dto);
 
+    @Mapping(source = "password", target = "password", qualifiedByName = "encodePassword")
     User update(@MappingTarget User user, UserAddDto dto);
 }

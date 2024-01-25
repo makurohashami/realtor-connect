@@ -43,7 +43,7 @@ public class RealEstateFullDto {
     private short countPublicPhotos;
     private short countPhotos;
     private boolean called;
-    private Instant called_at;
+    private Instant calledAt;
     private List<RealEstatePhotoDto> photos = new ArrayList<>();
     private long realtorId;
     private int countFavorites;

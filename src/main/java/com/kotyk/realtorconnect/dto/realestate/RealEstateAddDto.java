@@ -3,10 +3,7 @@ package com.kotyk.realtorconnect.dto.realestate;
 import com.kotyk.realtorconnect.entity.realestate.embedded.*;
 import com.kotyk.realtorconnect.entity.realestate.enums.*;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,8 +24,8 @@ public class RealEstateAddDto {
     @Size(min = 40, max = 512)
     private String description;
     @NotNull
-    @Min(0)
-    @Max(999000000)
+    @DecimalMin("0.01")
+    @DecimalMax("999999999999999999.99")
     private BigDecimal price;
     @Valid
     private Owner owner;

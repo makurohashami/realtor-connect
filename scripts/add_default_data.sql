@@ -8,3 +8,8 @@ VALUES ('Admin', 'admin@mail.com', 'admin.user', '$2a$12$b0dV3CqizJ2WQ80BL7jEjuE
 
 INSERT INTO realtors_info (id, agency, agency_site, subscription_type, real_estates_count, public_real_estates_count)
 VALUES ((SELECT id FROM users WHERE username = 'realtor'), 'agency', 'agency.com', 0, 0, 0);
+
+INSERT INTO realtors_contacts(contact, type_id, realtor_id)
+VALUES ('https://t.me/realtor', 1, (SELECT id FROM users WHERE username = 'realtor')),
+       ('realtor@mail.com', 4, (SELECT id FROM users WHERE username = 'realtor')),
+       ('+380990000002', 0, (SELECT id FROM users WHERE username = 'realtor'));

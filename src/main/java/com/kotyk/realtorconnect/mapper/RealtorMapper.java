@@ -11,6 +11,11 @@ import org.mapstruct.MappingTarget;
 @Mapper(componentModel = "spring", uses = {RealEstateMapper.class, UserMapper.class})
 public interface RealtorMapper {
 
+    default Realtor fromId(Long id) {
+        if (id == null) return null;
+        return Realtor.builder().id(id).build();
+    }
+
     RealtorDto toDto(Realtor realtor);
 
     RealtorFullDto toFullDto(Realtor realtor);
@@ -24,5 +29,6 @@ public interface RealtorMapper {
     @Mapping(target = "publicRealEstatesCount", constant = "0")
     Realtor toEntity(RealtorAddDto dto);
 
+    @Mapping(source = "password", target = "password", qualifiedByName = "encodePassword")
     Realtor update(@MappingTarget Realtor realtor, RealtorAddDto dto);
 }

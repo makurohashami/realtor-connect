@@ -16,6 +16,8 @@ import java.util.Set;
 @Table(name = "real_estates")
 @Getter
 @Setter
+@ToString
+@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 public class RealEstate {
@@ -64,10 +66,12 @@ public class RealEstate {
     private Instant calledAt;
     private Instant createdAt;
     @ManyToOne
+    @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @JoinColumn(name = "realtor_id", nullable = false)
     private Realtor realtor;
     @ManyToMany(mappedBy = "favoriteRealEstates")
+    @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Set<User> favorites = new HashSet<>();
 
