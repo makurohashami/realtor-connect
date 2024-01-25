@@ -39,7 +39,7 @@ public class RealEstateDto {
     private AnnouncementType announcementType;
     private short roomsCount;
     private double ceilingHeight;
-    private Instant called_at;
+    private Instant calledAt;
     private List<RealEstatePhotoDto> photos = new ArrayList<>();
     private long realtorId;
     private int countFavorites;

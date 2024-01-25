@@ -11,11 +11,11 @@ import java.util.stream.Stream;
 @Getter
 public enum ContactType {
 
-    ADDITIONAL_PHONE(0),
+    PHONE(0),
     TELEGRAM(1),
     VIBER(2),
     WHATSAPP(3),
-    ADDITIONAL_EMAIL(4);
+    EMAIL(4);
 
     private final int typeId;
     private static final Map<Integer, ContactType> TYPE_BY_ID_MAP = Collections.unmodifiableMap(initialiseValueMapping());

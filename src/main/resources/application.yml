@@ -34,7 +34,7 @@ management:
 
 openapi:
   title: Realtor Connect
-  version: 1.0
+  version: 0.1
   description: An application that helps realtors to more easily control their objects and find clients
 
 security.jwt:

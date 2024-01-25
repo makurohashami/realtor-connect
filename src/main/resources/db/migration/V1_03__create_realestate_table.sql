@@ -3,7 +3,7 @@ create table if not exists real_estates
     id                   bigserial        not null primary key,
     name                 varchar(255)     not null,
     description          varchar(512)     not null,
-    price                numeric(38, 2)   not null,
+    price                numeric(20, 2)   not null,
     verified             boolean          not null,
     owner_name           varchar(255)     not null,
     owner_phone          varchar(20)      not null,

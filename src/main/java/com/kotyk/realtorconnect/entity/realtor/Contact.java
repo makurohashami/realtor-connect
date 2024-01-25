@@ -1,15 +1,14 @@
 package com.kotyk.realtorconnect.entity.realtor;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 
 @Entity
 @Table(name = "realtors_contacts")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
 public class Contact {
 
     @Id
@@ -19,6 +18,7 @@ public class Contact {
     private ContactType type;
     private String contact;
     @ManyToOne
+    @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @JoinColumn(name = "realtor_id", nullable = false)
     private Realtor realtor;

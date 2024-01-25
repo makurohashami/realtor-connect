@@ -7,6 +7,8 @@ import lombok.*;
 @Table(name = "real_estates_photos")
 @Getter
 @Setter
+@ToString
+@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 public class RealEstatePhoto {
@@ -17,6 +19,7 @@ public class RealEstatePhoto {
     private String photo;
     private boolean isPrivate;
     @ManyToOne
+    @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @JoinColumn(name = "real_estate_id", nullable = false)
     private RealEstate realEstate;
