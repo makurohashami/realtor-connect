@@ -49,10 +49,10 @@ public class ContactService {
     }
 
     @Transactional
-    public ContactDto update(ContactDto contactDto) {
-        log.debug("update() - start. contact = {}", contactDto);
-        Contact toUpdate = contactRepository.findById(contactDto.getId())
-                .orElseThrow(() -> new ResourceNotFoundException(String.format(NOT_FOUND_BY_ID_MSG, contactDto.getId())));
+    public ContactDto update(long contactId, ContactDto contactDto) {
+        log.debug("update() - start. contactId = {}, contact = {}", contactId, contactDto);
+        Contact toUpdate = contactRepository.findById(contactId)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format(NOT_FOUND_BY_ID_MSG, contactId)));
         ContactDto contact = contactMapper.toDto(contactMapper.update(toUpdate, contactDto));
         log.debug("update() - end. updated = {}", contact);
         return contact;

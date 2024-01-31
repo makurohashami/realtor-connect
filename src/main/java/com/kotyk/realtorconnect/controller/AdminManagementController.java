@@ -17,11 +17,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static com.kotyk.realtorconnect.util.ApiResponseUtil.*;
+import static com.kotyk.realtorconnect.util.ApiResponseUtil.created;
+import static com.kotyk.realtorconnect.util.ApiResponseUtil.ok;
 
 @RestController
 @AllArgsConstructor
-@PreAuthorize("hasAuthority('MANAGE_ADMINS')")
 @RequestMapping(value = "/admin-management", produces = MediaType.APPLICATION_JSON_VALUE)
 @Tag(name = "Admin Management Controller")
 public class AdminManagementController {
@@ -30,21 +30,24 @@ public class AdminManagementController {
 
     @PostMapping
     @Operation(summary = "Create admin")
+    @PreAuthorize("hasAuthority('MANAGE_ADMINS')")
     public ResponseEntity<ApiSuccess<UserDto>> createAdmin(@RequestBody @Valid UserAddDto dto) {
         return created(userService.create(dto, Role.ADMIN));
     }
 
     @GetMapping
     @Operation(summary = "Get all admins")
+    @PreAuthorize("hasAuthority('MANAGE_ADMINS')")
     public ResponseEntity<ApiSuccess<List<UserDto>>> getAllAdmins() {
         return ok(userService.readAll(UserFilter.builder().role(Role.ADMIN).build()));
     }
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete admin")
-    public ResponseEntity<ApiSuccess<Void>> deleteAdmin(@PathVariable long id) {
+    @PreAuthorize("hasAuthority('MANAGE_ADMINS')")
+    public ResponseEntity<Void> deleteAdmin(@PathVariable long id) {
         userService.deleteAdmin(id);
-        return noContent(null);
+        return ResponseEntity.noContent().build();
     }
 
 }

@@ -5,17 +5,15 @@ import com.kotyk.realtorconnect.entity.realestate.embedded.Bathroom;
 import com.kotyk.realtorconnect.entity.realestate.embedded.Loggia;
 import com.kotyk.realtorconnect.entity.realestate.enums.*;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class RealEstateDto {
