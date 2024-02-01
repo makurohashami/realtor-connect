@@ -29,8 +29,8 @@ public class RealEstateController {
 
     private final RealEstateService service;
 
-    @IsSameRealtor
-    @CanManageRealtorInfo
+    //@IsSameRealtor
+    //@CanManageRealtorInfo
     @PostMapping("/{realtorId}/real-estates")
     @Operation(summary = "Add real estate")
     public ResponseEntity<ApiSuccess<RealEstateFullDto>> create(@PathVariable long realtorId, @RequestBody RealEstateAddDto realEstateDto) {
@@ -43,8 +43,8 @@ public class RealEstateController {
         return ok(service.readShortById(realEstateId));
     }
 
-    @IsRealEstateOwner
-    @CanManageRealtorInfo
+    //@IsRealEstateOwner
+    //@CanManageRealtorInfo
     @GetMapping("/real-estates/{realEstateId}/full")
     @Operation(summary = "Get full real estate")
     public ResponseEntity<ApiSuccess<RealEstateFullDto>> readFullById(@PathVariable long realEstateId) {
@@ -59,8 +59,8 @@ public class RealEstateController {
         return ok(service.readAllShorts(filter, PageRequest.of(page, size)));
     }
 
-    @IsSameRealtor
-    @CanManageRealtorInfo
+    //@IsSameRealtor
+    //@CanManageRealtorInfo
     @GetMapping("/{realtorId}/real-estates/fulls")
     @Operation(summary = "Get full real estates")
     public ResponseEntity<ApiSuccess<Page<RealEstateFullDto>>> readAllFulls(@PathVariable long realtorId,
@@ -72,8 +72,8 @@ public class RealEstateController {
     }
 
 
-    @IsRealEstateOwner
-    @CanManageRealtorInfo
+    //@IsRealEstateOwner
+    //@CanManageRealtorInfo
     @PutMapping("/real-estates/{realEstateId}")
     @Operation(summary = "Update real estate")
     public ResponseEntity<ApiSuccess<RealEstateFullDto>> update(@PathVariable long realEstateId, @RequestBody RealEstateAddDto realEstateDto) {
@@ -81,8 +81,8 @@ public class RealEstateController {
     }
 
 
-    @IsRealEstateOwner
-    @CanManageRealtorInfo
+    //@IsRealEstateOwner
+    //@CanManageRealtorInfo
     @DeleteMapping("/real-estates/{realEstateId}")
     @Operation(summary = "Delete real estate")
     public ResponseEntity<Void> delete(@PathVariable long realEstateId) {

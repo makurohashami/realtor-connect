@@ -86,4 +86,16 @@ public class GlobalExceptionHandler {
         return notFound(error);
     }
 
+    @ExceptionHandler(ActionNotAllowedException.class)
+    public ResponseEntity<ApiError<Error>> methodResourceNotFoundException(ActionNotAllowedException ex, WebRequest request) {
+        Error error = new Error(
+                Instant.now(),
+                "Action not allowed",
+                ex.getMessage(),
+                request.getDescription(false)
+        );
+        log.error("", ex);
+        return badRequest(error);
+    }
+
 }

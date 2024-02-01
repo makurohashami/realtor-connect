@@ -12,7 +12,7 @@ import java.util.stream.Stream;
 public enum SubscriptionType {
 
     FREE(0),
-    PRO(1);
+    PREMIUM(1);
 
     private final int subscriptionId;
     private static final Map<Integer, SubscriptionType> SUBSCRIPTION_BY_ID_MAP = Collections.unmodifiableMap(initialiseValueMapping());

@@ -70,7 +70,7 @@ public class RealEstate {
     @EqualsAndHashCode.Exclude
     @JoinColumn(name = "realtor_id", nullable = false)
     private Realtor realtor;
-    @ManyToMany(mappedBy = "favoriteRealEstates")
+    @ManyToMany(mappedBy = "favoriteRealEstates", fetch = FetchType.EAGER)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Set<User> favorites = new HashSet<>();
