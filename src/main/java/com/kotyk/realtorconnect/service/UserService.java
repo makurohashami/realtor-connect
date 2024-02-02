@@ -15,7 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,14 +42,6 @@ public class UserService {
         user.setLastLogin(Instant.now());
         userRepository.save(user);
         log.debug("updateLastLogin() - end. last login = {}", user.getLastLogin());
-    }
-
-    @Transactional(readOnly = true)
-    public boolean hasSameId(long id) {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userRepository.findByUsername(username)
-                .orElse(User.builder().id(-1L).build());
-        return user.getId().equals(id);
     }
 
     @Transactional(readOnly = true)

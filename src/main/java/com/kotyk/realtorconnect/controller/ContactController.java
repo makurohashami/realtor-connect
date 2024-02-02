@@ -1,5 +1,7 @@
 package com.kotyk.realtorconnect.controller;
 
+import com.kotyk.realtorconnect.annotation.IsContactOwnerOrCanManageRealtorInfo;
+import com.kotyk.realtorconnect.annotation.IsSameRealtorOrCanManageRealtorInfo;
 import com.kotyk.realtorconnect.dto.apiresponse.ApiSuccess;
 import com.kotyk.realtorconnect.dto.realtor.ContactDto;
 import com.kotyk.realtorconnect.service.ContactService;
@@ -12,7 +14,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static com.kotyk.realtorconnect.util.ApiResponseUtil.*;
+import static com.kotyk.realtorconnect.util.ApiResponseUtil.created;
+import static com.kotyk.realtorconnect.util.ApiResponseUtil.ok;
 
 @RestController
 @AllArgsConstructor
@@ -22,6 +25,7 @@ public class ContactController {
 
     private final ContactService service;
 
+    @IsSameRealtorOrCanManageRealtorInfo
     @PostMapping("/{realtorId}/contacts")
     @Operation(summary = "Add new contact")
     public ResponseEntity<ApiSuccess<ContactDto>> create(@PathVariable long realtorId,
@@ -41,17 +45,20 @@ public class ContactController {
         return ok(service.readAll(realtorId));
     }
 
-    @PutMapping("/contacts")
+    @IsContactOwnerOrCanManageRealtorInfo
+    @PutMapping("/contacts/{contactId}")
     @Operation(summary = "Update contact")
-    public ResponseEntity<ApiSuccess<ContactDto>> update(@RequestBody ContactDto contactDto) {
-        return ok(service.update(contactDto));
+    public ResponseEntity<ApiSuccess<ContactDto>> update(@PathVariable long contactId,
+                                                         @RequestBody ContactDto contactDto) {
+        return ok(service.update(contactId, contactDto));
     }
 
+    @IsContactOwnerOrCanManageRealtorInfo
     @DeleteMapping("/contacts/{contactId}")
     @Operation(summary = "Delete contact")
-    public ResponseEntity<ApiSuccess<Void>> delete(@PathVariable long contactId) {
+    public ResponseEntity<Void> delete(@PathVariable long contactId) {
         service.delete(contactId);
-        return noContent(null);
+        return ResponseEntity.noContent().build();
     }
 
 }

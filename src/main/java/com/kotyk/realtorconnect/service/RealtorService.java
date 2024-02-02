@@ -22,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class RealtorService {
 
-    private static final String NOT_FOUND_BY_ID_MSG = "Realtor with id '%d' not found";
+    public static final String NOT_FOUND_BY_ID_MSG = "Realtor with id '%d' not found";
 
     private final RealtorMapper realtorMapper;
     private final RealtorRepository realtorRepository;

@@ -1,6 +1,6 @@
 package com.kotyk.realtorconnect.controller;
 
-import com.kotyk.realtorconnect.annotation.IsOwnerOrAdmin;
+import com.kotyk.realtorconnect.annotation.IsSameUserOrCanManageUsers;
 import com.kotyk.realtorconnect.dto.apiresponse.ApiSuccess;
 import com.kotyk.realtorconnect.dto.realtor.RealtorAddDto;
 import com.kotyk.realtorconnect.dto.realtor.RealtorDto;
@@ -18,7 +18,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import static com.kotyk.realtorconnect.util.ApiResponseUtil.noContent;
 import static com.kotyk.realtorconnect.util.ApiResponseUtil.ok;
 
 @RestController
@@ -29,7 +28,7 @@ public class RealtorController {
 
     private final RealtorService service;
 
-    @IsOwnerOrAdmin
+    @IsSameUserOrCanManageUsers
     @GetMapping("/{id}/full")
     @Operation(summary = "Get full realtor")
     public ResponseEntity<ApiSuccess<RealtorFullDto>> readFullById(@PathVariable long id) {
@@ -46,14 +45,14 @@ public class RealtorController {
     @Operation(summary = "Get page of short realtors")
     public ResponseEntity<ApiSuccess<Page<RealtorDto>>> getAllShorts(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "15") int size,
             @ModelAttribute RealtorFilter filter
     ) {
         Pageable paging = PageRequest.of(page, size);
         return ok(service.getAllShorts(filter, paging));
     }
 
-    @IsOwnerOrAdmin
+    @IsSameUserOrCanManageUsers
     @PutMapping("/{id}")
     @Operation(summary = "Update realtor")
     public ResponseEntity<ApiSuccess<RealtorFullDto>> update(@PathVariable long id,
@@ -61,12 +60,12 @@ public class RealtorController {
         return ok(service.update(id, dto));
     }
 
-    @IsOwnerOrAdmin
+    @IsSameUserOrCanManageUsers
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete realtor")
-    public ResponseEntity<ApiSuccess<Void>> delete(@PathVariable long id) {
+    public ResponseEntity<Void> delete(@PathVariable long id) {
         service.delete(id);
-        return noContent(null);
+        return ResponseEntity.noContent().build();
     }
 
 }

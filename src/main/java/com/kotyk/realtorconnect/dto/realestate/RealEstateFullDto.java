@@ -3,17 +3,15 @@ package com.kotyk.realtorconnect.dto.realestate;
 import com.kotyk.realtorconnect.entity.realestate.embedded.*;
 import com.kotyk.realtorconnect.entity.realestate.enums.*;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class RealEstateFullDto {

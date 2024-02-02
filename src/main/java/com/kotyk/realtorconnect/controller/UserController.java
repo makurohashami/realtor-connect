@@ -1,6 +1,6 @@
 package com.kotyk.realtorconnect.controller;
 
-import com.kotyk.realtorconnect.annotation.IsOwnerOrAdmin;
+import com.kotyk.realtorconnect.annotation.IsSameUserOrCanManageUsers;
 import com.kotyk.realtorconnect.dto.apiresponse.ApiSuccess;
 import com.kotyk.realtorconnect.dto.user.UserAddDto;
 import com.kotyk.realtorconnect.dto.user.UserDto;
@@ -17,7 +17,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import static com.kotyk.realtorconnect.util.ApiResponseUtil.noContent;
 import static com.kotyk.realtorconnect.util.ApiResponseUtil.ok;
 
 @RestController
@@ -28,7 +27,7 @@ public class UserController {
 
     private final UserService service;
 
-    @IsOwnerOrAdmin
+    @IsSameUserOrCanManageUsers
     @GetMapping("/{id}")
     @Operation(summary = "Get user")
     public ResponseEntity<ApiSuccess<UserDto>> readById(@PathVariable long id) {
@@ -38,13 +37,13 @@ public class UserController {
     @GetMapping
     @Operation(summary = "Get page of users")
     public ResponseEntity<ApiSuccess<Page<UserDto>>> readAll(@RequestParam(defaultValue = "0") int page,
-                                                             @RequestParam(defaultValue = "5") int size,
+                                                             @RequestParam(defaultValue = "15") int size,
                                                              @ModelAttribute UserFilter filter) {
         Pageable paging = PageRequest.of(page, size);
         return ok(service.readAll(filter, paging));
     }
 
-    @IsOwnerOrAdmin
+    @IsSameUserOrCanManageUsers
     @PutMapping("/{id}")
     @Operation(summary = "Update user")
     public ResponseEntity<ApiSuccess<UserDto>> update(@PathVariable long id,
@@ -52,12 +51,12 @@ public class UserController {
         return ok(service.update(id, dto));
     }
 
-    @IsOwnerOrAdmin
+    @IsSameUserOrCanManageUsers
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete user")
-    public ResponseEntity<ApiSuccess<Void>> delete(@PathVariable long id) {
+    public ResponseEntity<Void> delete(@PathVariable long id) {
         service.delete(id);
-        return noContent(null);
+        return ResponseEntity.noContent().build();
     }
 
 }
