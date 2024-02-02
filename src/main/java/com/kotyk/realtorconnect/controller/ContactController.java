@@ -1,8 +1,7 @@
 package com.kotyk.realtorconnect.controller;
 
-import com.kotyk.realtorconnect.annotation.CanManageRealtorInfo;
-import com.kotyk.realtorconnect.annotation.IsContactOwner;
-import com.kotyk.realtorconnect.annotation.IsSameRealtor;
+import com.kotyk.realtorconnect.annotation.IsContactOwnerOrCanManageRealtorInfo;
+import com.kotyk.realtorconnect.annotation.IsSameRealtorOrCanManageRealtorInfo;
 import com.kotyk.realtorconnect.dto.apiresponse.ApiSuccess;
 import com.kotyk.realtorconnect.dto.realtor.ContactDto;
 import com.kotyk.realtorconnect.service.ContactService;
@@ -26,8 +25,7 @@ public class ContactController {
 
     private final ContactService service;
 
-    @IsSameRealtor
-    @CanManageRealtorInfo
+    @IsSameRealtorOrCanManageRealtorInfo
     @PostMapping("/{realtorId}/contacts")
     @Operation(summary = "Add new contact")
     public ResponseEntity<ApiSuccess<ContactDto>> create(@PathVariable long realtorId,
@@ -47,8 +45,7 @@ public class ContactController {
         return ok(service.readAll(realtorId));
     }
 
-    @IsContactOwner
-    @CanManageRealtorInfo
+    @IsContactOwnerOrCanManageRealtorInfo
     @PutMapping("/contacts/{contactId}")
     @Operation(summary = "Update contact")
     public ResponseEntity<ApiSuccess<ContactDto>> update(@PathVariable long contactId,
@@ -56,8 +53,7 @@ public class ContactController {
         return ok(service.update(contactId, contactDto));
     }
 
-    @IsContactOwner
-    @CanManageRealtorInfo
+    @IsContactOwnerOrCanManageRealtorInfo
     @DeleteMapping("/contacts/{contactId}")
     @Operation(summary = "Delete contact")
     public ResponseEntity<Void> delete(@PathVariable long contactId) {

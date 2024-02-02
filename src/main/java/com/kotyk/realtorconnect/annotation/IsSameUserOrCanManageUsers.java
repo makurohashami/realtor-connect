@@ -9,6 +9,6 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-@PreAuthorize("@permissionService.isSameUser(#id)")
-public @interface IsSameUser {
+@PreAuthorize("@permissionService.isSameUser(#id) or hasAuthority('MANAGE_USERS')")
+public @interface IsSameUserOrCanManageUsers {
 }

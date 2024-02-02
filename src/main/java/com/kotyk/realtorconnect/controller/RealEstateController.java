@@ -1,8 +1,7 @@
 package com.kotyk.realtorconnect.controller;
 
-import com.kotyk.realtorconnect.annotation.CanManageRealtorInfo;
-import com.kotyk.realtorconnect.annotation.IsRealEstateOwner;
-import com.kotyk.realtorconnect.annotation.IsSameRealtor;
+import com.kotyk.realtorconnect.annotation.IsRealEstateOwnerOrCanManageRealtorInfo;
+import com.kotyk.realtorconnect.annotation.IsSameRealtorOrCanManageRealtorInfo;
 import com.kotyk.realtorconnect.dto.apiresponse.ApiSuccess;
 import com.kotyk.realtorconnect.dto.realestate.RealEstateAddDto;
 import com.kotyk.realtorconnect.dto.realestate.RealEstateDto;
@@ -29,8 +28,7 @@ public class RealEstateController {
 
     private final RealEstateService service;
 
-    //@IsSameRealtor
-    //@CanManageRealtorInfo
+    @IsSameRealtorOrCanManageRealtorInfo
     @PostMapping("/{realtorId}/real-estates")
     @Operation(summary = "Add real estate")
     public ResponseEntity<ApiSuccess<RealEstateFullDto>> create(@PathVariable long realtorId, @RequestBody RealEstateAddDto realEstateDto) {
@@ -43,8 +41,7 @@ public class RealEstateController {
         return ok(service.readShortById(realEstateId));
     }
 
-    //@IsRealEstateOwner
-    //@CanManageRealtorInfo
+    @IsRealEstateOwnerOrCanManageRealtorInfo
     @GetMapping("/real-estates/{realEstateId}/full")
     @Operation(summary = "Get full real estate")
     public ResponseEntity<ApiSuccess<RealEstateFullDto>> readFullById(@PathVariable long realEstateId) {
@@ -59,8 +56,7 @@ public class RealEstateController {
         return ok(service.readAllShorts(filter, PageRequest.of(page, size)));
     }
 
-    //@IsSameRealtor
-    //@CanManageRealtorInfo
+    @IsSameRealtorOrCanManageRealtorInfo
     @GetMapping("/{realtorId}/real-estates/fulls")
     @Operation(summary = "Get full real estates")
     public ResponseEntity<ApiSuccess<Page<RealEstateFullDto>>> readAllFulls(@PathVariable long realtorId,
@@ -72,8 +68,7 @@ public class RealEstateController {
     }
 
 
-    //@IsRealEstateOwner
-    //@CanManageRealtorInfo
+    @IsRealEstateOwnerOrCanManageRealtorInfo
     @PutMapping("/real-estates/{realEstateId}")
     @Operation(summary = "Update real estate")
     public ResponseEntity<ApiSuccess<RealEstateFullDto>> update(@PathVariable long realEstateId, @RequestBody RealEstateAddDto realEstateDto) {
@@ -81,8 +76,7 @@ public class RealEstateController {
     }
 
 
-    //@IsRealEstateOwner
-    //@CanManageRealtorInfo
+    @IsRealEstateOwnerOrCanManageRealtorInfo
     @DeleteMapping("/real-estates/{realEstateId}")
     @Operation(summary = "Delete real estate")
     public ResponseEntity<Void> delete(@PathVariable long realEstateId) {
