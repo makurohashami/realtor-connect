@@ -1,6 +1,7 @@
 package com.kotyk.realtorconnect.repository;
 
 import com.kotyk.realtorconnect.entity.realtor.Realtor;
+import com.kotyk.realtorconnect.entity.realtor.SubscriptionType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -17,7 +18,7 @@ public interface RealtorRepository extends JpaRepository<Realtor, Long> {
 
     Page<Realtor> findAll(Specification<Realtor> spec, Pageable pageable);
 
-    List<Realtor> findAllByPremiumExpiresAtBefore(Instant instant);
+    List<Realtor> findAllByPremiumExpiresAtBeforeAndSubscriptionType(Instant instant, SubscriptionType type);
 
     @Modifying
     @Query("UPDATE Realtor r SET r.realEstatesCount = :realEstatesCount, r.publicRealEstatesCount = :publicRealEstatesCount WHERE r.id = :id")

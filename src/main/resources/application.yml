@@ -30,9 +30,14 @@ realtor:
       maxTotalRealEstates: 25
     premium:
       maxPublicRealEstates: 25
-      maxTotalRealEstates: 2147483647 #int max value
+      maxTotalRealEstates: 2147483647 # int max value
   scheduler:
-    reset-plan-cron: "1 0 * * * *" #every day at 00:01 AM
+    reset-plan-cron: "1 0 * * * *" # every day at 00:01 AM
+
+real-estate:
+  daysForExpireCalled: 14
+  scheduler:
+    check-called-cron: "0 */2 * * * *" # every 2 hours
 
 management:
   endpoints:

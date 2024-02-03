@@ -141,9 +141,8 @@ public class UserService {
             throw new ActionNotAllowedException("You cannot change 'blocked' for this user");
         }
         user.setBlocked(blocked);
-        boolean updatedBlocked = userRepository.save(user).getBlocked();
-        log.debug("updateBlocked() - end. blocked = {}", updatedBlocked);
-        return updatedBlocked;
+        log.debug("updateBlocked() - end. blocked = {}", user.getBlocked());
+        return user.getBlocked();
     }
 
 }

@@ -62,6 +62,7 @@ public class RealEstate {
     private boolean isPrivate;
     private short countPublicPhotos;
     private short countPhotos;
+    @Column(name = "is_called")
     private boolean called;
     private Instant calledAt;
     private Instant createdAt;

@@ -19,7 +19,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Clock;
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
@@ -93,7 +92,7 @@ public class RealtorService {
                 .orElseThrow(() -> new ResourceNotFoundException(String.format(NOT_FOUND_BY_ID_MSG, id)));
         realtor.setSubscriptionType(SubscriptionType.PREMIUM);
         if (realtor.getPremiumExpiresAt() == null) {
-            realtor.setPremiumExpiresAt(ZonedDateTime.now(ZoneOffset.UTC).withHour(0).withMinute(0)
+            realtor.setPremiumExpiresAt(ZonedDateTime.now().withHour(0).withMinute(0)
                     .withSecond(0).withNano(0).toInstant());
         }
         realtor.setPremiumExpiresAt(ZonedDateTime.ofInstant(realtor.getPremiumExpiresAt(), ZoneOffset.UTC)
@@ -107,7 +106,7 @@ public class RealtorService {
     @Scheduled(cron = "${realtor.scheduler.reset-plan-cron}")
     protected void setFreeSubscriptionWhenPrivateExpired() {
         log.debug("setFreeSubscriptionWhenPrivateExpired() - start.");
-        List<Realtor> realtors = realtorRepository.findAllByPremiumExpiresAtBefore(Instant.now(Clock.system(ZoneOffset.UTC)));
+        List<Realtor> realtors = realtorRepository.findAllByPremiumExpiresAtBeforeAndSubscriptionType(Instant.now(), SubscriptionType.PREMIUM);
         realtors.forEach(realtor -> {
             realtor.setPremiumExpiresAt(null);
             realtor.setSubscriptionType(SubscriptionType.FREE);

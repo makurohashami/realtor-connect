@@ -84,4 +84,11 @@ public class RealEstateController {
         return ResponseEntity.noContent().build();
     }
 
+    @IsRealEstateOwnerOrCanManageRealtorInfo
+    @PutMapping("/real-estates/{realEstateId}/mark-called")
+    @Operation(summary = "Mark real estate called")
+    public ResponseEntity<ApiSuccess<Boolean>> updateCalled(@PathVariable long realEstateId) {
+        return ok(service.updateCalled(realEstateId, true));
+    }
+
 }
