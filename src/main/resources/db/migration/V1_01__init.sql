@@ -21,7 +21,8 @@ create table if not exists realtors_info
     agency_site               varchar(2048) null,
     subscription_type         integer       not null,
     real_estates_count        integer       not null,
-    public_real_estates_count integer       not null
+    public_real_estates_count integer       not null,
+    premium_expires_at        timestamp     null
 );
 
 create index username_idx on users (username);
@@ -32,4 +33,4 @@ insert into users (name, email, username, password,
 values ('Admin', 'makurohashami@gmail.com', 'admin',
         '$2a$12$BPdZng5Zle584HCtKfxeoul4TiM0ngA/UyNCBcOsmsYqd.bdIMFaq',
         '+380990000000', 'https://i.imgur.com/meePOPU.png',
-        0, false, null, now());
+        0, false, null, now() at time zone 'UTC');

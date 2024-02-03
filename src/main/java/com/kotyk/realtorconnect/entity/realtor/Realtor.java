@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -32,5 +33,6 @@ public class Realtor extends User {
     private SubscriptionType subscriptionType;
     private int realEstatesCount;
     private int publicRealEstatesCount;
+    private Instant premiumExpiresAt;
 
 }

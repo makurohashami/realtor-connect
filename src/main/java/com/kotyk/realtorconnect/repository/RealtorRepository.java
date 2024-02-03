@@ -9,10 +9,15 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.time.Instant;
+import java.util.List;
+
 @Repository
 public interface RealtorRepository extends JpaRepository<Realtor, Long> {
 
     Page<Realtor> findAll(Specification<Realtor> spec, Pageable pageable);
+
+    List<Realtor> findAllByPremiumExpiresAtBefore(Instant instant);
 
     @Modifying
     @Query("UPDATE Realtor r SET r.realEstatesCount = :realEstatesCount, r.publicRealEstatesCount = :publicRealEstatesCount WHERE r.id = :id")

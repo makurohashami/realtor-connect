@@ -132,4 +132,15 @@ public class UserService {
         log.debug("deleteAdmin() - end. deleted");
     }
 
+    @Transactional
+    public boolean updateBlocked(long id, boolean blocked) {
+        log.debug("updateBlocked() - start. id = {}, blocked = {}", id, blocked);
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format(NOT_FOUND_BY_ID_MSG, id)));
+        user.setBlocked(blocked);
+        boolean updatedBlocked = userRepository.save(user).getBlocked();
+        log.debug("updateBlocked() - end. blocked = {}", updatedBlocked);
+        return updatedBlocked;
+    }
+
 }

@@ -30,6 +30,7 @@ public class RealtorFullDto {
     private String agency;
     private String agencySite;
     private SubscriptionType subscriptionType;
+    private Instant premiumExpiresAt;
     private List<ContactDto> contacts = new ArrayList<>();
     private List<RealEstateFullDto> realEstates = new ArrayList<>();
     private int realEstatesCount;

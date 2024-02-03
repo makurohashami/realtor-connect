@@ -22,7 +22,7 @@ import static com.kotyk.realtorconnect.util.ApiResponseUtil.ok;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping(value = "/admin-management", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/admins", produces = MediaType.APPLICATION_JSON_VALUE)
 @Tag(name = "Admin Management Controller")
 public class AdminManagementController {
 
