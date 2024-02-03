@@ -133,4 +133,15 @@ public class RealEstateService {
         log.debug("delete() - end. deleted");
     }
 
+    @Transactional
+    public boolean updateVerified(long realEstateId, boolean verified) {
+        log.debug("updateVerified() - start. realEstateId = {}, verified = {}", realEstateId, verified);
+        RealEstate realEstate = realEstateRepository.findById(realEstateId)
+                .orElseThrow(() -> new ResourceNotFoundException(getExMessage(realEstateId)));
+        realEstate.setVerified(verified);
+        boolean updatedVerified = realEstateRepository.save(realEstate).isVerified();
+        log.debug("updateVerified() - end. verified = {}", updatedVerified);
+        return updatedVerified;
+    }
+
 }

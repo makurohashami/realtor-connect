@@ -5,6 +5,7 @@ import com.kotyk.realtorconnect.dto.realtor.RealtorDto;
 import com.kotyk.realtorconnect.dto.realtor.RealtorFilter;
 import com.kotyk.realtorconnect.dto.realtor.RealtorFullDto;
 import com.kotyk.realtorconnect.entity.realtor.Realtor;
+import com.kotyk.realtorconnect.entity.realtor.SubscriptionType;
 import com.kotyk.realtorconnect.mapper.RealtorMapper;
 import com.kotyk.realtorconnect.repository.RealtorRepository;
 import com.kotyk.realtorconnect.specification.RealtorFilterSpecifications;
@@ -14,8 +15,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.Clock;
+import java.time.Instant;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -76,6 +84,37 @@ public class RealtorService {
         log.debug("delete() - start. id - {}", id);
         realtorRepository.deleteById(id);
         log.debug("delete() - end. deleted");
+    }
+
+    @Transactional
+    public Instant givePremiumToRealtor(long id, short durationInMonths) {
+        log.debug("givePremiumToRealtor() - start. realtorId - {}, durationInMonths - {}", id, durationInMonths);
+        Realtor realtor = realtorRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format(NOT_FOUND_BY_ID_MSG, id)));
+        realtor.setSubscriptionType(SubscriptionType.PREMIUM);
+        if (realtor.getPremiumExpiresAt() == null) {
+            realtor.setPremiumExpiresAt(ZonedDateTime.now(ZoneOffset.UTC).withHour(0).withMinute(0)
+                    .withSecond(0).withNano(0).toInstant());
+        }
+        realtor.setPremiumExpiresAt(ZonedDateTime.ofInstant(realtor.getPremiumExpiresAt(), ZoneOffset.UTC)
+                .plusMonths(durationInMonths).toInstant());
+        realtorRepository.save(realtor);
+        log.debug("givePremiumToRealtor() - end. premium expires at = {}", realtor.getPremiumExpiresAt());
+        return realtor.getPremiumExpiresAt();
+    }
+
+    @Transactional
+    @Scheduled(cron = "${realtor.scheduler.reset-plan-cron}")
+    protected void setFreeSubscriptionWhenPrivateExpired() {
+        log.debug("setFreeSubscriptionWhenPrivateExpired() - start.");
+        List<Realtor> realtors = realtorRepository.findAllByPremiumExpiresAtBefore(Instant.now(Clock.system(ZoneOffset.UTC)));
+        realtors.forEach(realtor -> {
+            realtor.setPremiumExpiresAt(null);
+            realtor.setSubscriptionType(SubscriptionType.FREE);
+            log.debug(String.format("Reset subscription for realtor: '%d'", realtor.getId()));
+        });
+        realtorRepository.saveAll(realtors);
+        log.debug("setFreeSubscriptionWhenPrivateExpired() - end. realtors - {}", realtors.size());
     }
 
 }

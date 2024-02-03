@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Getter
 @Setter
 @Component
-@ConfigurationProperties(prefix = "realtor.configuration")
+@ConfigurationProperties(prefix = "realtor")
 public class RealtorConfiguration {
 
     private PlanConfiguration planConfiguration;
