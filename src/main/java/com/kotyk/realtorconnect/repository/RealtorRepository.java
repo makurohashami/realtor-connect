@@ -21,7 +21,7 @@ public interface RealtorRepository extends JpaRepository<Realtor, Long> {
     List<Realtor> findAllByPremiumExpiresAtBeforeAndSubscriptionType(Instant instant, SubscriptionType type);
 
     @Modifying
-    @Query("UPDATE Realtor r SET r.realEstatesCount = :realEstatesCount, r.publicRealEstatesCount = :publicRealEstatesCount WHERE r.id = :id")
-    void setRealEstateCountsByRealtorId(long id, int realEstatesCount, int publicRealEstatesCount);
+    @Query("UPDATE Realtor r SET r.publicRealEstatesCount = :publicRealEstatesCount WHERE r.id = :id")
+    void setRealEstateCountsByRealtorId(long id, int publicRealEstatesCount);
 
 }

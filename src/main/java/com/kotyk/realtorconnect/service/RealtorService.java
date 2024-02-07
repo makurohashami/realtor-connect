@@ -7,6 +7,7 @@ import com.kotyk.realtorconnect.dto.realtor.RealtorFullDto;
 import com.kotyk.realtorconnect.entity.realtor.Realtor;
 import com.kotyk.realtorconnect.entity.realtor.SubscriptionType;
 import com.kotyk.realtorconnect.mapper.RealtorMapper;
+import com.kotyk.realtorconnect.repository.RealEstateRepository;
 import com.kotyk.realtorconnect.repository.RealtorRepository;
 import com.kotyk.realtorconnect.specification.RealtorFilterSpecifications;
 import com.kotyk.realtorconnect.util.exception.ResourceNotFoundException;
@@ -33,6 +34,8 @@ public class RealtorService {
 
     private final RealtorMapper realtorMapper;
     private final RealtorRepository realtorRepository;
+
+    private final RealEstateRepository realEstateRepository;
 
     @Transactional
     public RealtorFullDto create(RealtorAddDto dto) {
@@ -112,7 +115,8 @@ public class RealtorService {
             realtor.setSubscriptionType(SubscriptionType.FREE);
             log.debug(String.format("Reset subscription for realtor: '%d'", realtor.getId()));
         });
-        realtorRepository.saveAll(realtors);
+        List<Long> realtorIds = realtors.stream().map(Realtor::getId).toList();
+        realEstateRepository.makeAllRealEstatesPrivateByRealtors(realtorIds);
         log.debug("setFreeSubscriptionWhenPrivateExpired() - end. realtors - {}", realtors.size());
     }
 

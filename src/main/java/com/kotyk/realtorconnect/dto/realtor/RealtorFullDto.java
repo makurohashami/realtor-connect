@@ -33,7 +33,5 @@ public class RealtorFullDto {
     private Instant premiumExpiresAt;
     private List<ContactDto> contacts = new ArrayList<>();
     private List<RealEstateFullDto> realEstates = new ArrayList<>();
-    private int realEstatesCount;
-    private int publicRealEstatesCount;
 
 }

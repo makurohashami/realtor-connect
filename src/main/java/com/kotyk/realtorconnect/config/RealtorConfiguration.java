@@ -33,7 +33,6 @@ public class RealtorConfiguration {
     @Setter
     public static class PlanProperties {
         private int maxPublicRealEstates;
-        private int maxTotalRealEstates;
     }
 
 }

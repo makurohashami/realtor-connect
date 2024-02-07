@@ -51,19 +51,15 @@ public class RealEstateService {
         log.debug("create() - start. realtorId = {}, realEstateDto = {}", realtorId, realEstateDto);
         Realtor realtor = realtorRepository.findById(realtorId)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format(RealtorService.NOT_FOUND_BY_ID_MSG, realtorId)));
-        int updatedTotalCount = realtor.getRealEstatesCount() + 1;
         int updatedPublicCount = realEstateDto.isPrivate() ? realtor.getPublicRealEstatesCount() : realtor.getPublicRealEstatesCount() + 1;
-        RealtorConfiguration.PlanProperties counts = realtorConfiguration.getPlanPropertiesByPlan(realtor.getSubscriptionType());
-        if (updatedTotalCount > counts.getMaxTotalRealEstates()) {
-            throw new ActionNotAllowedException("It is impossible to add a real estate because the maximum number of real estates has been reached");
-        }
-        if (updatedPublicCount > counts.getMaxPublicRealEstates()) {
+        long maxCounts = realtorConfiguration.getPlanPropertiesByPlan(realtor.getSubscriptionType()).getMaxPublicRealEstates();
+        if (updatedPublicCount > maxCounts) {
             throw new ActionNotAllowedException("It is impossible to add a public real estate because the maximum number of public real estates has been reached");
         }
         RealEstateFullDto realEstate = realEstateMapper.toFullDto(realEstateRepository.save(
                 realEstateMapper.toEntity(realEstateDto, realtorId))
         );
-        realtorRepository.setRealEstateCountsByRealtorId(realtorId, updatedTotalCount, updatedPublicCount);
+        realtorRepository.setRealEstateCountsByRealtorId(realtorId, updatedPublicCount);
         log.debug("create() - end. realEstate = {}", realEstate);
         return realEstate;
     }
@@ -117,7 +113,7 @@ public class RealEstateService {
             if (!realEstateDto.isPrivate() && updatedPublicCount > realtorConfiguration.getPlanPropertiesByPlan(realtor.getSubscriptionType()).getMaxPublicRealEstates()) {
                 throw new ActionNotAllowedException("It is impossible to make an object public because the maximum number of public real estates has been reached");
             }
-            realtorRepository.setRealEstateCountsByRealtorId(realtor.getId(), realtor.getRealEstatesCount(), updatedPublicCount);
+            realtorRepository.setRealEstateCountsByRealtorId(realtor.getId(), updatedPublicCount);
         }
         RealEstateFullDto updated = realEstateMapper.toFullDto(realEstateMapper.update(toUpdate, realEstateDto));
         log.debug("update() - end. updated = {}", updated);
@@ -133,7 +129,6 @@ public class RealEstateService {
             realEstateRepository.deleteById(realEstateId);
             realtorRepository.setRealEstateCountsByRealtorId(
                     realEstate.getRealtor().getId(),
-                    realEstate.getRealtor().getRealEstatesCount() - 1,
                     realEstate.isPrivate() ? realEstate.getRealtor().getPublicRealEstatesCount() : realEstate.getRealtor().getPublicRealEstatesCount() - 1
             );
         }

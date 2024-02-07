@@ -25,7 +25,6 @@ public interface RealtorMapper {
     @Mapping(target = "blocked", constant = "false")
     @Mapping(target = "created", expression = "java( java.time.Instant.now() )")
     @Mapping(target = "subscriptionType", constant = "FREE")
-    @Mapping(target = "realEstatesCount", constant = "0")
     @Mapping(target = "publicRealEstatesCount", constant = "0")
     Realtor toEntity(RealtorAddDto dto);
 

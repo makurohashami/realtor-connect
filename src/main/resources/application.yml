@@ -27,10 +27,8 @@ realtor:
   plan-configuration:
     free:
       maxPublicRealEstates: 10
-      maxTotalRealEstates: 25
     premium:
       maxPublicRealEstates: 25
-      maxTotalRealEstates: 2147483647 # int max value
   scheduler:
     reset-plan-cron: "1 0 * * * *" # every day at 00:01 AM
 
