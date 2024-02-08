@@ -32,9 +32,7 @@ public class EmailSenderServiceBean implements EmailSenderService {
         } catch (MailException ex) {
             log.error("Error while sending email", ex);
         } catch (MessagingException ex) {
-            String errMsg = "MimeMessageHelper creation failed";
-            log.error(errMsg, ex);
-            throw new IllegalStateException(errMsg);
+            log.error("MimeMessageHelper creation failed", ex);
         }
     }
 

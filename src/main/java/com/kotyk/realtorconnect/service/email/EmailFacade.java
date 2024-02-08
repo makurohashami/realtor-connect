@@ -19,7 +19,7 @@ public class EmailFacade {
         emailSenderService.sendEmail(email);
     }
 
-    public void sendStartPremiumNotification(Realtor realtor, short durationInMonths) {
+    public void sendStartPremiumNotification(Realtor realtor, int durationInMonths) {
         Email email = emailGeneratorService.generateStartPremiumNotification(realtor, durationInMonths);
         emailSenderService.sendEmail(email);
     }

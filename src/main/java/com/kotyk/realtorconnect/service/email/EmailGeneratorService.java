@@ -33,7 +33,7 @@ public class EmailGeneratorService {
         return generateEmail(user.getEmail(), EmailTemplate.VERIFY_EMAIL, templateVariables);
     }
 
-    protected Email generateStartPremiumNotification(Realtor realtor, short durationInMonths) {
+    protected Email generateStartPremiumNotification(Realtor realtor, int durationInMonths) {
         Map<String, Object> templateVariables = new HashMap<>();
         templateVariables.put("name", realtor.getName());
         templateVariables.put("durationInMonths", durationInMonths);

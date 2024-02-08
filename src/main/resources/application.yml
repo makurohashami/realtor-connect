@@ -52,7 +52,7 @@ realtor:
 real-estate:
   daysForExpireCalled: 14
   scheduler:
-    check-called-cron: "0 */2 * * * *" # every 2 hours
+    check-called-cron: "*/30 * * * * *" # every 30 minutes
 
 management:
   endpoints:
