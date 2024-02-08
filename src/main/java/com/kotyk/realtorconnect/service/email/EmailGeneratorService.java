@@ -39,7 +39,7 @@ public class EmailGeneratorService {
         templateVariables.put("durationInMonths", durationInMonths);
         templateVariables.put("expiresAt", realtor.getPremiumExpiresAt());
 
-        return generateEmail(realtor.getEmail(), EmailTemplate.START_PREMIUM_NOTIFICATION, templateVariables);
+        return generateEmail(realtor.getEmail(), EmailTemplate.PREMIUM_ADDED, templateVariables);
     }
 
     protected Email generateSubscriptionExpiresEmail(Realtor realtor) {

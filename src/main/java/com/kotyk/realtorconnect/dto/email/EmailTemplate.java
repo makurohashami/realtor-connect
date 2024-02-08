@@ -12,9 +12,9 @@ public enum EmailTemplate {
             "html/verify_email.html",
             true
     ),
-    START_PREMIUM_NOTIFICATION(
+    PREMIUM_ADDED(
             "Congratulations on your new subscription",
-            "html/start_premium_notification.html",
+            "html/premium_added.html",
             true
     ),
     PREMIUM_EXPIRES(
