@@ -23,6 +23,7 @@ public interface RealtorMapper {
     @Mapping(source = "password", target = "password", qualifiedByName = "encodePassword")
     @Mapping(target = "role", constant = "REALTOR")
     @Mapping(target = "blocked", constant = "false")
+    @Mapping(target = "emailVerified", constant = "false")
     @Mapping(target = "created", expression = "java( java.time.Instant.now() )")
     @Mapping(target = "subscriptionType", constant = "FREE")
     @Mapping(target = "publicRealEstatesCount", constant = "0")

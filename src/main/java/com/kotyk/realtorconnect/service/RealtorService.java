@@ -9,6 +9,7 @@ import com.kotyk.realtorconnect.entity.realtor.SubscriptionType;
 import com.kotyk.realtorconnect.mapper.RealtorMapper;
 import com.kotyk.realtorconnect.repository.RealEstateRepository;
 import com.kotyk.realtorconnect.repository.RealtorRepository;
+import com.kotyk.realtorconnect.service.email.EmailFacade;
 import com.kotyk.realtorconnect.specification.RealtorFilterSpecifications;
 import com.kotyk.realtorconnect.util.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -32,15 +33,17 @@ public class RealtorService {
 
     public static final String NOT_FOUND_BY_ID_MSG = "Realtor with id '%d' not found";
 
+    private final EmailFacade emailFacade;
     private final RealtorMapper realtorMapper;
     private final RealtorRepository realtorRepository;
-
     private final RealEstateRepository realEstateRepository;
 
     @Transactional
     public RealtorFullDto create(RealtorAddDto dto) {
         log.debug("create() - start. dto - {}", dto);
-        RealtorFullDto created = realtorMapper.toFullDto(realtorRepository.save(realtorMapper.toEntity(dto)));
+        Realtor realtor = realtorRepository.save(realtorMapper.toEntity(dto));
+        emailFacade.sendVerifyEmail(realtor);
+        RealtorFullDto created = realtorMapper.toFullDto(realtor);
         log.debug("create() - end. result = {}", created);
         return created;
     }
@@ -101,6 +104,7 @@ public class RealtorService {
         realtor.setPremiumExpiresAt(ZonedDateTime.ofInstant(realtor.getPremiumExpiresAt(), ZoneOffset.UTC)
                 .plusMonths(durationInMonths).toInstant());
         realtorRepository.save(realtor);
+        emailFacade.sendStartPremiumNotification(realtor, durationInMonths);
         log.debug("givePremiumToRealtor() - end. premium expires at = {}", realtor.getPremiumExpiresAt());
         return realtor.getPremiumExpiresAt();
     }
@@ -117,6 +121,7 @@ public class RealtorService {
         });
         List<Long> realtorIds = realtors.stream().map(Realtor::getId).toList();
         realEstateRepository.makeAllRealEstatesPrivateByRealtors(realtorIds);
+        realtors.forEach(emailFacade::sendSubscriptionExpiredEmail);
         log.debug("setFreeSubscriptionWhenPrivateExpired() - end. realtors - {}", realtors.size());
     }
 

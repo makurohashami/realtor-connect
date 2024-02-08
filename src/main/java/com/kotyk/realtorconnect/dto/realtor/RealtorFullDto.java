@@ -27,6 +27,7 @@ public class RealtorFullDto {
     private Role role;
     private Instant lastLogin;
     private Boolean blocked;
+    private Boolean emailVerified;
     private String agency;
     private String agencySite;
     private SubscriptionType subscriptionType;

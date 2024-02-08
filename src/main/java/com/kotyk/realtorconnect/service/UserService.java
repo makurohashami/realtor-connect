@@ -7,6 +7,7 @@ import com.kotyk.realtorconnect.entity.user.Role;
 import com.kotyk.realtorconnect.entity.user.User;
 import com.kotyk.realtorconnect.mapper.UserMapper;
 import com.kotyk.realtorconnect.repository.UserRepository;
+import com.kotyk.realtorconnect.service.email.EmailFacade;
 import com.kotyk.realtorconnect.specification.UserFilterSpecifications;
 import com.kotyk.realtorconnect.util.exception.ActionNotAllowedException;
 import com.kotyk.realtorconnect.util.exception.ResourceNotFoundException;
@@ -35,6 +36,7 @@ public class UserService {
 
     private final UserMapper userMapper;
     private final UserRepository userRepository;
+    private final EmailFacade emailFacade;
 
     @Transactional
     public void updateLastLogin(User user) {
@@ -58,6 +60,7 @@ public class UserService {
         User user = userMapper.toEntity(dto);
         user.setRole(role);
         UserDto saved = userMapper.toDto(userRepository.save(user));
+        emailFacade.sendVerifyEmail(user);
         log.debug("create() - end. saved = {}", saved);
         return saved;
     }
@@ -145,4 +148,13 @@ public class UserService {
         return user.getBlocked();
     }
 
+    @Transactional
+    public boolean verifyEmail(String username) {
+        log.debug("verifyEmail() - start. username = {}", username);
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format(NOT_FOUND_BY_USERNAME_MSG, username)));
+        user.setEmailVerified(true);
+        log.debug("verifyEmail() - end. email verified = {}", user.getEmailVerified());
+        return user.getEmailVerified();
+    }
 }
