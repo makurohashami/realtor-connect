@@ -1,0 +1,49 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+
+        body {
+            background-color: #fafafa;
+            color: #2c3e50;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header-img {
+            max-width: 25%;
+            height: auto;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .container {
+            font-size: 18px;
+            background-color: #fafafa;
+            padding: 20px;
+            text-align: center;
+            margin: 30px auto;
+            border-radius: 10px;
+            max-width: 600px;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <img class="header-img" src="https://i.imgur.com/meePOPU.png" alt="Realtor Connect Header Image">
+    <h3>Dear <span th:text="${name}">Realtor</span>!</h3>
+    <p>Your premium subscription will expire in <span th:text="${daysLeft}">-1</span> days at: <span
+            th:text="${#dates.format(expiresAt, 'yyyy-MM-dd HH:mm:ss')}">time</span></p>
+    <p>All your real estates will be made private.</p>
+    <p>To renew your subscription, contact the administration.</p>
+</div>
+
+</body>
+
+</html>

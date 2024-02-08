@@ -20,8 +20,25 @@ spring:
       org.hibernate: info
       org.flywaydb: info
 
-server:
-  port: 8080
+network:
+  app-domain: ${APP_DOMAIN:http://localhost:8080}
+  swagger-ui-url: ${network.app-domain}/swagger-ui/index.html
+  verify-email-url: ${network.swagger-ui-url}#/User%20Controller/verifyEmail
+
+email:
+  enabled: ${EMAIL_ENABLED:true}
+  debug-mode:
+    enabled: ${EMAIL_DEBUG_ENABLED:true}
+    debug-email: makurohashami@gmail.com
+  server:
+    host: smtp.gmail.com
+    port: 587
+    username: ${EMAIL_USERNAME}
+    password: ${EMAIL_PASSWORD}
+    protocol: smtp
+    test-connection: true
+    smtp-auth: true
+    smtp-starttls-enabled: true
 
 realtor:
   plan-configuration:
