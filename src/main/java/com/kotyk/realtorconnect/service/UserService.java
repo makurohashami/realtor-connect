@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -157,4 +158,14 @@ public class UserService {
         log.debug("verifyEmail() - end. email verified = {}", user.getEmailVerified());
         return user.getEmailVerified();
     }
+
+    @Transactional
+    @Scheduled(cron = "${user.scheduler.remind-to-verify-email-cron}")
+    protected void remindToVerifyEmail() {
+        log.debug("remindToVerifyEmail() - start.");
+        List<User> users = userRepository.findAllByEmailVerifiedFalse();
+        users.forEach(emailFacade::sendVerifyEmail);
+        log.debug("remindToVerifyEmail() - end. users - {}", users.size());
+    }
+
 }

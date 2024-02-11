@@ -6,6 +6,8 @@ import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Component
@@ -13,7 +15,7 @@ import org.springframework.stereotype.Component;
 public class RealtorConfiguration {
 
     private PlanConfiguration planConfiguration;
-
+    private List<Integer> daysToNotifyExpiresPremium;
 
     public PlanProperties getPlanPropertiesByPlan(SubscriptionType type) {
         return switch (type) {

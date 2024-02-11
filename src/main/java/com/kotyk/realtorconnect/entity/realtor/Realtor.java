@@ -33,5 +33,7 @@ public class Realtor extends User {
     private SubscriptionType subscriptionType;
     private int publicRealEstatesCount;
     private Instant premiumExpiresAt;
+    @Column(name = "notified_days_to_expire_prem")
+    private Integer notifiedDaysToExpirePremium;
 
 }

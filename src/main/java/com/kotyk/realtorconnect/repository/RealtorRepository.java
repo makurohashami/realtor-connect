@@ -24,4 +24,11 @@ public interface RealtorRepository extends JpaRepository<Realtor, Long> {
     @Query("UPDATE Realtor r SET r.publicRealEstatesCount = :publicRealEstatesCount WHERE r.id = :id")
     void setRealEstateCountsByRealtorId(long id, int publicRealEstatesCount);
 
+
+    @Query("SELECT r FROM Realtor r WHERE r.notifiedDaysToExpirePremium > :daysLeft " +
+            "AND EXTRACT(DAY FROM r.premiumExpiresAt)  = :day " +
+            "AND EXTRACT(MONTH FROM r.premiumExpiresAt)  = :month " +
+            "AND EXTRACT(YEAR FROM r.premiumExpiresAt)  = :year")
+    List<Realtor> findAllNotNotifiedExpiringPremium(int daysLeft, int day, int month, int year);
+
 }

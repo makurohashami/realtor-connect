@@ -1,5 +1,6 @@
 package com.kotyk.realtorconnect.service;
 
+import com.kotyk.realtorconnect.config.RealtorConfiguration;
 import com.kotyk.realtorconnect.dto.realtor.RealtorAddDto;
 import com.kotyk.realtorconnect.dto.realtor.RealtorDto;
 import com.kotyk.realtorconnect.dto.realtor.RealtorFilter;
@@ -25,6 +26,7 @@ import java.time.Instant;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @Slf4j
 @Service
@@ -36,6 +38,7 @@ public class RealtorService {
     private final EmailFacade emailFacade;
     private final RealtorMapper realtorMapper;
     private final RealtorRepository realtorRepository;
+    private final RealtorConfiguration realtorConfiguration;
     private final RealEstateRepository realEstateRepository;
 
     @Transactional
@@ -103,8 +106,9 @@ public class RealtorService {
         }
         realtor.setPremiumExpiresAt(ZonedDateTime.ofInstant(realtor.getPremiumExpiresAt(), ZoneOffset.UTC)
                 .plusMonths(durationInMonths).toInstant());
+        realtor.setNotifiedDaysToExpirePremium(Integer.MAX_VALUE);
         realtorRepository.save(realtor);
-        emailFacade.sendStartPremiumNotification(realtor, durationInMonths);
+        emailFacade.sendStartPremiumEmail(realtor, durationInMonths);
         log.debug("givePremiumToRealtor() - end. premium expires at = {}", realtor.getPremiumExpiresAt());
         return realtor.getPremiumExpiresAt();
     }
@@ -116,13 +120,32 @@ public class RealtorService {
         List<Realtor> realtors = realtorRepository.findAllByPremiumExpiresAtBeforeAndSubscriptionType(Instant.now(), SubscriptionType.PREMIUM);
         realtors.forEach(realtor -> {
             realtor.setPremiumExpiresAt(null);
+            realtor.setNotifiedDaysToExpirePremium(null);
             realtor.setSubscriptionType(SubscriptionType.FREE);
             log.debug(String.format("Reset subscription for realtor: '%d'", realtor.getId()));
         });
         List<Long> realtorIds = realtors.stream().map(Realtor::getId).toList();
         realEstateRepository.makeAllRealEstatesPrivateByRealtors(realtorIds);
-        realtors.forEach(emailFacade::sendSubscriptionExpiredEmail);
+        realtors.forEach(emailFacade::sendPremiumExpiredEmail);
         log.debug("setFreeSubscriptionWhenPrivateExpired() - end. realtors - {}", realtors.size());
+    }
+
+    @Transactional
+    @Scheduled(cron = "${realtor.scheduler.send-email-when-premium-expires-cron}")
+    protected void sendEmailWhenLeftOneDayOfPremium() {
+        realtorConfiguration.getDaysToNotifyExpiresPremium().forEach(
+                daysLeft -> CompletableFuture.runAsync(() -> sendEmailWhenLeftFewDaysOfPremium(daysLeft))
+        );
+    }
+
+    protected void sendEmailWhenLeftFewDaysOfPremium(int daysLeft) {
+        ZonedDateTime time = ZonedDateTime.now().plusDays(daysLeft).withZoneSameInstant(ZoneOffset.UTC);
+        realtorRepository.findAllNotNotifiedExpiringPremium(daysLeft, time.getDayOfMonth(), time.getMonthValue(), time.getYear())
+                .forEach(realtor -> {
+                    emailFacade.sendPremiumExpiresEmail(realtor);
+                    realtor.setNotifiedDaysToExpirePremium(daysLeft);
+                    realtorRepository.save(realtor);
+                });
     }
 
 }

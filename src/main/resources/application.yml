@@ -40,19 +40,25 @@ email:
     smtp-auth: true
     smtp-starttls-enabled: true
 
+user:
+  scheduler:
+    remind-to-verify-email-cron: "0 12 * * 1 *" #every monday at 12 AM
+
 realtor:
   plan-configuration:
     free:
       maxPublicRealEstates: 10
     premium:
       maxPublicRealEstates: 25
+  daysToNotifyExpiresPremium: [ 1, 7 ]
   scheduler:
-    reset-plan-cron: "1 0 * * * *" # every day at 00:01 AM
+    reset-plan-cron: "0 0 * * * *" # every day at 00:00 AM
+    send-email-when-premium-expires-cron: "0 10 * * * *" # every day at 10 AM
 
 real-estate:
   daysForExpireCalled: 14
   scheduler:
-    check-called-cron: "*/30 * * * * *" # every 30 minutes
+    check-called-cron: "*/10 * * * * *" # every 10 minutes
 
 management:
   endpoints:

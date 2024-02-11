@@ -16,13 +16,14 @@ create table if not exists users
 
 create table if not exists realtors_info
 (
-    id                        bigint        not null primary key
+    id                           bigint        not null primary key
         constraint pk_users_id references users,
-    agency                    varchar(50)   null,
-    agency_site               varchar(2048) null,
-    subscription_type         integer       not null,
-    public_real_estates_count integer       not null,
-    premium_expires_at        timestamp     null
+    agency                       varchar(50)   null,
+    agency_site                  varchar(2048) null,
+    subscription_type            integer       not null,
+    public_real_estates_count    integer       not null,
+    premium_expires_at           timestamp     null,
+    notified_days_to_expire_prem integer       null
 );
 
 create index username_idx on users (username);
