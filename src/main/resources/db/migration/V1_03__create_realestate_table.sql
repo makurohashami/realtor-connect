@@ -40,7 +40,7 @@ create table if not exists real_estates
     count_photos         smallint         not null,
     count_public_photos  smallint         not null,
     is_private           boolean          not null,
-    called               boolean          not null,
+    is_called            boolean          not null,
     called_at            timestamp(6)     null,
     created_at           timestamp(6)     null,
     realtor_id           bigint           not null

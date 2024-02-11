@@ -7,6 +7,7 @@ import com.kotyk.realtorconnect.entity.user.Role;
 import com.kotyk.realtorconnect.entity.user.User;
 import com.kotyk.realtorconnect.mapper.UserMapper;
 import com.kotyk.realtorconnect.repository.UserRepository;
+import com.kotyk.realtorconnect.service.email.EmailFacade;
 import com.kotyk.realtorconnect.specification.UserFilterSpecifications;
 import com.kotyk.realtorconnect.util.exception.ActionNotAllowedException;
 import com.kotyk.realtorconnect.util.exception.ResourceNotFoundException;
@@ -15,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,6 +37,7 @@ public class UserService {
 
     private final UserMapper userMapper;
     private final UserRepository userRepository;
+    private final EmailFacade emailFacade;
 
     @Transactional
     public void updateLastLogin(User user) {
@@ -58,6 +61,7 @@ public class UserService {
         User user = userMapper.toEntity(dto);
         user.setRole(role);
         UserDto saved = userMapper.toDto(userRepository.save(user));
+        emailFacade.sendVerifyEmail(user);
         log.debug("create() - end. saved = {}", saved);
         return saved;
     }
@@ -141,9 +145,27 @@ public class UserService {
             throw new ActionNotAllowedException("You cannot change 'blocked' for this user");
         }
         user.setBlocked(blocked);
-        boolean updatedBlocked = userRepository.save(user).getBlocked();
-        log.debug("updateBlocked() - end. blocked = {}", updatedBlocked);
-        return updatedBlocked;
+        log.debug("updateBlocked() - end. blocked = {}", user.getBlocked());
+        return user.getBlocked();
+    }
+
+    @Transactional
+    public boolean verifyEmail(String username) {
+        log.debug("verifyEmail() - start. username = {}", username);
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format(NOT_FOUND_BY_USERNAME_MSG, username)));
+        user.setEmailVerified(true);
+        log.debug("verifyEmail() - end. email verified = {}", user.getEmailVerified());
+        return user.getEmailVerified();
+    }
+
+    @Transactional
+    @Scheduled(cron = "${user.scheduler.remind-to-verify-email-cron}")
+    protected void remindToVerifyEmail() {
+        log.debug("remindToVerifyEmail() - start.");
+        List<User> users = userRepository.findAllByEmailVerifiedFalse();
+        users.forEach(emailFacade::sendVerifyEmail);
+        log.debug("remindToVerifyEmail() - end. users - {}", users.size());
     }
 
 }

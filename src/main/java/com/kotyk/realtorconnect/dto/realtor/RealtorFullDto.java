@@ -27,13 +27,12 @@ public class RealtorFullDto {
     private Role role;
     private Instant lastLogin;
     private Boolean blocked;
+    private Boolean emailVerified;
     private String agency;
     private String agencySite;
     private SubscriptionType subscriptionType;
     private Instant premiumExpiresAt;
     private List<ContactDto> contacts = new ArrayList<>();
     private List<RealEstateFullDto> realEstates = new ArrayList<>();
-    private int realEstatesCount;
-    private int publicRealEstatesCount;
 
 }

@@ -23,5 +23,6 @@ public class UserDto {
     private Role role;
     private Instant lastLogin;
     private Boolean blocked;
+    private Boolean emailVerified;
 
 }

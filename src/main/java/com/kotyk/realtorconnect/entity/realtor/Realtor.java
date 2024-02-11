@@ -31,8 +31,9 @@ public class Realtor extends User {
     @EqualsAndHashCode.Exclude
     private Set<RealEstate> realEstates = new HashSet<>();
     private SubscriptionType subscriptionType;
-    private int realEstatesCount;
     private int publicRealEstatesCount;
     private Instant premiumExpiresAt;
+    @Column(name = "notified_days_to_expire_prem")
+    private Integer notifiedDaysToExpirePremium;
 
 }

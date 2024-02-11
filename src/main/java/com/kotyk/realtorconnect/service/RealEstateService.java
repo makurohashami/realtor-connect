@@ -1,5 +1,6 @@
 package com.kotyk.realtorconnect.service;
 
+import com.kotyk.realtorconnect.config.RealEstateConfiguration;
 import com.kotyk.realtorconnect.config.RealtorConfiguration;
 import com.kotyk.realtorconnect.dto.realestate.RealEstateAddDto;
 import com.kotyk.realtorconnect.dto.realestate.RealEstateDto;
@@ -18,9 +19,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
+import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -32,6 +37,8 @@ public class RealEstateService {
 
     private final RealEstateMapper realEstateMapper;
     private final RealEstateRepository realEstateRepository;
+    private final RealEstateConfiguration realEstateConfiguration;
+
     private final RealtorConfiguration realtorConfiguration;
     private final RealtorRepository realtorRepository;
 
@@ -44,19 +51,15 @@ public class RealEstateService {
         log.debug("create() - start. realtorId = {}, realEstateDto = {}", realtorId, realEstateDto);
         Realtor realtor = realtorRepository.findById(realtorId)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format(RealtorService.NOT_FOUND_BY_ID_MSG, realtorId)));
-        int updatedTotalCount = realtor.getRealEstatesCount() + 1;
         int updatedPublicCount = realEstateDto.isPrivate() ? realtor.getPublicRealEstatesCount() : realtor.getPublicRealEstatesCount() + 1;
-        RealtorConfiguration.PlanProperties counts = realtorConfiguration.getPlanPropertiesByPlan(realtor.getSubscriptionType());
-        if (updatedTotalCount > counts.getMaxTotalRealEstates()) {
-            throw new ActionNotAllowedException("It is impossible to add a real estate because the maximum number of real estates has been reached");
-        }
-        if (updatedPublicCount > counts.getMaxPublicRealEstates()) {
+        long maxCounts = realtorConfiguration.getPlanPropertiesByPlan(realtor.getSubscriptionType()).getMaxPublicRealEstates();
+        if (updatedPublicCount > maxCounts) {
             throw new ActionNotAllowedException("It is impossible to add a public real estate because the maximum number of public real estates has been reached");
         }
         RealEstateFullDto realEstate = realEstateMapper.toFullDto(realEstateRepository.save(
                 realEstateMapper.toEntity(realEstateDto, realtorId))
         );
-        realtorRepository.setRealEstateCountsByRealtorId(realtorId, updatedTotalCount, updatedPublicCount);
+        realtorRepository.setRealEstateCountsByRealtorId(realtorId, updatedPublicCount);
         log.debug("create() - end. realEstate = {}", realEstate);
         return realEstate;
     }
@@ -110,7 +113,7 @@ public class RealEstateService {
             if (!realEstateDto.isPrivate() && updatedPublicCount > realtorConfiguration.getPlanPropertiesByPlan(realtor.getSubscriptionType()).getMaxPublicRealEstates()) {
                 throw new ActionNotAllowedException("It is impossible to make an object public because the maximum number of public real estates has been reached");
             }
-            realtorRepository.setRealEstateCountsByRealtorId(realtor.getId(), realtor.getRealEstatesCount(), updatedPublicCount);
+            realtorRepository.setRealEstateCountsByRealtorId(realtor.getId(), updatedPublicCount);
         }
         RealEstateFullDto updated = realEstateMapper.toFullDto(realEstateMapper.update(toUpdate, realEstateDto));
         log.debug("update() - end. updated = {}", updated);
@@ -126,7 +129,6 @@ public class RealEstateService {
             realEstateRepository.deleteById(realEstateId);
             realtorRepository.setRealEstateCountsByRealtorId(
                     realEstate.getRealtor().getId(),
-                    realEstate.getRealtor().getRealEstatesCount() - 1,
                     realEstate.isPrivate() ? realEstate.getRealtor().getPublicRealEstatesCount() : realEstate.getRealtor().getPublicRealEstatesCount() - 1
             );
         }
@@ -139,9 +141,29 @@ public class RealEstateService {
         RealEstate realEstate = realEstateRepository.findById(realEstateId)
                 .orElseThrow(() -> new ResourceNotFoundException(getExMessage(realEstateId)));
         realEstate.setVerified(verified);
-        boolean updatedVerified = realEstateRepository.save(realEstate).isVerified();
-        log.debug("updateVerified() - end. verified = {}", updatedVerified);
-        return updatedVerified;
+        log.debug("updateVerified() - end. verified = {}", realEstate.isVerified());
+        return realEstate.isVerified();
+    }
+
+    @Transactional
+    public boolean updateCalled(long realEstateId, boolean called) {
+        log.debug("updateCalled() - start. realEstateId = {}, called = {}", realEstateId, called);
+        RealEstate realEstate = realEstateRepository.findById(realEstateId)
+                .orElseThrow(() -> new ResourceNotFoundException(getExMessage(realEstateId)));
+        realEstate.setCalled(called);
+        realEstate.setCalledAt(Instant.now());
+        log.debug("updateCalled() - end. called = {}", realEstate.isCalled());
+        return realEstate.isCalled();
+    }
+
+    @Transactional
+    @Scheduled(cron = "${real-estate.scheduler.check-called-cron}")
+    protected void setNotCalledWhenCalledAtExpired() {
+        log.debug("setNotCalledWhenCalledAtExpired() - start.");
+        Instant time = ZonedDateTime.now().minusDays(realEstateConfiguration.getDaysForExpireCalled()).toInstant();
+        List<RealEstate> realEstates = realEstateRepository.findAllByCalledAtBeforeAndCalledTrue(time);
+        realEstates.forEach(realEstate -> realEstate.setCalled(false));
+        log.debug("setNotCalledWhenCalledAtExpired() - end. real estates - {}", realEstates.size());
     }
 
 }

@@ -40,6 +40,7 @@ public class User implements UserDetails {
     private Boolean blocked;
     private Instant lastLogin;
     private Instant created;
+    private Boolean emailVerified;
     @ManyToMany
     @JoinTable(name = "favorite_real_estates",
             joinColumns = @JoinColumn(name = "user_id"),

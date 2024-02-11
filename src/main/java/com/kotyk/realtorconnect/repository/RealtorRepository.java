@@ -1,6 +1,7 @@
 package com.kotyk.realtorconnect.repository;
 
 import com.kotyk.realtorconnect.entity.realtor.Realtor;
+import com.kotyk.realtorconnect.entity.realtor.SubscriptionType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -17,10 +18,17 @@ public interface RealtorRepository extends JpaRepository<Realtor, Long> {
 
     Page<Realtor> findAll(Specification<Realtor> spec, Pageable pageable);
 
-    List<Realtor> findAllByPremiumExpiresAtBefore(Instant instant);
+    List<Realtor> findAllByPremiumExpiresAtBeforeAndSubscriptionType(Instant instant, SubscriptionType type);
 
     @Modifying
-    @Query("UPDATE Realtor r SET r.realEstatesCount = :realEstatesCount, r.publicRealEstatesCount = :publicRealEstatesCount WHERE r.id = :id")
-    void setRealEstateCountsByRealtorId(long id, int realEstatesCount, int publicRealEstatesCount);
+    @Query("UPDATE Realtor r SET r.publicRealEstatesCount = :publicRealEstatesCount WHERE r.id = :id")
+    void setRealEstateCountsByRealtorId(long id, int publicRealEstatesCount);
+
+
+    @Query("SELECT r FROM Realtor r WHERE r.notifiedDaysToExpirePremium > :daysLeft " +
+            "AND EXTRACT(DAY FROM r.premiumExpiresAt)  = :day " +
+            "AND EXTRACT(MONTH FROM r.premiumExpiresAt)  = :month " +
+            "AND EXTRACT(YEAR FROM r.premiumExpiresAt)  = :year")
+    List<Realtor> findAllNotNotifiedExpiringPremium(int daysLeft, int day, int month, int year);
 
 }
