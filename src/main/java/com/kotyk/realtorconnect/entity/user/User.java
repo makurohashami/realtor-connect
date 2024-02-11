@@ -46,6 +46,8 @@ public class User implements UserDetails {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "real_estate_id"))
     private Set<RealEstate> favoriteRealEstates = new HashSet<>();
+    @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private ConfirmationToken confirmationToken;
 
     public User(String username, Role role) {
         this.username = username;
@@ -76,6 +78,6 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return emailVerified;
     }
 }

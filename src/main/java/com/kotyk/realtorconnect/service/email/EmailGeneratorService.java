@@ -25,10 +25,10 @@ public class EmailGeneratorService {
 
     private final SpringTemplateEngine templateEngine;
 
-    protected Email generateVerifyEmail(User user) {
+    protected Email generateVerifyEmail(User user, String token) {
         Map<String, Object> templateVariables = new HashMap<>();
         templateVariables.put("name", user.getName());
-        templateVariables.put("link", verifyEmailUrl);
+        templateVariables.put("link", verifyEmailUrl + token);
 
         return generateEmail(user.getEmail(), EmailTemplate.VERIFY_EMAIL, templateVariables);
     }

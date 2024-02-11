@@ -14,6 +14,14 @@ create table if not exists users
     email_verified boolean       not null
 );
 
+create index username_idx on users (username);
+
+create table if not exists confirmation_tokens
+(
+    token   UUID not null primary key,
+    user_id bigserial unique references users (id)
+);
+
 create table if not exists realtors_info
 (
     id                           bigint        not null primary key
@@ -25,8 +33,6 @@ create table if not exists realtors_info
     premium_expires_at           timestamp     null,
     notified_days_to_expire_prem integer       null
 );
-
-create index username_idx on users (username);
 
 insert into users (name, email, username, password,
                    phone, avatar, role_id,

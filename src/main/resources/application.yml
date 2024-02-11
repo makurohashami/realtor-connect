@@ -23,7 +23,7 @@ spring:
 network:
   app-domain: ${APP_DOMAIN:http://localhost:8080}
   swagger-ui-url: ${network.app-domain}/swagger-ui/index.html
-  verify-email-url: ${network.swagger-ui-url}#/User%20Controller/verifyEmail
+  verify-email-url: ${app-domain}/users/verifyEmail/
 
 email:
   enabled: ${EMAIL_ENABLED:true}
@@ -41,8 +41,9 @@ email:
     smtp-starttls-enabled: true
 
 user:
+  timeToVerifyEmailInDays: 7
   scheduler:
-    remind-to-verify-email-cron: "0 12 * * 1 *" #every monday at 12 AM
+    delete-unverified-users-cron: "* */2 * * * *" # every 2 hours
 
 realtor:
   plan-configuration:

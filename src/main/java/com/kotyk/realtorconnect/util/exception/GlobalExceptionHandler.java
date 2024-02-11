@@ -3,6 +3,7 @@ package com.kotyk.realtorconnect.util.exception;
 import com.kotyk.realtorconnect.dto.Error;
 import com.kotyk.realtorconnect.dto.apiresponse.ApiError;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -91,6 +92,18 @@ public class GlobalExceptionHandler {
         Error error = new Error(
                 Instant.now(),
                 "Action not allowed",
+                ex.getMessage(),
+                request.getDescription(false)
+        );
+        log.error("", ex);
+        return badRequest(error);
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ApiError<Error>> dataIntegrityViolationException(DataIntegrityViolationException ex, WebRequest request) {
+        Error error = new Error(
+                Instant.now(),
+                "Constraint violation",
                 ex.getMessage(),
                 request.getDescription(false)
         );

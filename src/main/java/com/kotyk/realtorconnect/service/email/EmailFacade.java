@@ -14,8 +14,8 @@ public class EmailFacade {
     private final EmailGeneratorService emailGeneratorService;
 
 
-    public void sendVerifyEmail(User user) {
-        Email email = emailGeneratorService.generateVerifyEmail(user);
+    public void sendVerifyEmail(User user, String token) {
+        Email email = emailGeneratorService.generateVerifyEmail(user, token);
         emailSenderService.sendEmail(email);
     }
 
