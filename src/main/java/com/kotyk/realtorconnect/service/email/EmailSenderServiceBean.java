@@ -23,6 +23,7 @@ public class EmailSenderServiceBean implements EmailSenderService {
         try {
 
             MimeMessageHelper messageHelper = new MimeMessageHelper(mailSender.createMimeMessage(), true, "UTF-8");
+
             messageHelper.setTo(email.getTo());
             messageHelper.setSubject(email.getSubject());
             messageHelper.setText(email.getBody(), email.isHtml());

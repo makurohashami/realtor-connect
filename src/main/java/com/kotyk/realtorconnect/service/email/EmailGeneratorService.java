@@ -33,7 +33,7 @@ public class EmailGeneratorService {
         return generateEmail(user.getEmail(), EmailTemplate.VERIFY_EMAIL, templateVariables);
     }
 
-    protected Email generateStartPremiumNotification(Realtor realtor, int durationInMonths) {
+    protected Email generateStartPremiumEmail(Realtor realtor, int durationInMonths) {
         Map<String, Object> templateVariables = new HashMap<>();
         templateVariables.put("name", realtor.getName());
         templateVariables.put("durationInMonths", durationInMonths);
@@ -42,10 +42,10 @@ public class EmailGeneratorService {
         return generateEmail(realtor.getEmail(), EmailTemplate.PREMIUM_ADDED, templateVariables);
     }
 
-    protected Email generateSubscriptionExpiresEmail(Realtor realtor) {
+    protected Email generatePremiumExpiresEmail(Realtor realtor) {
         Map<String, Object> templateVariables = new HashMap<>();
         templateVariables.put("name", realtor.getName());
-        templateVariables.put("daysLeft", ChronoUnit.DAYS.between(LocalDateTime.ofInstant(realtor.getPremiumExpiresAt(), ZoneOffset.UTC), LocalDateTime.now()));
+        templateVariables.put("daysLeft", ChronoUnit.DAYS.between(LocalDateTime.now(), LocalDateTime.ofInstant(realtor.getPremiumExpiresAt(), ZoneOffset.UTC)));
         templateVariables.put("expiresAt", realtor.getPremiumExpiresAt());
 
         return generateEmail(realtor.getEmail(), EmailTemplate.PREMIUM_EXPIRES, templateVariables);

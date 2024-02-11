@@ -19,18 +19,18 @@ public class EmailFacade {
         emailSenderService.sendEmail(email);
     }
 
-    public void sendStartPremiumNotification(Realtor realtor, int durationInMonths) {
-        Email email = emailGeneratorService.generateStartPremiumNotification(realtor, durationInMonths);
+    public void sendStartPremiumEmail(Realtor realtor, int durationInMonths) {
+        Email email = emailGeneratorService.generateStartPremiumEmail(realtor, durationInMonths);
         emailSenderService.sendEmail(email);
     }
 
 
-    public void sendSubscriptionExpiresEmail(Realtor realtor) {
-        Email email = emailGeneratorService.generateSubscriptionExpiresEmail(realtor);
+    public void sendPremiumExpiresEmail(Realtor realtor) {
+        Email email = emailGeneratorService.generatePremiumExpiresEmail(realtor);
         emailSenderService.sendEmail(email);
     }
 
-    public void sendSubscriptionExpiredEmail(Realtor realtor) {
+    public void sendPremiumExpiredEmail(Realtor realtor) {
         Email email = emailGeneratorService.generatePremiumExpiredEmail(realtor);
         emailSenderService.sendEmail(email);
     }
