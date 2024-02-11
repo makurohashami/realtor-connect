@@ -16,7 +16,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import static com.kotyk.realtorconnect.util.ApiResponseUtil.ok;
@@ -61,12 +60,11 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/verifyEmail")
-    @PreAuthorize("isAuthenticated()")
-    @Operation(summary = "Verify email of authenticated user")
-    public ResponseEntity<ApiSuccess<Boolean>> verifyEmail() {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        return ok(service.verifyEmail(username));
+    @GetMapping("/verifyEmail/{token}")
+    @PreAuthorize("isAnonymous()")
+    @Operation(summary = "Verify email of anonymous user")
+    public ResponseEntity<ApiSuccess<Boolean>> verifyEmail(@PathVariable String token) {
+        return ok(service.verifyEmail(token));
     }
 
 }

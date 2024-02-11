@@ -40,12 +40,13 @@ public class RealtorService {
     private final RealtorRepository realtorRepository;
     private final RealtorConfiguration realtorConfiguration;
     private final RealEstateRepository realEstateRepository;
+    private final ConfirmationTokenService tokenService;
 
     @Transactional
     public RealtorFullDto create(RealtorAddDto dto) {
         log.debug("create() - start. dto - {}", dto);
         Realtor realtor = realtorRepository.save(realtorMapper.toEntity(dto));
-        emailFacade.sendVerifyEmail(realtor);
+        emailFacade.sendVerifyEmail(realtor, tokenService.createToken(realtor));
         RealtorFullDto created = realtorMapper.toFullDto(realtor);
         log.debug("create() - end. result = {}", created);
         return created;

@@ -1,5 +1,6 @@
 package com.kotyk.realtorconnect.service;
 
+import com.kotyk.realtorconnect.config.UserConfiguration;
 import com.kotyk.realtorconnect.dto.user.UserAddDto;
 import com.kotyk.realtorconnect.dto.user.UserDto;
 import com.kotyk.realtorconnect.dto.user.UserFilter;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,7 +39,9 @@ public class UserService {
 
     private final UserMapper userMapper;
     private final UserRepository userRepository;
+    private final UserConfiguration userConfiguration;
     private final EmailFacade emailFacade;
+    private final ConfirmationTokenService tokenService;
 
     @Transactional
     public void updateLastLogin(User user) {
@@ -61,7 +65,7 @@ public class UserService {
         User user = userMapper.toEntity(dto);
         user.setRole(role);
         UserDto saved = userMapper.toDto(userRepository.save(user));
-        emailFacade.sendVerifyEmail(user);
+        emailFacade.sendVerifyEmail(user, tokenService.createToken(user));
         log.debug("create() - end. saved = {}", saved);
         return saved;
     }
@@ -150,22 +154,24 @@ public class UserService {
     }
 
     @Transactional
-    public boolean verifyEmail(String username) {
-        log.debug("verifyEmail() - start. username = {}", username);
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new ResourceNotFoundException(String.format(NOT_FOUND_BY_USERNAME_MSG, username)));
+    public boolean verifyEmail(String token) {
+        log.debug("verifyEmail() - start. token = {}", token);
+        User user = tokenService.getUserByToken(token);
         user.setEmailVerified(true);
+        tokenService.deleteToken(token);
         log.debug("verifyEmail() - end. email verified = {}", user.getEmailVerified());
         return user.getEmailVerified();
     }
 
     @Transactional
-    @Scheduled(cron = "${user.scheduler.remind-to-verify-email-cron}")
-    protected void remindToVerifyEmail() {
-        log.debug("remindToVerifyEmail() - start.");
-        List<User> users = userRepository.findAllByEmailVerifiedFalse();
-        users.forEach(emailFacade::sendVerifyEmail);
-        log.debug("remindToVerifyEmail() - end. users - {}", users.size());
+    @Scheduled(cron = "${user.scheduler.delete-unverified-users-cron}")
+    protected void deleteUnverifiedUsers() {
+        log.debug("deleteUnverifiedUsers() - start.");
+        Instant time = ZonedDateTime.now()
+                .minusDays(userConfiguration.getTimeToVerifyEmailInDays())
+                .toInstant();
+        userRepository.deleteAllByCreatedIsBeforeAndEmailVerifiedFalse(time);
+        log.debug("deleteUnverifiedUsers() - end.");
     }
 
 }
