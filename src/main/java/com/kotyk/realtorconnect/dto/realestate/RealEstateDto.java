@@ -40,6 +40,5 @@ public class RealEstateDto {
     private Instant calledAt;
     private List<RealEstatePhotoDto> photos = new ArrayList<>();
     private long realtorId;
-    private int countFavorites;
 
 }

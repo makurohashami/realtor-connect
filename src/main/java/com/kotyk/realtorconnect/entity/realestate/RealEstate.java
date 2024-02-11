@@ -3,7 +3,6 @@ package com.kotyk.realtorconnect.entity.realestate;
 import com.kotyk.realtorconnect.entity.realestate.embedded.*;
 import com.kotyk.realtorconnect.entity.realestate.enums.*;
 import com.kotyk.realtorconnect.entity.realtor.Realtor;
-import com.kotyk.realtorconnect.entity.user.User;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -71,9 +70,5 @@ public class RealEstate {
     @EqualsAndHashCode.Exclude
     @JoinColumn(name = "realtor_id", nullable = false)
     private Realtor realtor;
-    @ManyToMany(mappedBy = "favoriteRealEstates", fetch = FetchType.EAGER)
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    private Set<User> favorites = new HashSet<>();
 
 }

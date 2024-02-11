@@ -1,6 +1,5 @@
 package com.kotyk.realtorconnect.entity.user;
 
-import com.kotyk.realtorconnect.entity.realestate.RealEstate;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,8 +11,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.Instant;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Entity
@@ -41,11 +38,6 @@ public class User implements UserDetails {
     private Instant lastLogin;
     private Instant created;
     private Boolean emailVerified;
-    @ManyToMany
-    @JoinTable(name = "favorite_real_estates",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "real_estate_id"))
-    private Set<RealEstate> favoriteRealEstates = new HashSet<>();
     @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE)
     private ConfirmationToken confirmationToken;
 

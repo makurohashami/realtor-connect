@@ -57,14 +57,3 @@ create table if not exists real_estates_photos
         constraint to_real_estate_id
             references real_estates
 );
-
-create table if not exists favorite_real_estates
-(
-    user_id        bigint not null
-        constraint to_user_id
-            references users,
-    real_estate_id bigint not null
-        constraint to_realtor_estate_id
-            references real_estates,
-    primary key (user_id, real_estate_id)
-);
