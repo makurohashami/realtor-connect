@@ -84,37 +84,37 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public UserFullDto readFullById(long id) {
-        log.debug("readById() - start. id = {}", id);
+        log.debug("readFullById() - start. id = {}", id);
         UserFullDto dto = userMapper.toFullDto(userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format(NOT_FOUND_BY_ID_MSG, id))));
-        log.debug("readById() - end. user = {}", dto);
+        log.debug("readFullById() - end. user = {}", dto);
         return dto;
     }
 
     @Transactional(readOnly = true)
     public UserFullDto readFullByUsername(String username) {
-        log.debug("readByUsername() - start. username = {}", username);
+        log.debug("readFullByUsername() - start. username = {}", username);
         UserFullDto dto = userMapper.toFullDto(userRepository.findByUsername(username)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format(NOT_FOUND_BY_USERNAME_MSG, username))));
-        log.debug("readByUsername() - end. user = {}", dto);
+        log.debug("readFullByUsername() - end. user = {}", dto);
         return dto;
     }
 
     @Transactional(readOnly = true)
     public Page<UserFullDto> readAllFulls(UserFilter filter, Pageable pageable) {
-        log.debug("readAll() - start. filter = {}, pageable = {}", filter, pageable);
+        log.debug("Page readAllFulls() - start. filter = {}, pageable = {}", filter, pageable);
         Specification<User> spec = UserFilterSpecifications.withFilter(filter);
         Page<UserFullDto> users = userRepository.findAll(spec, pageable).map(userMapper::toFullDto);
-        log.debug("readAll() - end: size = {}", users.getTotalElements());
+        log.debug("Page readAllFulls() - end: size = {}", users.getTotalElements());
         return users;
     }
 
     @Transactional(readOnly = true)
     public List<UserFullDto> readAllFulls(UserFilter filter) {
-        log.debug("readAll() - start. filter = {}", filter);
+        log.debug("List readAllFulls() - start. filter = {}", filter);
         Specification<User> spec = UserFilterSpecifications.withFilter(filter);
         List<UserFullDto> users = userMapper.toListFullDto(userRepository.findAll(spec));
-        log.debug("readAll() - end: size = {}", users.size());
+        log.debug("List readAllFulls() - end: size = {}", users.size());
         return users;
     }
 
