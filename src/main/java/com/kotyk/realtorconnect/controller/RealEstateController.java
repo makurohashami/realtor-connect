@@ -1,12 +1,15 @@
 package com.kotyk.realtorconnect.controller;
 
 import com.kotyk.realtorconnect.annotation.IsRealEstateOwner;
+import com.kotyk.realtorconnect.annotation.IsRealEstatePublic;
 import com.kotyk.realtorconnect.annotation.IsSameRealtor;
 import com.kotyk.realtorconnect.dto.apiresponse.ApiSuccess;
 import com.kotyk.realtorconnect.dto.realestate.RealEstateAddDto;
 import com.kotyk.realtorconnect.dto.realestate.RealEstateDto;
 import com.kotyk.realtorconnect.dto.realestate.RealEstateFilter;
 import com.kotyk.realtorconnect.dto.realestate.RealEstateFullDto;
+import com.kotyk.realtorconnect.entity.user.Permission;
+import com.kotyk.realtorconnect.service.PermissionService;
 import com.kotyk.realtorconnect.service.RealEstateService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -27,6 +30,7 @@ import static com.kotyk.realtorconnect.util.ApiResponseUtil.ok;
 public class RealEstateController {
 
     private final RealEstateService service;
+    private final PermissionService permissionService;
 
     @IsSameRealtor
     @PostMapping("/{realtorId}/real-estates")
@@ -35,6 +39,7 @@ public class RealEstateController {
         return created(service.create(realtorId, realEstateDto));
     }
 
+    @IsRealEstatePublic
     @GetMapping("/real-estates/{realEstateId}")
     @Operation(summary = "Get short real estate")
     public ResponseEntity<ApiSuccess<RealEstateDto>> readShortById(@PathVariable long realEstateId) {
@@ -53,7 +58,8 @@ public class RealEstateController {
     public ResponseEntity<ApiSuccess<Page<RealEstateDto>>> readAllShorts(@RequestParam(defaultValue = "0") int page,
                                                                          @RequestParam(defaultValue = "15") int size,
                                                                          @ModelAttribute RealEstateFilter filter) {
-        return ok(service.readAllShorts(filter, PageRequest.of(page, size)));
+        boolean canSeePrivate = permissionService.isCurrentHasPermission(Permission.SEE_PRIVATE_REAL_ESTATES);
+        return ok(service.readAllShorts(filter, PageRequest.of(page, size), !canSeePrivate));
     }
 
     @IsSameRealtor

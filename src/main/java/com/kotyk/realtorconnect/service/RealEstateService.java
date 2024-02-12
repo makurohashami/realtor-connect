@@ -17,6 +17,7 @@ import com.kotyk.realtorconnect.util.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -27,6 +28,7 @@ import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 @Slf4j
 @Service
@@ -85,12 +87,22 @@ public class RealEstateService {
     }
 
     @Transactional(readOnly = true)
-    public Page<RealEstateDto> readAllShorts(RealEstateFilter filter, Pageable pageable) {
+    public Page<RealEstateDto> readAllShorts(RealEstateFilter filter, Pageable pageable, Boolean filterPrivate) {
         log.debug("readAllShorts() - start. filter = {}, pageable = {}", filter, pageable);
         Specification<RealEstate> spec = RealEstateSpecifications.withFilter(filter);
-        Page<RealEstateDto> realEstates = realEstateRepository.findAll(spec, pageable).map(realEstateMapper::toDto);
+        Page<RealEstate> realEstatePage = realEstateRepository.findAll(spec, pageable);
+        if (filterPrivate) {
+            realEstatePage = filterRealEstatePage(realEstate -> !realEstate.isPrivate(), realEstatePage);
+        }
+        Page<RealEstateDto> realEstates = realEstatePage.map(realEstateMapper::toDto);
         log.debug("readAllShorts() - end: size = {}", realEstates.getTotalElements());
         return realEstates;
+    }
+
+    private Page<RealEstate> filterRealEstatePage(Predicate<RealEstate> predicate, Page<RealEstate> realEstates) {
+        List<RealEstate> filteredRealEstateList = realEstates.getContent().stream()
+                .filter(predicate).toList();
+        return new PageImpl<>(filteredRealEstateList, realEstates.getPageable(), realEstates.getTotalElements());
     }
 
     @Transactional(readOnly = true)

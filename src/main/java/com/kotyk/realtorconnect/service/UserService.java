@@ -133,7 +133,7 @@ public class UserService {
         log.debug("delete() - start. id = {}", id);
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format(NOT_FOUND_BY_ID_MSG, id)));
-        boolean canDeleteAdmins = permissionService.hasPermission(Permission.MANAGE_ADMINS);
+        boolean canDeleteAdmins = permissionService.isCurrentHasPermission(Permission.MANAGE_ADMINS);
         if (user.getRole() == CHIEF_ADMIN || (user.getRole() == ADMIN && !canDeleteAdmins)) {
             throw new ActionNotAllowedException("You can't delete an user with this role");
         }

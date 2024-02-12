@@ -14,6 +14,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @AllArgsConstructor
 public class PermissionService {
@@ -54,12 +56,17 @@ public class PermissionService {
         return isSameUser(contact.getRealtor().getId());
     }
 
-    public boolean hasPermission(Permission permission) {
+    public boolean isCurrentHasPermission(Permission permission) {
         return SecurityContextHolder
                 .getContext()
                 .getAuthentication()
                 .getAuthorities()
                 .contains(new SimpleGrantedAuthority(permission.name()));
+    }
+
+    public boolean isRealEstatePublic(long realEstateId) {
+        Optional<RealEstate> realEstateOpt = realEstateRepository.findById(realEstateId);
+        return realEstateOpt.map(realEstate -> !realEstate.isPrivate()).orElse(false);
     }
 
 
