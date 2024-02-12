@@ -6,7 +6,7 @@ import com.kotyk.realtorconnect.dto.auth.AuthResponse;
 import com.kotyk.realtorconnect.dto.realtor.RealtorAddDto;
 import com.kotyk.realtorconnect.dto.realtor.RealtorFullDto;
 import com.kotyk.realtorconnect.dto.user.UserAddDto;
-import com.kotyk.realtorconnect.dto.user.UserDto;
+import com.kotyk.realtorconnect.dto.user.UserFullDto;
 import com.kotyk.realtorconnect.entity.user.Role;
 import com.kotyk.realtorconnect.service.AuthService;
 import com.kotyk.realtorconnect.service.RealtorService;
@@ -50,16 +50,16 @@ public class AuthController {
     @PreAuthorize("isAnonymous()")
     @PostMapping("/register/user")
     @Operation(summary = "Register user")
-    public ResponseEntity<ApiSuccess<UserDto>> registration(@RequestBody @Valid UserAddDto dto) {
+    public ResponseEntity<ApiSuccess<UserFullDto>> registration(@RequestBody @Valid UserAddDto dto) {
         return created(userService.create(dto, Role.USER));
     }
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/current")
     @Operation(summary = "Get current authenticated user")
-    public ResponseEntity<ApiSuccess<UserDto>> getCurrent() {
+    public ResponseEntity<ApiSuccess<UserFullDto>> getCurrent() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        return ok(userService.readByUsername(username));
+        return ok(userService.readFullByUsername(username));
     }
 
 }

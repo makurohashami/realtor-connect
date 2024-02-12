@@ -2,11 +2,9 @@ package com.kotyk.realtorconnect.mapper;
 
 import com.kotyk.realtorconnect.dto.user.UserAddDto;
 import com.kotyk.realtorconnect.dto.user.UserDto;
+import com.kotyk.realtorconnect.dto.user.UserFullDto;
 import com.kotyk.realtorconnect.entity.user.User;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.Named;
+import org.mapstruct.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.List;
@@ -21,10 +19,15 @@ public interface UserMapper {
 
     UserDto toDto(User user);
 
+    UserFullDto toFullDto(User user);
+
+    @IterableMapping(elementTargetType = UserDto.class)
     List<UserDto> toListDto(List<User> users);
 
+    @IterableMapping(elementTargetType = UserFullDto.class)
+    List<UserFullDto> toListFullDto(List<User> users);
+
     @Mapping(source = "password", target = "password", qualifiedByName = "encodePassword")
-    @Mapping(target = "role", constant = "USER")
     @Mapping(target = "blocked", constant = "false")
     @Mapping(target = "emailVerified", constant = "false")
     @Mapping(target = "created", expression = "java( java.time.Instant.now() )")

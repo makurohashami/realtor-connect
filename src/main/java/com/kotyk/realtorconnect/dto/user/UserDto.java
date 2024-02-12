@@ -6,8 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.Instant;
-
 @Getter
 @Setter
 @NoArgsConstructor
@@ -15,14 +13,8 @@ import java.time.Instant;
 public class UserDto {
 
     private Long id;
-    private String username;
     private String name;
-    private String email;
-    private String phone;
     private String avatar;
     private Role role;
-    private Instant lastLogin;
-    private Boolean blocked;
-    private Boolean emailVerified;
 
 }

@@ -1,6 +1,6 @@
 package com.kotyk.realtorconnect.dto.realtor;
 
-import com.kotyk.realtorconnect.dto.realestate.RealEstateDto;
+import com.kotyk.realtorconnect.dto.user.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,14 +13,10 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RealtorDto {
+public class RealtorDto extends UserDto {
 
-    private Long id;
-    private String name;
-    private String avatar;
     private String agency;
     private String agencySite;
     private List<ContactDto> contacts = new ArrayList<>();
-    private List<RealEstateDto> realEstates = new ArrayList<>();
 
 }

@@ -22,8 +22,8 @@ public class UserFilterSpecifications {
             if (filter.getPhone() != null) {
                 predicates.add(criteriaBuilder.like(root.get("phone"), "%" + filter.getPhone() + "%"));
             }
-            if (filter.getRole() != null) {
-                predicates.add(criteriaBuilder.equal(root.get("role"), filter.getRole()));
+            if (filter.getRoles() != null) {
+                predicates.add(root.get("role").in(filter.getRoles()));
             }
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         };

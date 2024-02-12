@@ -27,7 +27,7 @@ public class AuthService {
         String jwtToken = jwtService.generateToken(user);
         return AuthResponse.builder()
                 .token(new AuthResponse.Token(jwtToken))
-                .user(userMapper.toDto(user))
+                .user(userMapper.toFullDto(user))
                 .build();
     }
 }

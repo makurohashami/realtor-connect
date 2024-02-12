@@ -3,11 +3,13 @@ package com.kotyk.realtorconnect.service;
 import com.kotyk.realtorconnect.entity.realestate.RealEstate;
 import com.kotyk.realtorconnect.entity.realtor.Contact;
 import com.kotyk.realtorconnect.entity.realtor.Realtor;
+import com.kotyk.realtorconnect.entity.user.Permission;
 import com.kotyk.realtorconnect.entity.user.User;
 import com.kotyk.realtorconnect.repository.ContactRepository;
 import com.kotyk.realtorconnect.repository.RealEstateRepository;
 import com.kotyk.realtorconnect.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,6 +52,14 @@ public class PermissionService {
             return false;
         }
         return isSameUser(contact.getRealtor().getId());
+    }
+
+    public boolean hasPermission(Permission permission) {
+        return SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getAuthorities()
+                .contains(new SimpleGrantedAuthority(permission.name()));
     }
 
 
