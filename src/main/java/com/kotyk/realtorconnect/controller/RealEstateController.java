@@ -1,7 +1,7 @@
 package com.kotyk.realtorconnect.controller;
 
-import com.kotyk.realtorconnect.annotation.IsRealEstateOwnerOrCanManageRealtorInfo;
-import com.kotyk.realtorconnect.annotation.IsSameRealtorOrCanManageRealtorInfo;
+import com.kotyk.realtorconnect.annotation.IsRealEstateOwner;
+import com.kotyk.realtorconnect.annotation.IsSameRealtor;
 import com.kotyk.realtorconnect.dto.apiresponse.ApiSuccess;
 import com.kotyk.realtorconnect.dto.realestate.RealEstateAddDto;
 import com.kotyk.realtorconnect.dto.realestate.RealEstateDto;
@@ -28,7 +28,7 @@ public class RealEstateController {
 
     private final RealEstateService service;
 
-    @IsSameRealtorOrCanManageRealtorInfo
+    @IsSameRealtor
     @PostMapping("/{realtorId}/real-estates")
     @Operation(summary = "Add real estate")
     public ResponseEntity<ApiSuccess<RealEstateFullDto>> create(@PathVariable long realtorId, @RequestBody RealEstateAddDto realEstateDto) {
@@ -41,7 +41,7 @@ public class RealEstateController {
         return ok(service.readShortById(realEstateId));
     }
 
-    @IsRealEstateOwnerOrCanManageRealtorInfo
+    @IsRealEstateOwner
     @GetMapping("/real-estates/{realEstateId}/full")
     @Operation(summary = "Get full real estate")
     public ResponseEntity<ApiSuccess<RealEstateFullDto>> readFullById(@PathVariable long realEstateId) {
@@ -56,9 +56,9 @@ public class RealEstateController {
         return ok(service.readAllShorts(filter, PageRequest.of(page, size)));
     }
 
-    @IsSameRealtorOrCanManageRealtorInfo
+    @IsSameRealtor
     @GetMapping("/{realtorId}/real-estates/fulls")
-    @Operation(summary = "Get full real estates")
+    @Operation(summary = "Get full real estates. RealtorId in filter will be ignored")
     public ResponseEntity<ApiSuccess<Page<RealEstateFullDto>>> readAllFulls(@PathVariable long realtorId,
                                                                             @RequestParam(defaultValue = "0") int page,
                                                                             @RequestParam(defaultValue = "15") int size,
@@ -68,7 +68,7 @@ public class RealEstateController {
     }
 
 
-    @IsRealEstateOwnerOrCanManageRealtorInfo
+    @IsRealEstateOwner
     @PutMapping("/real-estates/{realEstateId}")
     @Operation(summary = "Update real estate")
     public ResponseEntity<ApiSuccess<RealEstateFullDto>> update(@PathVariable long realEstateId, @RequestBody RealEstateAddDto realEstateDto) {
@@ -76,7 +76,7 @@ public class RealEstateController {
     }
 
 
-    @IsRealEstateOwnerOrCanManageRealtorInfo
+    @IsRealEstateOwner
     @DeleteMapping("/real-estates/{realEstateId}")
     @Operation(summary = "Delete real estate")
     public ResponseEntity<Void> delete(@PathVariable long realEstateId) {
@@ -84,7 +84,7 @@ public class RealEstateController {
         return ResponseEntity.noContent().build();
     }
 
-    @IsRealEstateOwnerOrCanManageRealtorInfo
+    @IsRealEstateOwner
     @PutMapping("/real-estates/{realEstateId}/mark-called")
     @Operation(summary = "Mark real estate called")
     public ResponseEntity<ApiSuccess<Boolean>> updateCalled(@PathVariable long realEstateId) {

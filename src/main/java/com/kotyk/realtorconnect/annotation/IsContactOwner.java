@@ -9,6 +9,6 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-@PreAuthorize("@permissionService.isSameUser(#realtorId) or hasAuthority('MANAGE_REALTOR_INFO')")
-public @interface IsSameRealtorOrCanManageRealtorInfo {
+@PreAuthorize("@permissionService.isContactOwner(#contactId) or hasAuthority('MANAGE_REALTOR_INFO')")
+public @interface IsContactOwner {
 }

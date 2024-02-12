@@ -1,6 +1,6 @@
 package com.kotyk.realtorconnect.controller;
 
-import com.kotyk.realtorconnect.annotation.IsSameUserOrCanManageUsers;
+import com.kotyk.realtorconnect.annotation.IsSameUser;
 import com.kotyk.realtorconnect.dto.apiresponse.ApiSuccess;
 import com.kotyk.realtorconnect.dto.user.UserAddDto;
 import com.kotyk.realtorconnect.dto.user.UserDto;
@@ -31,14 +31,14 @@ public class UserController {
         return ok(service.readById(id));
     }
 
-    @IsSameUserOrCanManageUsers
+    @IsSameUser
     @GetMapping("/{id}/full")
     @Operation(summary = "Get full user")
     public ResponseEntity<ApiSuccess<UserFullDto>> readFullById(@PathVariable long id) {
         return ok(service.readFullById(id));
     }
 
-    @IsSameUserOrCanManageUsers
+    @IsSameUser
     @PutMapping("/{id}")
     @Operation(summary = "Update user")
     public ResponseEntity<ApiSuccess<UserFullDto>> update(@PathVariable long id,
@@ -46,7 +46,7 @@ public class UserController {
         return ok(service.update(id, dto));
     }
 
-    @IsSameUserOrCanManageUsers
+    @IsSameUser
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete user")
     public ResponseEntity<Void> delete(@PathVariable long id) {
