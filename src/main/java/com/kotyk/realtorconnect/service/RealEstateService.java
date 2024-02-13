@@ -191,7 +191,7 @@ public class RealEstateService {
     }
 
     @Transactional
-    @Scheduled(cron = "${real-estate.scheduler.check-called-cron}")
+    @Scheduled(fixedDelayString = "${real-estate.scheduler.check-called}")
     protected void setNotCalledWhenCalledAtExpired() {
         log.debug("setNotCalledWhenCalledAtExpired() - start.");
         Instant time = ZonedDateTime.now().minusDays(realEstateConfiguration.getDaysForExpireCalled()).toInstant();

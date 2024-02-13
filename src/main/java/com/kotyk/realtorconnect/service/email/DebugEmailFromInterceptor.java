@@ -1,16 +1,15 @@
 package com.kotyk.realtorconnect.service.email;
 
 import com.kotyk.realtorconnect.config.EmailConfiguration;
-import jakarta.mail.Address;
-import jakarta.mail.Message;
+import com.kotyk.realtorconnect.config.EmailDebugModeEnabled;
 import jakarta.mail.MessagingException;
-import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.springframework.context.annotation.Conditional;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
@@ -21,20 +20,15 @@ import java.util.List;
 @Aspect
 @Component
 @AllArgsConstructor
-public class DebugEmailToInterceptor {
+@Conditional(EmailDebugModeEnabled.class)
+public class DebugEmailFromInterceptor {
 
     private final EmailConfiguration emailConfiguration;
 
     @Around("execution(* org.springframework.mail.javamail.JavaMailSender.send(..))")
     public Object interceptSendDebugEmailTo(ProceedingJoinPoint joinPoint) throws Throwable {
-        if (isDebugModeEnabled()) {
-            findMimeMessages(joinPoint).forEach(this::setDebugEmailTo);
-        }
+        findMimeMessages(joinPoint).forEach(this::setDebugEmailFrom);
         return joinPoint.proceed(joinPoint.getArgs());
-    }
-
-    private boolean isDebugModeEnabled() {
-        return emailConfiguration.getDebugMode().isEnabled();
     }
 
     private List<MimeMessage> findMimeMessages(ProceedingJoinPoint joinPoint) {
@@ -49,10 +43,9 @@ public class DebugEmailToInterceptor {
         return retList;
     }
 
-    private void setDebugEmailTo(MimeMessage mimeMessage) {
+    private void setDebugEmailFrom(MimeMessage mimeMessage) {
         try {
-            Address debugAddress = new InternetAddress(emailConfiguration.getDebugMode().getDebugEmail());
-            mimeMessage.setRecipient(Message.RecipientType.TO, debugAddress);
+            mimeMessage.setFrom(emailConfiguration.getDebugMode().getFrom());
         } catch (MessagingException ex) {
             log.error("", ex);
         }
