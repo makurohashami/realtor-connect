@@ -43,7 +43,8 @@ public class RealEstateController {
     @GetMapping("/real-estates/{realEstateId}")
     @Operation(summary = "Get short real estate")
     public ResponseEntity<ApiSuccess<RealEstateDto>> readShortById(@PathVariable long realEstateId) {
-        return ok(service.readShortById(realEstateId));
+        boolean canSeePrivatePhotos = permissionService.isCurrentHasPermission(Permission.SEE_PRIVATE_PHOTOS);
+        return ok(service.readShortById(realEstateId, !canSeePrivatePhotos));
     }
 
     @IsRealEstateOwner
@@ -59,7 +60,8 @@ public class RealEstateController {
                                                                          @RequestParam(defaultValue = "15") int size,
                                                                          @ModelAttribute RealEstateFilter filter) {
         boolean canSeePrivate = permissionService.isCurrentHasPermission(Permission.SEE_PRIVATE_REAL_ESTATES);
-        return ok(service.readAllShorts(filter, PageRequest.of(page, size), !canSeePrivate));
+        boolean canSeePrivatePhotos = permissionService.isCurrentHasPermission(Permission.SEE_PRIVATE_PHOTOS);
+        return ok(service.readAllShorts(filter, PageRequest.of(page, size), !canSeePrivate, !canSeePrivatePhotos));
     }
 
     @IsSameRealtor
