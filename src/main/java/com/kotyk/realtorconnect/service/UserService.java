@@ -4,6 +4,8 @@ import com.kotyk.realtorconnect.config.UserConfiguration;
 import com.kotyk.realtorconnect.dto.user.UserAddDto;
 import com.kotyk.realtorconnect.dto.user.UserDto;
 import com.kotyk.realtorconnect.dto.user.UserFilter;
+import com.kotyk.realtorconnect.dto.user.UserFullDto;
+import com.kotyk.realtorconnect.entity.user.Permission;
 import com.kotyk.realtorconnect.entity.user.Role;
 import com.kotyk.realtorconnect.entity.user.User;
 import com.kotyk.realtorconnect.mapper.UserMapper;
@@ -42,6 +44,7 @@ public class UserService {
     private final UserConfiguration userConfiguration;
     private final EmailFacade emailFacade;
     private final ConfirmationTokenService tokenService;
+    private final PermissionService permissionService;
 
     @Transactional
     public void updateLastLogin(User user) {
@@ -60,11 +63,11 @@ public class UserService {
     }
 
     @Transactional
-    public UserDto create(UserAddDto dto, Role role) {
+    public UserFullDto create(UserAddDto dto, Role role) {
         log.debug("create() - start. role = {}, dto = {}", role, dto);
         User user = userMapper.toEntity(dto);
         user.setRole(role);
-        UserDto saved = userMapper.toDto(userRepository.save(user));
+        UserFullDto saved = userMapper.toFullDto(userRepository.save(user));
         emailFacade.sendVerifyEmail(user, tokenService.createToken(user));
         log.debug("create() - end. saved = {}", saved);
         return saved;
@@ -80,38 +83,47 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public UserDto readByUsername(String username) {
-        log.debug("readByUsername() - start. username = {}", username);
-        UserDto dto = userMapper.toDto(userRepository.findByUsername(username)
-                .orElseThrow(() -> new ResourceNotFoundException(String.format(NOT_FOUND_BY_USERNAME_MSG, username))));
-        log.debug("readByUsername() - end. user = {}", dto);
+    public UserFullDto readFullById(long id) {
+        log.debug("readFullById() - start. id = {}", id);
+        UserFullDto dto = userMapper.toFullDto(userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format(NOT_FOUND_BY_ID_MSG, id))));
+        log.debug("readFullById() - end. user = {}", dto);
         return dto;
     }
 
     @Transactional(readOnly = true)
-    public Page<UserDto> readAll(UserFilter filter, Pageable pageable) {
-        log.debug("readAll() - start. filter = {}, pageable = {}", filter, pageable);
+    public UserFullDto readFullByUsername(String username) {
+        log.debug("readFullByUsername() - start. username = {}", username);
+        UserFullDto dto = userMapper.toFullDto(userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format(NOT_FOUND_BY_USERNAME_MSG, username))));
+        log.debug("readFullByUsername() - end. user = {}", dto);
+        return dto;
+    }
+
+    @Transactional(readOnly = true)
+    public Page<UserFullDto> readAllFulls(UserFilter filter, Pageable pageable) {
+        log.debug("Page readAllFulls() - start. filter = {}, pageable = {}", filter, pageable);
         Specification<User> spec = UserFilterSpecifications.withFilter(filter);
-        Page<UserDto> users = userRepository.findAll(spec, pageable).map(userMapper::toDto);
-        log.debug("readAll() - end: size = {}", users.getTotalElements());
+        Page<UserFullDto> users = userRepository.findAll(spec, pageable).map(userMapper::toFullDto);
+        log.debug("Page readAllFulls() - end: size = {}", users.getTotalElements());
         return users;
     }
 
     @Transactional(readOnly = true)
-    public List<UserDto> readAll(UserFilter filter) {
-        log.debug("readAll() - start. filter = {}", filter);
+    public List<UserFullDto> readAllFulls(UserFilter filter) {
+        log.debug("List readAllFulls() - start. filter = {}", filter);
         Specification<User> spec = UserFilterSpecifications.withFilter(filter);
-        List<UserDto> users = userMapper.toListDto(userRepository.findAll(spec));
-        log.debug("readAll() - end: size = {}", users.size());
+        List<UserFullDto> users = userMapper.toListFullDto(userRepository.findAll(spec));
+        log.debug("List readAllFulls() - end: size = {}", users.size());
         return users;
     }
 
     @Transactional
-    public UserDto update(long id, UserAddDto dto) {
+    public UserFullDto update(long id, UserAddDto dto) {
         log.debug("update() - start. id = {}, dto = {}", id, dto);
         User toUpdate = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format(NOT_FOUND_BY_ID_MSG, id)));
-        UserDto updated = userMapper.toDto(userMapper.update(toUpdate, dto));
+        UserFullDto updated = userMapper.toFullDto(userMapper.update(toUpdate, dto));
         log.debug("update() - end. result = {}", updated);
         return updated;
     }
@@ -121,23 +133,12 @@ public class UserService {
         log.debug("delete() - start. id = {}", id);
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format(NOT_FOUND_BY_ID_MSG, id)));
-        if (user.getRole() == ADMIN || user.getRole() == CHIEF_ADMIN) {
+        boolean canDeleteAdmins = permissionService.isCurrentHasPermission(Permission.MANAGE_ADMINS);
+        if (user.getRole() == CHIEF_ADMIN || (user.getRole() == ADMIN && !canDeleteAdmins)) {
             throw new ActionNotAllowedException("You can't delete an user with this role");
         }
         userRepository.deleteById(id);
         log.debug("delete() - end. deleted");
-    }
-
-    @Transactional
-    public void deleteAdmin(long id) {
-        log.debug("deleteAdmin() - start. id = {}", id);
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(String.format(NOT_FOUND_BY_ID_MSG, id)));
-        if (user.getRole() != ADMIN) {
-            throw new ActionNotAllowedException("You can't delete an user with this role");
-        }
-        userRepository.deleteById(id);
-        log.debug("deleteAdmin() - end. deleted");
     }
 
     @Transactional

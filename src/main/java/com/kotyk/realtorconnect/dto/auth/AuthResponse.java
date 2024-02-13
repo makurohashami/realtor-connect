@@ -1,6 +1,6 @@
 package com.kotyk.realtorconnect.dto.auth;
 
-import com.kotyk.realtorconnect.dto.user.UserDto;
+import com.kotyk.realtorconnect.dto.user.UserFullDto;
 import lombok.*;
 
 @Data
@@ -10,7 +10,7 @@ import lombok.*;
 public class AuthResponse {
 
     private Token token;
-    private UserDto user;
+    private UserFullDto user;
 
     @Getter
     @AllArgsConstructor

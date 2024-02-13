@@ -2,8 +2,8 @@ package com.kotyk.realtorconnect.controller;
 
 import com.kotyk.realtorconnect.dto.apiresponse.ApiSuccess;
 import com.kotyk.realtorconnect.dto.user.UserAddDto;
-import com.kotyk.realtorconnect.dto.user.UserDto;
 import com.kotyk.realtorconnect.dto.user.UserFilter;
+import com.kotyk.realtorconnect.dto.user.UserFullDto;
 import com.kotyk.realtorconnect.entity.user.Role;
 import com.kotyk.realtorconnect.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -31,23 +31,15 @@ public class AdminManagementController {
     @PostMapping
     @Operation(summary = "Create admin")
     @PreAuthorize("hasAuthority('MANAGE_ADMINS')")
-    public ResponseEntity<ApiSuccess<UserDto>> createAdmin(@RequestBody @Valid UserAddDto dto) {
+    public ResponseEntity<ApiSuccess<UserFullDto>> createAdmin(@RequestBody @Valid UserAddDto dto) {
         return created(userService.create(dto, Role.ADMIN));
     }
 
     @GetMapping
     @Operation(summary = "Get all admins")
     @PreAuthorize("hasAuthority('MANAGE_ADMINS')")
-    public ResponseEntity<ApiSuccess<List<UserDto>>> getAllAdmins() {
-        return ok(userService.readAll(UserFilter.builder().role(Role.ADMIN).build()));
-    }
-
-    @DeleteMapping("/{id}")
-    @Operation(summary = "Delete admin")
-    @PreAuthorize("hasAuthority('MANAGE_ADMINS')")
-    public ResponseEntity<Void> deleteAdmin(@PathVariable long id) {
-        userService.deleteAdmin(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<ApiSuccess<List<UserFullDto>>> getAllAdmins() {
+        return ok(userService.readAllFulls(UserFilter.builder().roles(List.of(Role.ADMIN)).build()));
     }
 
 }

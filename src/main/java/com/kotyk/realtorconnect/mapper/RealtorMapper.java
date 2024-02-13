@@ -11,11 +11,6 @@ import org.mapstruct.MappingTarget;
 @Mapper(componentModel = "spring", uses = {RealEstateMapper.class, UserMapper.class})
 public interface RealtorMapper {
 
-    default Realtor fromId(Long id) {
-        if (id == null) return null;
-        return Realtor.builder().id(id).build();
-    }
-
     RealtorDto toDto(Realtor realtor);
 
     RealtorFullDto toFullDto(Realtor realtor);
