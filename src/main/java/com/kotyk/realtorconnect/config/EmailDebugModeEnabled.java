@@ -2,6 +2,7 @@ package com.kotyk.realtorconnect.config;
 
 import org.springframework.boot.autoconfigure.condition.AllNestedConditions;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.annotation.Conditional;
 
 public class EmailDebugModeEnabled extends AllNestedConditions {
 
@@ -9,12 +10,12 @@ public class EmailDebugModeEnabled extends AllNestedConditions {
         super(ConfigurationPhase.REGISTER_BEAN);
     }
 
-    @ConditionalOnProperty(name = "email.enabled", havingValue = "true")
-    static class EmailEnabled {
+    @Conditional(EmailEnabled.class)
+    static class EmailEnabledCondition {
     }
 
     @ConditionalOnProperty(name = "email.debug-mode.enabled", havingValue = "true")
-    static class DebugEnabled {
+    static class DebugEnabledCondition {
     }
 
 }
