@@ -54,13 +54,13 @@ public class EmailConfiguration {
     public static class DebugMode {
         private boolean enabled;
         private String from;
-        private Server debugServer;
+        private Server server;
     }
 
     @Bean
     public JavaMailSender javaMailSender() {
         if (this.getDebugMode().isEnabled()) {
-            return configureJavaMailSender(this.getDebugMode().getDebugServer());
+            return configureJavaMailSender(this.getDebugMode().getServer());
         }
         return configureJavaMailSender(this.getServer());
     }

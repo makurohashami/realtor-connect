@@ -32,13 +32,17 @@ email:
       username: ${EMAIL_USERNAME}
       password: ${EMAIL_PASSWORD}
     network:
-      host:
-      port:
-    properties: [ ]
-  debug-mode:
+      host: smtp.gmail.com
+      port: 587
+    properties:
+      mail.protocol: smtp
+      mail.test-connection: true
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
+  debugMode:
     enabled: ${DEBUG_EMAIL_ENABLED:false}
     from: info@realtorconnect.com
-    debugServer:
+    server:
       credentials:
         username: user
         password: user
