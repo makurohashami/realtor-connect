@@ -23,22 +23,32 @@ spring:
 network:
   app-domain: ${APP_DOMAIN:http://localhost:8080}
   swagger-ui-url: ${network.app-domain}/swagger-ui/index.html
-  verify-email-url: ${app-domain}/users/verifyEmail/
+  verify-email-url: ${network.app-domain}/users/verifyEmail/
 
 email:
   enabled: ${EMAIL_ENABLED:true}
-  debug-mode:
-    enabled: ${EMAIL_DEBUG_ENABLED:true}
-    debug-email: makurohashami@gmail.com
   server:
-    host: smtp.gmail.com
-    port: 587
-    username: ${EMAIL_USERNAME}
-    password: ${EMAIL_PASSWORD}
-    protocol: smtp
-    test-connection: true
-    smtp-auth: true
-    smtp-starttls-enabled: true
+    credentials:
+      username: ${EMAIL_USERNAME}
+      password: ${EMAIL_PASSWORD}
+    network:
+      host: smtp.gmail.com
+      port: 587
+    properties:
+      mail.protocol: smtp
+      mail.test-connection: true
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
+  debugMode:
+    enabled: ${DEBUG_EMAIL_ENABLED:false}
+    from: info@realtorconnect.com
+    server:
+      credentials:
+        username: user
+        password: user
+      network:
+        host: localhost
+        port: 1025
 
 user:
   timeToVerifyEmailInDays: 7
@@ -59,7 +69,7 @@ realtor:
 real-estate:
   daysForExpireCalled: 14
   scheduler:
-    check-called-cron: "*/10 * * * * *" # every 10 minutes
+    check-called: 60000 # every minute
 
 management:
   endpoints:
@@ -78,5 +88,5 @@ openapi:
   description: An application that helps realtors to more easily control their objects and find clients
 
 security.jwt:
-  token-ttl: 18000000 # 5h
+  token-ttl: 18000000 # 5 hours
   secret: ${JWT_SECRET}
