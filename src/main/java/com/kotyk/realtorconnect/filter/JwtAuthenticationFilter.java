@@ -6,7 +6,7 @@ import com.kotyk.realtorconnect.dto.Error;
 import com.kotyk.realtorconnect.dto.apiresponse.ApiError;
 import com.kotyk.realtorconnect.dto.auth.JwtToken;
 import com.kotyk.realtorconnect.entity.user.User;
-import com.kotyk.realtorconnect.service.JwtService;
+import com.kotyk.realtorconnect.service.auth.JwtService;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

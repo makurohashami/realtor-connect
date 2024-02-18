@@ -1,4 +1,4 @@
-package com.kotyk.realtorconnect.service;
+package com.kotyk.realtorconnect.service.user;
 
 import com.kotyk.realtorconnect.entity.user.ConfirmationToken;
 import com.kotyk.realtorconnect.entity.user.User;

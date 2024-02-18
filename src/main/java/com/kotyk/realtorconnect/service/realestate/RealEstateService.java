@@ -13,7 +13,7 @@ import com.kotyk.realtorconnect.entity.realtor.Realtor;
 import com.kotyk.realtorconnect.mapper.RealEstateMapper;
 import com.kotyk.realtorconnect.repository.RealEstateRepository;
 import com.kotyk.realtorconnect.repository.RealtorRepository;
-import com.kotyk.realtorconnect.service.RealtorService;
+import com.kotyk.realtorconnect.service.realtor.RealtorService;
 import com.kotyk.realtorconnect.specification.RealEstateSpecifications;
 import com.kotyk.realtorconnect.util.exception.ActionNotAllowedException;
 import com.kotyk.realtorconnect.util.exception.ResourceNotFoundException;

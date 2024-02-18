@@ -1,4 +1,4 @@
-package com.kotyk.realtorconnect.service;
+package com.kotyk.realtorconnect.service.realtor;
 
 import com.kotyk.realtorconnect.annotation.datafilter.ContactsFiltered;
 import com.kotyk.realtorconnect.config.RealtorConfiguration;
@@ -12,6 +12,7 @@ import com.kotyk.realtorconnect.mapper.RealtorMapper;
 import com.kotyk.realtorconnect.repository.RealEstateRepository;
 import com.kotyk.realtorconnect.repository.RealtorRepository;
 import com.kotyk.realtorconnect.service.email.EmailFacade;
+import com.kotyk.realtorconnect.service.user.ConfirmationTokenService;
 import com.kotyk.realtorconnect.specification.RealtorFilterSpecifications;
 import com.kotyk.realtorconnect.util.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;

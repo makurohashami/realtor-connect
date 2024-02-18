@@ -2,7 +2,7 @@ package com.kotyk.realtorconnect.service.realestate;
 
 import com.kotyk.realtorconnect.dto.realestate.RealEstateDto;
 import com.kotyk.realtorconnect.entity.user.Permission;
-import com.kotyk.realtorconnect.service.PermissionService;
+import com.kotyk.realtorconnect.service.auth.PermissionService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;

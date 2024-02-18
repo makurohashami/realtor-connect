@@ -1,4 +1,4 @@
-package com.kotyk.realtorconnect.service;
+package com.kotyk.realtorconnect.service.user;
 
 import com.kotyk.realtorconnect.config.UserConfiguration;
 import com.kotyk.realtorconnect.dto.user.UserAddDto;
@@ -10,6 +10,7 @@ import com.kotyk.realtorconnect.entity.user.Role;
 import com.kotyk.realtorconnect.entity.user.User;
 import com.kotyk.realtorconnect.mapper.UserMapper;
 import com.kotyk.realtorconnect.repository.UserRepository;
+import com.kotyk.realtorconnect.service.auth.PermissionService;
 import com.kotyk.realtorconnect.service.email.EmailFacade;
 import com.kotyk.realtorconnect.specification.UserFilterSpecifications;
 import com.kotyk.realtorconnect.util.exception.ActionNotAllowedException;
