@@ -62,8 +62,9 @@ public class UserService {
     public UserFullDto create(UserAddDto dto, Role role) {
         User user = userMapper.toEntity(dto);
         user.setRole(role);
+        UserFullDto userFullDto = userMapper.toFullDto(userRepository.save(user));
         emailFacade.sendVerifyEmail(user, tokenService.createToken(user));
-        return userMapper.toFullDto(userRepository.save(user));
+        return userFullDto;
     }
 
     @Transactional(readOnly = true)

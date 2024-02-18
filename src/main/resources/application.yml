@@ -24,6 +24,7 @@ network:
   app-domain: ${APP_DOMAIN:http://localhost:8080}
   swagger-ui-url: ${network.app-domain}/swagger-ui/index.html
   verify-email-url: ${network.app-domain}/users/verifyEmail/
+  defaultAvatarUrl: https://i.imgur.com/meePOPU.png
 
 email:
   enabled: ${EMAIL_ENABLED:true}
