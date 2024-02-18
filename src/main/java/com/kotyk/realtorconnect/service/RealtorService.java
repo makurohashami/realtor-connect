@@ -1,5 +1,6 @@
 package com.kotyk.realtorconnect.service;
 
+import com.kotyk.realtorconnect.annotation.datafilter.ContactsFiltered;
 import com.kotyk.realtorconnect.config.RealtorConfiguration;
 import com.kotyk.realtorconnect.dto.realtor.RealtorAddDto;
 import com.kotyk.realtorconnect.dto.realtor.RealtorDto;
@@ -55,12 +56,14 @@ public class RealtorService {
                 .orElseThrow(() -> new ResourceNotFoundException(String.format(NOT_FOUND_BY_ID_MSG, id))));
     }
 
+    @ContactsFiltered
     @Transactional(readOnly = true)
     public RealtorDto readShortById(long id) {
         return realtorMapper.toDto(realtorRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format(NOT_FOUND_BY_ID_MSG, id))));
     }
 
+    @ContactsFiltered
     public Page<RealtorDto> getAllShorts(RealtorFilter filter, Pageable pageable) {
         Specification<Realtor> spec = RealtorFilterSpecifications.withFilter(filter);
         return realtorRepository.findAll(spec, pageable).map(realtorMapper::toDto);

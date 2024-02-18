@@ -1,4 +1,4 @@
-package com.kotyk.realtorconnect.service;
+package com.kotyk.realtorconnect.service.contact;
 
 import com.kotyk.realtorconnect.dto.realtor.ContactDto;
 import com.kotyk.realtorconnect.entity.realtor.Contact;
