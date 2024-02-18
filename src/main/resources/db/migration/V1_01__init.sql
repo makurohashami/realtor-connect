@@ -37,7 +37,7 @@ create table if not exists realtors_info
 insert into users (name, email, username, password,
                    phone, avatar, role_id,
                    is_blocked, last_login, created, email_verified)
-values ('Admin', 'makurohashami@gmail.com', 'admin',
+values ('RC Admin', 'makurohashami@gmail.com', 'rc.admin',
         '$2a$12$BPdZng5Zle584HCtKfxeoul4TiM0ngA/UyNCBcOsmsYqd.bdIMFaq',
         '+380990000000', 'https://i.imgur.com/meePOPU.png',
         0, false, null, now() at time zone 'UTC', true);

@@ -8,7 +8,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
-@Mapper(componentModel = "spring", uses = {RealEstateMapper.class, UserMapper.class})
+@Mapper(componentModel = "spring", uses = UserMapper.class)
 public interface RealtorMapper {
 
     RealtorDto toDto(Realtor realtor);
@@ -16,6 +16,7 @@ public interface RealtorMapper {
     RealtorFullDto toFullDto(Realtor realtor);
 
     @Mapping(source = "password", target = "password", qualifiedByName = "encodePassword")
+    @Mapping(target = "avatar", expression = "java( userMapper.getDefaultAvatarUrl() )")
     @Mapping(target = "role", constant = "REALTOR")
     @Mapping(target = "blocked", constant = "false")
     @Mapping(target = "emailVerified", constant = "false")
