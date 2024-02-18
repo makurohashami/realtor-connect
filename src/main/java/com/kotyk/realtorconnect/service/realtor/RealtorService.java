@@ -89,7 +89,7 @@ public class RealtorService {
         realtor.setSubscriptionType(SubscriptionType.PREMIUM);
         if (realtor.getPremiumExpiresAt() == null) {
             realtor.setPremiumExpiresAt(ZonedDateTime.now().withHour(0).withMinute(0)
-                    .withSecond(0).withNano(0).toInstant());
+                    .withSecond(0).withNano(0).plusDays(1).toInstant());
         }
         realtor.setPremiumExpiresAt(ZonedDateTime.ofInstant(realtor.getPremiumExpiresAt(), ZoneOffset.UTC)
                 .plusMonths(durationInMonths).toInstant());
@@ -123,7 +123,7 @@ public class RealtorService {
     }
 
     protected void sendEmailWhenLeftFewDaysOfPremium(int daysLeft) {
-        ZonedDateTime time = ZonedDateTime.now().plusDays(daysLeft).withZoneSameInstant(ZoneOffset.UTC);
+        ZonedDateTime time = ZonedDateTime.now().plusDays(daysLeft);
         realtorRepository.findAllNotNotifiedExpiringPremium(daysLeft, time.getDayOfMonth(), time.getMonthValue(), time.getYear())
                 .forEach(realtor -> {
                     emailFacade.sendPremiumExpiresEmail(realtor);

@@ -82,9 +82,10 @@
             <img class="expired-img" src="https://i.imgur.com/meePOPU.png" alt="Realtor Connect Header Image">
             <p>Dear <span th:text="${name}">Realtor</span>,</p>
             <p>Congratulations on purchasing a premium subscription for <span th:text="${durationInMonths}">-1</span>
-                months. You can already enjoy all the benefits of a subscription.<br>Your subscription will expire at:
+                <span th:if="${durationInMonths == 1}">month</span><span th:if="${durationInMonths != 1}">months</span>.
+                You can already enjoy all the benefits of a subscription.<br>Your subscription will expire at:
                 <b><code><span
-                        th:text="${#dates.format(expiresAt, 'yyyy-MM-dd HH:mm:ss')}">time</span></code></b>
+                        th:text="${#dates.format(expiresAt, 'yyyy-MM-dd HH:mm:ss')}">time</span></code></b> by UTC.</p>
             <p>Best regards,<br>Realtor Connect.</p>
         </div>
 

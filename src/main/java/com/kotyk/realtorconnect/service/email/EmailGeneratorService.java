@@ -10,8 +10,7 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
+import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.Map;
@@ -45,7 +44,7 @@ public class EmailGeneratorService {
     protected Email generatePremiumExpiresEmail(Realtor realtor) {
         Map<String, Object> templateVariables = new HashMap<>();
         templateVariables.put("name", realtor.getName());
-        templateVariables.put("daysLeft", ChronoUnit.DAYS.between(LocalDateTime.now(), LocalDateTime.ofInstant(realtor.getPremiumExpiresAt(), ZoneOffset.UTC)));
+        templateVariables.put("daysLeft", ChronoUnit.DAYS.between(Instant.now(), realtor.getPremiumExpiresAt()) + 1);
         templateVariables.put("expiresAt", realtor.getPremiumExpiresAt());
 
         return generateEmail(realtor.getEmail(), EmailTemplate.PREMIUM_EXPIRES, templateVariables);

@@ -11,6 +11,10 @@ spring:
     username: ${POSTGRES_USER}
     password: ${POSTGRES_PASSWORD}
     driver-class-name: org.postgresql.Driver
+  jackson:
+    date-format: yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
+    serialization:
+      write_dates_as_timestamps: false
   flyway:
     baseline-on-migrate: true
   logging:
@@ -20,11 +24,25 @@ spring:
       org.hibernate: info
       org.flywaydb: info
 
-network:
-  app-domain: ${APP_DOMAIN:http://localhost:8080}
-  swagger-ui-url: ${network.app-domain}/swagger-ui/index.html
-  verify-email-url: ${network.app-domain}/users/verifyEmail/
-  defaultAvatarUrl: https://i.imgur.com/meePOPU.png
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    env:
+      show-values: ALWAYS
+    configprops:
+      show-values: ALWAYS
+
+openapi:
+  title: Realtor Connect
+  version: 0.1
+  description: An application that helps realtors to more easily control their objects and find clients
+
+security.jwt:
+  token-ttl: 18000000 # 5 hours
+  secret: ${JWT_SECRET}
 
 email:
   enabled: ${EMAIL_ENABLED:true}
@@ -54,7 +72,7 @@ email:
 user:
   timeToVerifyEmailInDays: 7
   scheduler:
-    delete-unverified-users-cron: "* */2 * * * *" # every 2 hours
+    delete-unverified-users-cron: "* * */1 * * *" # every hour
 
 realtor:
   plan-configuration:
@@ -64,30 +82,21 @@ realtor:
       maxPublicRealEstates: 25
   daysToNotifyExpiresPremium: [ 1, 7 ]
   scheduler:
-    reset-plan-cron: "0 0 * * * *" # every day at 00:00 AM
-    send-email-when-premium-expires-cron: "0 10 * * * *" # every day at 10 AM
+    reset-plan-cron: "1 0 0 * * *" # every day at 00:00:01 AM
+    send-email-when-premium-expires-cron: "0 0 10 * * *" # every day at 10 AM
 
 real-estate:
   daysForExpireCalled: 14
   scheduler:
     check-called: 60000 # every minute
 
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-  endpoint:
-    env:
-      show-values: ALWAYS
-    configprops:
-      show-values: ALWAYS
+network:
+  app-domain: ${APP_DOMAIN:http://localhost:8080}
+  swagger-ui-url: ${network.app-domain}/swagger-ui/index.html
+  verify-email-url: ${network.app-domain}/users/verifyEmail/
+  defaultAvatarUrl: https://i.imgur.com/meePOPU.png
 
-openapi:
-  title: Realtor Connect
-  version: 0.1
-  description: An application that helps realtors to more easily control their objects and find clients
-
-security.jwt:
-  token-ttl: 18000000 # 5 hours
-  secret: ${JWT_SECRET}
+scheduler:
+  enabled: ${SCHEDULER_ENABLED:true}
+  task-pool-size: 10
+  thread-name-prefix: rc-scheduled-thread-

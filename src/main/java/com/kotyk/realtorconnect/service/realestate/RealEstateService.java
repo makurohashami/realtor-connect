@@ -138,7 +138,7 @@ public class RealEstateService {
     }
 
     @Transactional
-    @Scheduled(fixedDelayString = "${real-estate.scheduler.check-called}")
+    @Scheduled(fixedRateString = "${real-estate.scheduler.check-called}")
     protected void setNotCalledWhenCalledAtExpired() {
         Instant time = ZonedDateTime.now().minusDays(realEstateConfiguration.getDaysForExpireCalled()).toInstant();
         List<RealEstate> realEstates = realEstateRepository.findAllByCalledAtBeforeAndCalledTrue(time);
