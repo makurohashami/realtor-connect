@@ -1,5 +1,7 @@
-package com.kotyk.realtorconnect.service;
+package com.kotyk.realtorconnect.service.realestate;
 
+import com.kotyk.realtorconnect.annotation.datafilter.RealEstatesFiltered;
+import com.kotyk.realtorconnect.annotation.datafilter.RealEstatesPhotoFiltered;
 import com.kotyk.realtorconnect.config.RealEstateConfiguration;
 import com.kotyk.realtorconnect.config.RealtorConfiguration;
 import com.kotyk.realtorconnect.dto.realestate.RealEstateAddDto;
@@ -7,18 +9,17 @@ import com.kotyk.realtorconnect.dto.realestate.RealEstateDto;
 import com.kotyk.realtorconnect.dto.realestate.RealEstateFilter;
 import com.kotyk.realtorconnect.dto.realestate.RealEstateFullDto;
 import com.kotyk.realtorconnect.entity.realestate.RealEstate;
-import com.kotyk.realtorconnect.entity.realestate.RealEstatePhoto;
 import com.kotyk.realtorconnect.entity.realtor.Realtor;
 import com.kotyk.realtorconnect.mapper.RealEstateMapper;
 import com.kotyk.realtorconnect.repository.RealEstateRepository;
 import com.kotyk.realtorconnect.repository.RealtorRepository;
+import com.kotyk.realtorconnect.service.RealtorService;
 import com.kotyk.realtorconnect.specification.RealEstateSpecifications;
 import com.kotyk.realtorconnect.util.exception.ActionNotAllowedException;
 import com.kotyk.realtorconnect.util.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -29,9 +30,6 @@ import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -60,26 +58,17 @@ public class RealEstateService {
         if (updatedPublicCount > maxCounts) {
             throw new ActionNotAllowedException("It is impossible to add a public real estate because the maximum number of public real estates has been reached");
         }
-        RealEstateFullDto realEstate = realEstateMapper.toFullDto(realEstateRepository.save(
+        realtorRepository.setRealEstateCountsByRealtorId(realtorId, updatedPublicCount);
+        return realEstateMapper.toFullDto(realEstateRepository.save(
                 realEstateMapper.toEntity(realEstateDto, realtorId))
         );
-        realtorRepository.setRealEstateCountsByRealtorId(realtorId, updatedPublicCount);
-        return realEstate;
     }
 
+    @RealEstatesPhotoFiltered
     @Transactional(readOnly = true)
-    public RealEstateDto readShortById(long realEstateId, Boolean filterPrivatePhotos) {
-        RealEstate realEstate = realEstateRepository.findById(realEstateId)
-                .orElseThrow(() -> new ResourceNotFoundException(getExMessage(realEstateId)));
-        if (filterPrivatePhotos) {
-            filterRealEstatePhotos(photo -> !photo.isPrivate(), realEstate);
-        }
-        return realEstateMapper.toDto(realEstate);
-    }
-
-    private void filterRealEstatePhotos(Predicate<RealEstatePhoto> predicate, RealEstate realEstate) {
-        Set<RealEstatePhoto> filtered = realEstate.getPhotos().stream().filter(predicate).collect(Collectors.toSet());
-        realEstate.setPhotos(filtered);
+    public RealEstateDto readShortById(long realEstateId) {
+        return realEstateMapper.toDto(realEstateRepository.findById(realEstateId)
+                .orElseThrow(() -> new ResourceNotFoundException(getExMessage(realEstateId))));
     }
 
     @Transactional(readOnly = true)
@@ -89,31 +78,12 @@ public class RealEstateService {
         );
     }
 
+    @RealEstatesFiltered
+    @RealEstatesPhotoFiltered
     @Transactional(readOnly = true)
-    public Page<RealEstateDto> readAllShorts(RealEstateFilter filter, Pageable pageable, Boolean filterPrivate, Boolean filterPrivatePhotos) {
+    public Page<RealEstateDto> readAllShorts(RealEstateFilter filter, Pageable pageable) {
         Specification<RealEstate> spec = RealEstateSpecifications.withFilter(filter);
-        Page<RealEstate> realEstatePage = realEstateRepository.findAll(spec, pageable);
-        if (filterPrivate) {
-            realEstatePage = filterRealEstatePage(realEstate -> !realEstate.isPrivate(), realEstatePage);
-        }
-        if (filterPrivatePhotos) {
-            realEstatePage = filterPhotosInPage(photo -> !photo.isPrivate(), realEstatePage);
-        }
-        return realEstatePage.map(realEstateMapper::toDto);
-    }
-
-    private Page<RealEstate> filterRealEstatePage(Predicate<RealEstate> predicate, Page<RealEstate> realEstates) {
-        List<RealEstate> filteredRealEstateList = realEstates.getContent().stream()
-                .filter(predicate).toList();
-        return new PageImpl<>(filteredRealEstateList, realEstates.getPageable(), realEstates.getTotalElements());
-    }
-
-    private Page<RealEstate> filterPhotosInPage(Predicate<RealEstatePhoto> predicate, Page<RealEstate> realEstates) {
-        List<RealEstate> filteredRealEstateList = realEstates.getContent().stream().toList();
-        filteredRealEstateList.forEach(realEstate ->
-                filterRealEstatePhotos(predicate, realEstate)
-        );
-        return new PageImpl<>(filteredRealEstateList, realEstates.getPageable(), realEstates.getTotalElements());
+        return realEstateRepository.findAll(spec, pageable).map(realEstateMapper::toDto);
     }
 
     @Transactional(readOnly = true)

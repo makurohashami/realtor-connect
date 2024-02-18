@@ -27,8 +27,8 @@ public class ContactFilterInterceptor {
 
     @AfterReturning(pointcut = "filterContactsPointcut()", returning = "result")
     public void filterContacts(Object result) {
-        if (result instanceof RealtorDto) {
-            filterRealtorDto((RealtorDto) result);
+        if (result instanceof RealtorDto realtorDto) {
+            filterRealtorDto(realtorDto);
         } else if (result instanceof Page<?> pageResult) {
             if (pageResult.hasContent() && pageResult.getContent().get(0) instanceof RealtorDto) {
                 filterPageRealtorDto((Page<RealtorDto>) pageResult);
