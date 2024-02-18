@@ -17,46 +17,33 @@ public class EmailFacade {
     private final EmailGeneratorService emailGeneratorService;
     private final Optional<EmailSenderService> emailSenderService;
 
-    private void logEmail(Email email) {
-        log.debug("Email not sent because emailing disabled. Email: {}", email);
-    }
-
-
-    public void sendVerifyEmail(User user, String token) {
-        Email email = emailGeneratorService.generateVerifyEmail(user, token);
+    private void sendEmail(Email email) {
         if (emailSenderService.isEmpty()) {
-            logEmail(email);
+            log.debug("Email not sent because emailing disabled. Email: {}", email);
             return;
         }
         emailSenderService.get().sendEmail(email);
+    }
+
+    public void sendVerifyEmail(User user, String token) {
+        Email email = emailGeneratorService.generateVerifyEmail(user, token);
+        sendEmail(email);
     }
 
     public void sendStartPremiumEmail(Realtor realtor, int durationInMonths) {
         Email email = emailGeneratorService.generateStartPremiumEmail(realtor, durationInMonths);
-        if (emailSenderService.isEmpty()) {
-            logEmail(email);
-            return;
-        }
-        emailSenderService.get().sendEmail(email);
+        sendEmail(email);
     }
 
 
     public void sendPremiumExpiresEmail(Realtor realtor) {
         Email email = emailGeneratorService.generatePremiumExpiresEmail(realtor);
-        if (emailSenderService.isEmpty()) {
-            logEmail(email);
-            return;
-        }
-        emailSenderService.get().sendEmail(email);
+        sendEmail(email);
     }
 
     public void sendPremiumExpiredEmail(Realtor realtor) {
         Email email = emailGeneratorService.generatePremiumExpiredEmail(realtor);
-        if (emailSenderService.isEmpty()) {
-            logEmail(email);
-            return;
-        }
-        emailSenderService.get().sendEmail(email);
+        sendEmail(email);
     }
 
 }

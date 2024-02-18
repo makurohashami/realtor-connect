@@ -39,7 +39,6 @@ public class PermissionService {
                 .contains(new SimpleGrantedAuthority(permission.name()));
     }
 
-
     @Transactional(readOnly = true)
     public boolean isSameUser(long id) {
         return getUser(getCurrentUsername()).getId().equals(id);
@@ -62,6 +61,5 @@ public class PermissionService {
         Optional<RealEstate> realEstate = realEstateRepository.findById(realEstateId);
         return realEstate.isPresent() && !realEstate.get().isPrivate();
     }
-
 
 }
