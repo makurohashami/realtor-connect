@@ -1,4 +1,4 @@
-package com.kotyk.realtorconnect.annotation;
+package com.kotyk.realtorconnect.annotation.security;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 

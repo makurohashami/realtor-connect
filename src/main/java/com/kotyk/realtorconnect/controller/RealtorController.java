@@ -1,6 +1,6 @@
 package com.kotyk.realtorconnect.controller;
 
-import com.kotyk.realtorconnect.annotation.IsSameUser;
+import com.kotyk.realtorconnect.annotation.security.IsSameUser;
 import com.kotyk.realtorconnect.dto.apiresponse.ApiSuccess;
 import com.kotyk.realtorconnect.dto.realtor.RealtorAddDto;
 import com.kotyk.realtorconnect.dto.realtor.RealtorDto;

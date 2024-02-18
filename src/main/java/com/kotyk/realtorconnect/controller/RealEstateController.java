@@ -1,8 +1,8 @@
 package com.kotyk.realtorconnect.controller;
 
-import com.kotyk.realtorconnect.annotation.IsRealEstateOwner;
-import com.kotyk.realtorconnect.annotation.IsRealEstatePublic;
-import com.kotyk.realtorconnect.annotation.IsSameRealtor;
+import com.kotyk.realtorconnect.annotation.security.IsRealEstateOwner;
+import com.kotyk.realtorconnect.annotation.security.IsRealEstatePublic;
+import com.kotyk.realtorconnect.annotation.security.IsSameRealtor;
 import com.kotyk.realtorconnect.dto.apiresponse.ApiSuccess;
 import com.kotyk.realtorconnect.dto.realestate.RealEstateAddDto;
 import com.kotyk.realtorconnect.dto.realestate.RealEstateDto;
