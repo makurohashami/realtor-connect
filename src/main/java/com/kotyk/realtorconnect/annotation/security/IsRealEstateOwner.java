@@ -1,4 +1,4 @@
-package com.kotyk.realtorconnect.annotation;
+package com.kotyk.realtorconnect.annotation.security;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 
@@ -9,6 +9,6 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-@PreAuthorize("@permissionService.isSameUser(#realtorId) or hasAuthority('MANAGE_REALTOR_INFO')")
-public @interface IsSameRealtor {
+@PreAuthorize("@permissionService.isRealEstateOwner(#realEstateId) or hasAuthority('MANAGE_REALTOR_INFO')")
+public @interface IsRealEstateOwner {
 }

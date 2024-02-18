@@ -1,15 +1,16 @@
 package com.kotyk.realtorconnect.controller;
 
-import com.kotyk.realtorconnect.annotation.IsContactOwner;
-import com.kotyk.realtorconnect.annotation.IsSameRealtor;
+import com.kotyk.realtorconnect.annotation.security.IsContactOwner;
+import com.kotyk.realtorconnect.annotation.security.IsSameRealtor;
 import com.kotyk.realtorconnect.dto.apiresponse.ApiSuccess;
 import com.kotyk.realtorconnect.dto.realtor.ContactDto;
-import com.kotyk.realtorconnect.service.ContactService;
+import com.kotyk.realtorconnect.service.contact.ContactService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,12 +36,14 @@ public class ContactController {
 
     @GetMapping("/contacts/{contactId}")
     @Operation(summary = "Get contact")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiSuccess<ContactDto>> readById(@PathVariable long contactId) {
         return ok(service.readById(contactId));
     }
 
     @GetMapping("/{realtorId}/contacts")
     @Operation(summary = "Get all contacts")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiSuccess<List<ContactDto>>> readAll(@PathVariable long realtorId) {
         return ok(service.readAll(realtorId));
     }

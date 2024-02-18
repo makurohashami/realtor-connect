@@ -6,7 +6,7 @@ import com.kotyk.realtorconnect.dto.Error;
 import com.kotyk.realtorconnect.dto.apiresponse.ApiError;
 import com.kotyk.realtorconnect.dto.auth.JwtToken;
 import com.kotyk.realtorconnect.entity.user.User;
-import com.kotyk.realtorconnect.service.JwtService;
+import com.kotyk.realtorconnect.service.auth.JwtService;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -63,7 +63,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     ex.getMessage(),
                     request.getRequestURI()
             );
-            log.warn("ExpiredJwtException - {}", error.details());
+            log.error("ExpiredJwtException - {}", error.details());
             ResponseEntity<ApiError<Error>> apiResponse = wrapError(error, HttpStatus.UNAUTHORIZED);
             ObjectMapper mapper = new ObjectMapper();
             mapper.registerModule(new JavaTimeModule());

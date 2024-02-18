@@ -1,4 +1,4 @@
-package com.kotyk.realtorconnect.service;
+package com.kotyk.realtorconnect.service.auth;
 
 import com.kotyk.realtorconnect.dto.auth.JwtToken;
 import com.kotyk.realtorconnect.entity.user.Role;

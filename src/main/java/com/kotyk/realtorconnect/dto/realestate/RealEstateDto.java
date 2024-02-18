@@ -39,6 +39,7 @@ public class RealEstateDto {
     private double ceilingHeight;
     private Instant calledAt;
     private List<RealEstatePhotoDto> photos = new ArrayList<>();
+    private boolean isPrivate;
     private long realtorId;
 
 }

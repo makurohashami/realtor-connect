@@ -1,11 +1,11 @@
 package com.kotyk.realtorconnect.controller;
 
-import com.kotyk.realtorconnect.annotation.IsSameUser;
+import com.kotyk.realtorconnect.annotation.security.IsSameUser;
 import com.kotyk.realtorconnect.dto.apiresponse.ApiSuccess;
 import com.kotyk.realtorconnect.dto.user.UserAddDto;
 import com.kotyk.realtorconnect.dto.user.UserDto;
 import com.kotyk.realtorconnect.dto.user.UserFullDto;
-import com.kotyk.realtorconnect.service.UserService;
+import com.kotyk.realtorconnect.service.user.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;

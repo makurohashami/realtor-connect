@@ -1,8 +1,5 @@
 package com.kotyk.realtorconnect.config;
 
-import com.kotyk.realtorconnect.service.email.EmailSenderService;
-import com.kotyk.realtorconnect.service.email.EmailSenderServiceBean;
-import com.kotyk.realtorconnect.service.email.MockEmailSenderServiceBean;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -79,11 +76,6 @@ public class EmailConfiguration {
         }
 
         return mailSender;
-    }
-
-    @Bean
-    public EmailSenderService emailSenderService() {
-        return this.enabled ? new EmailSenderServiceBean(javaMailSender()) : new MockEmailSenderServiceBean();
     }
 
 }

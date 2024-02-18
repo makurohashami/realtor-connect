@@ -1,7 +1,7 @@
 package com.kotyk.realtorconnect.config;
 
 import com.kotyk.realtorconnect.filter.JwtAuthenticationFilter;
-import com.kotyk.realtorconnect.service.UserService;
+import com.kotyk.realtorconnect.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

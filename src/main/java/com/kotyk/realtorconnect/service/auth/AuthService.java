@@ -1,9 +1,10 @@
-package com.kotyk.realtorconnect.service;
+package com.kotyk.realtorconnect.service.auth;
 
 import com.kotyk.realtorconnect.dto.auth.AuthRequest;
 import com.kotyk.realtorconnect.dto.auth.AuthResponse;
 import com.kotyk.realtorconnect.entity.user.User;
 import com.kotyk.realtorconnect.mapper.UserMapper;
+import com.kotyk.realtorconnect.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

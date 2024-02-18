@@ -1,5 +1,6 @@
-package com.kotyk.realtorconnect.service;
+package com.kotyk.realtorconnect.service.realtor;
 
+import com.kotyk.realtorconnect.annotation.datafilter.ContactsFiltered;
 import com.kotyk.realtorconnect.config.RealtorConfiguration;
 import com.kotyk.realtorconnect.dto.realtor.RealtorAddDto;
 import com.kotyk.realtorconnect.dto.realtor.RealtorDto;
@@ -11,6 +12,7 @@ import com.kotyk.realtorconnect.mapper.RealtorMapper;
 import com.kotyk.realtorconnect.repository.RealEstateRepository;
 import com.kotyk.realtorconnect.repository.RealtorRepository;
 import com.kotyk.realtorconnect.service.email.EmailFacade;
+import com.kotyk.realtorconnect.service.user.ConfirmationTokenService;
 import com.kotyk.realtorconnect.specification.RealtorFilterSpecifications;
 import com.kotyk.realtorconnect.util.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -44,60 +46,44 @@ public class RealtorService {
 
     @Transactional
     public RealtorFullDto create(RealtorAddDto dto) {
-        log.debug("create() - start. dto - {}", dto);
         Realtor realtor = realtorRepository.save(realtorMapper.toEntity(dto));
         emailFacade.sendVerifyEmail(realtor, tokenService.createToken(realtor));
-        RealtorFullDto created = realtorMapper.toFullDto(realtor);
-        log.debug("create() - end. result = {}", created);
-        return created;
+        return realtorMapper.toFullDto(realtor);
     }
 
     @Transactional(readOnly = true)
     public RealtorFullDto readFullById(long id) {
-        log.debug("readFullById() - start. id - {}", id);
-        RealtorFullDto dto = realtorMapper.toFullDto(realtorRepository.findById(id)
+        return realtorMapper.toFullDto(realtorRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format(NOT_FOUND_BY_ID_MSG, id))));
-        log.debug("readFullById() - end. result = {}", dto);
-        return dto;
     }
 
+    @ContactsFiltered
     @Transactional(readOnly = true)
     public RealtorDto readShortById(long id) {
-        log.debug("readShortById() - start. id - {}", id);
-        RealtorDto dto = realtorMapper.toDto(realtorRepository.findById(id)
+        return realtorMapper.toDto(realtorRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format(NOT_FOUND_BY_ID_MSG, id))));
-        log.debug("readShortById() - end. result = {}", dto);
-        return dto;
     }
 
+    @ContactsFiltered
     public Page<RealtorDto> getAllShorts(RealtorFilter filter, Pageable pageable) {
-        log.debug("getAllShorts() - start: filter = {}", filter);
         Specification<Realtor> spec = RealtorFilterSpecifications.withFilter(filter);
-        Page<RealtorDto> realtors = realtorRepository.findAll(spec, pageable).map(realtorMapper::toDto);
-        log.debug("getAllShorts() - end: page elements = {}", realtors.getTotalElements());
-        return realtors;
+        return realtorRepository.findAll(spec, pageable).map(realtorMapper::toDto);
     }
 
     @Transactional
     public RealtorFullDto update(long id, RealtorAddDto dto) {
-        log.debug("update() - start. dto - {}", dto);
         Realtor toUpdate = realtorRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format(NOT_FOUND_BY_ID_MSG, id)));
-        RealtorFullDto updated = realtorMapper.toFullDto(realtorMapper.update(toUpdate, dto));
-        log.debug("update() - end. result = {}", updated);
-        return updated;
+        return realtorMapper.toFullDto(realtorMapper.update(toUpdate, dto));
     }
 
     @Transactional
     public void delete(long id) {
-        log.debug("delete() - start. id - {}", id);
         realtorRepository.deleteById(id);
-        log.debug("delete() - end. deleted");
     }
 
     @Transactional
     public Instant givePremiumToRealtor(long id, short durationInMonths) {
-        log.debug("givePremiumToRealtor() - start. realtorId - {}, durationInMonths - {}", id, durationInMonths);
         Realtor realtor = realtorRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format(NOT_FOUND_BY_ID_MSG, id)));
         realtor.setSubscriptionType(SubscriptionType.PREMIUM);
@@ -110,14 +96,12 @@ public class RealtorService {
         realtor.setNotifiedDaysToExpirePremium(Integer.MAX_VALUE);
         realtorRepository.save(realtor);
         emailFacade.sendStartPremiumEmail(realtor, durationInMonths);
-        log.debug("givePremiumToRealtor() - end. premium expires at = {}", realtor.getPremiumExpiresAt());
         return realtor.getPremiumExpiresAt();
     }
 
     @Transactional
     @Scheduled(cron = "${realtor.scheduler.reset-plan-cron}")
     protected void setFreeSubscriptionWhenPrivateExpired() {
-        log.debug("setFreeSubscriptionWhenPrivateExpired() - start.");
         List<Realtor> realtors = realtorRepository.findAllByPremiumExpiresAtBeforeAndSubscriptionType(Instant.now(), SubscriptionType.PREMIUM);
         realtors.forEach(realtor -> {
             realtor.setPremiumExpiresAt(null);
@@ -128,7 +112,6 @@ public class RealtorService {
         List<Long> realtorIds = realtors.stream().map(Realtor::getId).toList();
         realEstateRepository.makeAllRealEstatesPrivateByRealtors(realtorIds);
         realtors.forEach(emailFacade::sendPremiumExpiredEmail);
-        log.debug("setFreeSubscriptionWhenPrivateExpired() - end. realtors - {}", realtors.size());
     }
 
     @Transactional
