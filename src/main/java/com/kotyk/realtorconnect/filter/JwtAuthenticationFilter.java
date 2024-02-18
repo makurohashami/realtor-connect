@@ -63,7 +63,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     ex.getMessage(),
                     request.getRequestURI()
             );
-            log.warn("ExpiredJwtException - {}", error.details());
+            log.error("ExpiredJwtException - {}", error.details());
             ResponseEntity<ApiError<Error>> apiResponse = wrapError(error, HttpStatus.UNAUTHORIZED);
             ObjectMapper mapper = new ObjectMapper();
             mapper.registerModule(new JavaTimeModule());

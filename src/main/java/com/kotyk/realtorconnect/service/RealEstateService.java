@@ -53,7 +53,6 @@ public class RealEstateService {
 
     @Transactional
     public RealEstateFullDto create(long realtorId, RealEstateAddDto realEstateDto) {
-        log.debug("create() - start. realtorId = {}, realEstateDto = {}", realtorId, realEstateDto);
         Realtor realtor = realtorRepository.findById(realtorId)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format(RealtorService.NOT_FOUND_BY_ID_MSG, realtorId)));
         int updatedPublicCount = realEstateDto.isPrivate() ? realtor.getPublicRealEstatesCount() : realtor.getPublicRealEstatesCount() + 1;
@@ -65,21 +64,17 @@ public class RealEstateService {
                 realEstateMapper.toEntity(realEstateDto, realtorId))
         );
         realtorRepository.setRealEstateCountsByRealtorId(realtorId, updatedPublicCount);
-        log.debug("create() - end. realEstate = {}", realEstate);
         return realEstate;
     }
 
     @Transactional(readOnly = true)
     public RealEstateDto readShortById(long realEstateId, Boolean filterPrivatePhotos) {
-        log.debug("readShortById() - start. realEstateId = {}", realEstateId);
         RealEstate realEstate = realEstateRepository.findById(realEstateId)
                 .orElseThrow(() -> new ResourceNotFoundException(getExMessage(realEstateId)));
         if (filterPrivatePhotos) {
             filterRealEstatePhotos(photo -> !photo.isPrivate(), realEstate);
         }
-        RealEstateDto dto = realEstateMapper.toDto(realEstate);
-        log.debug("readShortById() - end. realEstate = {}", dto);
-        return dto;
+        return realEstateMapper.toDto(realEstate);
     }
 
     private void filterRealEstatePhotos(Predicate<RealEstatePhoto> predicate, RealEstate realEstate) {
@@ -89,17 +84,13 @@ public class RealEstateService {
 
     @Transactional(readOnly = true)
     public RealEstateFullDto readFullById(long realEstateId) {
-        log.debug("readFullById() - start. realEstateId = {}", realEstateId);
-        RealEstateFullDto realEstate = realEstateMapper.toFullDto(realEstateRepository.findById(realEstateId)
+        return realEstateMapper.toFullDto(realEstateRepository.findById(realEstateId)
                 .orElseThrow(() -> new ResourceNotFoundException(getExMessage(realEstateId)))
         );
-        log.debug("readFullById() - end. realEstate = {}", realEstate);
-        return realEstate;
     }
 
     @Transactional(readOnly = true)
     public Page<RealEstateDto> readAllShorts(RealEstateFilter filter, Pageable pageable, Boolean filterPrivate, Boolean filterPrivatePhotos) {
-        log.debug("readAllShorts() - start. filter = {}, pageable = {}", filter, pageable);
         Specification<RealEstate> spec = RealEstateSpecifications.withFilter(filter);
         Page<RealEstate> realEstatePage = realEstateRepository.findAll(spec, pageable);
         if (filterPrivate) {
@@ -108,9 +99,7 @@ public class RealEstateService {
         if (filterPrivatePhotos) {
             realEstatePage = filterPhotosInPage(photo -> !photo.isPrivate(), realEstatePage);
         }
-        Page<RealEstateDto> realEstates = realEstatePage.map(realEstateMapper::toDto);
-        log.debug("readAllShorts() - end: size = {}", realEstates.getTotalElements());
-        return realEstates;
+        return realEstatePage.map(realEstateMapper::toDto);
     }
 
     private Page<RealEstate> filterRealEstatePage(Predicate<RealEstate> predicate, Page<RealEstate> realEstates) {
@@ -129,16 +118,12 @@ public class RealEstateService {
 
     @Transactional(readOnly = true)
     public Page<RealEstateFullDto> readAllFulls(RealEstateFilter filter, Pageable pageable) {
-        log.debug("readAllFulls() - start. filter = {}, pageable = {}", filter, pageable);
         Specification<RealEstate> spec = RealEstateSpecifications.withFilter(filter);
-        Page<RealEstateFullDto> realEstates = realEstateRepository.findAll(spec, pageable).map(realEstateMapper::toFullDto);
-        log.debug("readAllFulls() - end: size = {}", realEstates.getTotalElements());
-        return realEstates;
+        return realEstateRepository.findAll(spec, pageable).map(realEstateMapper::toFullDto);
     }
 
     @Transactional
     public RealEstateFullDto update(long realEstateId, RealEstateAddDto realEstateDto) {
-        log.debug("update() - start. realEstateId = {}, realEstateDto = {}", realEstateId, realEstateDto);
         RealEstate toUpdate = realEstateRepository.findById(realEstateId)
                 .orElseThrow(() -> new ResourceNotFoundException(getExMessage(realEstateId)));
         if (toUpdate.isPrivate() != realEstateDto.isPrivate()) {
@@ -149,14 +134,11 @@ public class RealEstateService {
             }
             realtorRepository.setRealEstateCountsByRealtorId(realtor.getId(), updatedPublicCount);
         }
-        RealEstateFullDto updated = realEstateMapper.toFullDto(realEstateMapper.update(toUpdate, realEstateDto));
-        log.debug("update() - end. updated = {}", updated);
-        return updated;
+        return realEstateMapper.toFullDto(realEstateMapper.update(toUpdate, realEstateDto));
     }
 
     @Transactional
     public void delete(long realEstateId) {
-        log.debug("delete() - start. realEstateId = {}", realEstateId);
         Optional<RealEstate> optionalRealEstate = realEstateRepository.findById(realEstateId);
         if (optionalRealEstate.isPresent()) {
             RealEstate realEstate = optionalRealEstate.get();
@@ -166,38 +148,31 @@ public class RealEstateService {
                     realEstate.isPrivate() ? realEstate.getRealtor().getPublicRealEstatesCount() : realEstate.getRealtor().getPublicRealEstatesCount() - 1
             );
         }
-        log.debug("delete() - end. deleted");
     }
 
     @Transactional
     public boolean updateVerified(long realEstateId, boolean verified) {
-        log.debug("updateVerified() - start. realEstateId = {}, verified = {}", realEstateId, verified);
         RealEstate realEstate = realEstateRepository.findById(realEstateId)
                 .orElseThrow(() -> new ResourceNotFoundException(getExMessage(realEstateId)));
         realEstate.setVerified(verified);
-        log.debug("updateVerified() - end. verified = {}", realEstate.isVerified());
         return realEstate.isVerified();
     }
 
     @Transactional
     public boolean updateCalled(long realEstateId, boolean called) {
-        log.debug("updateCalled() - start. realEstateId = {}, called = {}", realEstateId, called);
         RealEstate realEstate = realEstateRepository.findById(realEstateId)
                 .orElseThrow(() -> new ResourceNotFoundException(getExMessage(realEstateId)));
         realEstate.setCalled(called);
         realEstate.setCalledAt(Instant.now());
-        log.debug("updateCalled() - end. called = {}", realEstate.isCalled());
         return realEstate.isCalled();
     }
 
     @Transactional
     @Scheduled(fixedDelayString = "${real-estate.scheduler.check-called}")
     protected void setNotCalledWhenCalledAtExpired() {
-        log.debug("setNotCalledWhenCalledAtExpired() - start.");
         Instant time = ZonedDateTime.now().minusDays(realEstateConfiguration.getDaysForExpireCalled()).toInstant();
         List<RealEstate> realEstates = realEstateRepository.findAllByCalledAtBeforeAndCalledTrue(time);
         realEstates.forEach(realEstate -> realEstate.setCalled(false));
-        log.debug("setNotCalledWhenCalledAtExpired() - end. real estates - {}", realEstates.size());
     }
 
 }
