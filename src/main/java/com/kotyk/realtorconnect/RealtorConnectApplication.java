@@ -25,8 +25,8 @@ public class RealtorConnectApplication {
     private static void changeDefaultTimeZone() {
         log.info("Setting system timezone to UTC...");
         TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
-        log.info(String.format("Current system timezone is now %s", TimeZone.getDefault().getID()));
-        log.info(String.format("Current system time is %s", LocalDateTime.now()));
+        log.info("Current system timezone is now {}", TimeZone.getDefault().getID());
+        log.info("Current system time is {}", LocalDateTime.now());
     }
 
     private static void printSwaggerMessage(Environment env) {

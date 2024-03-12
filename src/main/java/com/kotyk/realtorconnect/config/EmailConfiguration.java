@@ -2,8 +2,11 @@ package com.kotyk.realtorconnect.config;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.boot.autoconfigure.condition.AllNestedConditions;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -55,6 +58,7 @@ public class EmailConfiguration {
     }
 
     @Bean
+    @Conditional(EmailEnabled.class)
     public JavaMailSender javaMailSender() {
         if (this.getDebugMode().isEnabled()) {
             return configureJavaMailSender(this.getDebugMode().getServer());
@@ -76,6 +80,33 @@ public class EmailConfiguration {
         }
 
         return mailSender;
+    }
+
+    public static class EmailEnabled extends AllNestedConditions {
+
+        public EmailEnabled() {
+            super(ConfigurationPhase.REGISTER_BEAN);
+        }
+
+        @ConditionalOnProperty(name = "email.enabled", havingValue = "true")
+        static class EmailEnabledProperty {
+        }
+    }
+
+    public static class EmailDebugModeEnabled extends AllNestedConditions {
+
+        public EmailDebugModeEnabled() {
+            super(ConfigurationPhase.REGISTER_BEAN);
+        }
+
+        @Conditional(EmailEnabled.class)
+        static class EmailEnabledCondition {
+        }
+
+        @ConditionalOnProperty(name = "email.debug-mode.enabled", havingValue = "true")
+        static class DebugEnabledCondition {
+        }
+
     }
 
 }
