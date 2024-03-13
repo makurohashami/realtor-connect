@@ -1,6 +1,7 @@
 package com.kotyk.realtorconnect.entity.realtor;
 
 import com.kotyk.realtorconnect.entity.realestate.RealEstate;
+import com.kotyk.realtorconnect.entity.realtor.enumeration.SubscriptionType;
 import com.kotyk.realtorconnect.entity.user.User;
 import jakarta.persistence.*;
 import lombok.*;

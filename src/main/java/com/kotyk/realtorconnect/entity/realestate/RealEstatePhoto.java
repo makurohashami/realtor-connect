@@ -1,5 +1,6 @@
 package com.kotyk.realtorconnect.entity.realestate;
 
+import com.kotyk.realtorconnect.entity.realestate.listener.RealEstatePhotoListener;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -11,12 +12,15 @@ import lombok.*;
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
+@EntityListeners(RealEstatePhotoListener.class)
 public class RealEstatePhoto {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String photo;
+    @Column(name = "photo_id")
+    private String photoId;
     private boolean isPrivate;
     @ManyToOne
     @ToString.Exclude

@@ -1,7 +1,7 @@
 package com.kotyk.realtorconnect.dto.realestate;
 
 import com.kotyk.realtorconnect.entity.realestate.embedded.*;
-import com.kotyk.realtorconnect.entity.realestate.enums.*;
+import com.kotyk.realtorconnect.entity.realestate.enumeration.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;

@@ -1,5 +1,6 @@
 package com.kotyk.realtorconnect.entity.realtor;
 
+import com.kotyk.realtorconnect.entity.realtor.enumeration.ContactType;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

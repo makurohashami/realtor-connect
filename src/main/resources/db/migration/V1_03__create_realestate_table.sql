@@ -50,10 +50,11 @@ create table if not exists real_estates
 
 create table if not exists real_estates_photos
 (
-    id             bigserial not null primary key,
-    is_private     boolean   not null,
-    photo          varchar(2048),
-    real_estate_id bigint    not null
+    id             bigserial     not null primary key,
+    is_private     boolean       not null,
+    photo          varchar(2048) null,
+    photo_id       varchar(512)  null,
+    real_estate_id bigint        not null
         constraint to_real_estate_id
             references real_estates
 );

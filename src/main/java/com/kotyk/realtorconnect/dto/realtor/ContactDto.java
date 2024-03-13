@@ -1,6 +1,6 @@
 package com.kotyk.realtorconnect.dto.realtor;
 
-import com.kotyk.realtorconnect.entity.realtor.ContactType;
+import com.kotyk.realtorconnect.entity.realtor.enumeration.ContactType;
 import lombok.*;
 
 @Getter

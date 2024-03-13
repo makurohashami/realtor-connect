@@ -1,6 +1,6 @@
 package com.kotyk.realtorconnect.entity.realestate.embedded;
 
-import com.kotyk.realtorconnect.entity.realestate.enums.BathroomType;
+import com.kotyk.realtorconnect.entity.realestate.enumeration.BathroomType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.validation.constraints.Max;

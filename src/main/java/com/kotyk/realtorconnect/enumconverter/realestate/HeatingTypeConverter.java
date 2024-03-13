@@ -1,6 +1,6 @@
 package com.kotyk.realtorconnect.enumconverter.realestate;
 
-import com.kotyk.realtorconnect.entity.realestate.enums.HeatingType;
+import com.kotyk.realtorconnect.entity.realestate.enumeration.HeatingType;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 

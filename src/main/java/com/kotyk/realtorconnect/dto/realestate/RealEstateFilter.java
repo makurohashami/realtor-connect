@@ -1,6 +1,6 @@
 package com.kotyk.realtorconnect.dto.realestate;
 
-import com.kotyk.realtorconnect.entity.realestate.enums.*;
+import com.kotyk.realtorconnect.entity.realestate.enumeration.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

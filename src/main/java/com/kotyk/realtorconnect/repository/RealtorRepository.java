@@ -1,7 +1,7 @@
 package com.kotyk.realtorconnect.repository;
 
 import com.kotyk.realtorconnect.entity.realtor.Realtor;
-import com.kotyk.realtorconnect.entity.realtor.SubscriptionType;
+import com.kotyk.realtorconnect.entity.realtor.enumeration.SubscriptionType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
