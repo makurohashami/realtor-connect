@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
+@EntityListeners(EventListener.class)
 public class User implements UserDetails {
 
     @Id
