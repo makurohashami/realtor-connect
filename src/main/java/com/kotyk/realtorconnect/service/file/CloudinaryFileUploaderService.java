@@ -18,12 +18,12 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 @Conditional(CloudinaryEnabled.class)
-public class CloudinaryFileService implements FileService {
+public class CloudinaryFileUploaderService implements FileUploaderService {
 
     private final Cloudinary cloudinary;
 
     @Override
-    public FileUploadResponse uploadFile(MultipartFile file, Map params) {
+    public FileUploadResponse uploadFile(MultipartFile file, Map<String, Object> params) {
         try {
             var result = cloudinary.uploader().upload(file.getBytes(), params);
             return FileUploadResponse.builder()

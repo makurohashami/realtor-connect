@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Configuration;
 @Setter
 @Configuration
 @ConfigurationProperties(prefix = "cloudinary")
+@Conditional(CloudinaryConfiguration.CloudinaryEnabled.class)
 public class CloudinaryConfiguration {
 
     private String cloudinaryUrl;
@@ -30,9 +31,10 @@ public class CloudinaryConfiguration {
             super(ConfigurationPhase.REGISTER_BEAN);
         }
 
-        @ConditionalOnProperty(name = "cloudinary.enabled", havingValue = "true")
-        static class CloudinaryEnabledProperty {
+        @ConditionalOnProperty(name = "files.client", havingValue = "cloudinary")
+        static class CloudinaryIsFilesClient {
         }
+
     }
 
 }

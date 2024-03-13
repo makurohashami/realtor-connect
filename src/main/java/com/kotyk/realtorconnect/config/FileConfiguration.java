@@ -17,6 +17,7 @@ import java.util.List;
 @ConfigurationProperties(prefix = "files")
 public class FileConfiguration {
 
+    private String client;
     private List<String> allowedContentTypes;
     private AvatarConfig avatar;
     private MultipartConfig multipart;

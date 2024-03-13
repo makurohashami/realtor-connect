@@ -70,6 +70,7 @@ email:
         port: 1025
 
 files:
+  client: ${CDN_CLIENT:cloudinary}
   allowedContentTypes: [ image/jpeg, image/png ]
   avatar:
     minWidthHeight: 128 # in px
@@ -80,7 +81,6 @@ files:
     maxRequestSize: 25MB
 
 cloudinary:
-  enabled: true
   cloudinaryUrl: ${CLOUDINARY_URL}
 
 user:

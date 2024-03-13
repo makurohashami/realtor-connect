@@ -1,7 +1,5 @@
 package com.kotyk.realtorconnect.service.user;
 
-import com.cloudinary.EagerTransformation;
-import com.kotyk.realtorconnect.config.FileConfiguration;
 import com.kotyk.realtorconnect.config.UserConfiguration;
 import com.kotyk.realtorconnect.dto.file.FileUploadResponse;
 import com.kotyk.realtorconnect.dto.user.UserAddDto;
@@ -15,7 +13,8 @@ import com.kotyk.realtorconnect.mapper.UserMapper;
 import com.kotyk.realtorconnect.repository.UserRepository;
 import com.kotyk.realtorconnect.service.auth.PermissionService;
 import com.kotyk.realtorconnect.service.email.EmailFacade;
-import com.kotyk.realtorconnect.service.file.FileService;
+import com.kotyk.realtorconnect.service.file.FileParamsGenerator;
+import com.kotyk.realtorconnect.service.file.FileUploaderService;
 import com.kotyk.realtorconnect.specification.UserFilterSpecifications;
 import com.kotyk.realtorconnect.util.exception.ActionNotAllowedException;
 import com.kotyk.realtorconnect.util.exception.ResourceNotFoundException;
@@ -34,8 +33,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.Instant;
 import java.time.ZonedDateTime;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static com.kotyk.realtorconnect.entity.user.Role.ADMIN;
@@ -56,8 +55,8 @@ public class UserService {
     private final ConfirmationTokenService tokenService;
     private final PermissionService permissionService;
     private final Validator<MultipartFile> avatarValidator;
-    private final FileConfiguration fileConfiguration;
-    private final FileService fileService;
+    private final FileParamsGenerator fileParamsGenerator;
+    private final FileUploaderService fileUploaderService;
 
     @Transactional
     public void updateLastLogin(User user) {
@@ -162,11 +161,9 @@ public class UserService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format(NOT_FOUND_BY_ID_MSG, id)));
         validateAvatar(avatar);
-        FileUploadResponse response = fileService.uploadFile(avatar, genAvatarUploadParams(user));
-        mapAvatar(user, response);
-        if (response.getFileId() == null) {
-            user.setAvatar(userMapper.getDefaultAvatarUrl());
-        }
+        Map<String, Object> params = fileParamsGenerator.generateParamsForAvatar(user);
+        FileUploadResponse response = fileUploaderService.uploadFile(avatar, params);
+        mapAvatarToUser(user, response);
         return user.getAvatar();
     }
 
@@ -174,7 +171,7 @@ public class UserService {
     public void deleteAvatar(long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format(NOT_FOUND_BY_ID_MSG, id)));
-        fileService.deleteFile(user.getAvatarId());
+        fileUploaderService.deleteFile(user.getAvatarId());
         user.setAvatar(userMapper.getDefaultAvatarUrl());
     }
 
@@ -185,24 +182,8 @@ public class UserService {
         }
     }
 
-    private HashMap<Object, Object> genAvatarUploadParams(User user) {
-        int sizeForSave = fileConfiguration.getAvatar().getWidthHeightForSave();
-        EagerTransformation transformation = new EagerTransformation().height(sizeForSave).width(sizeForSave).crop("fill").gravity("auto");
-
-        var params = new HashMap<>();
-        params.put("tags", "avatar");
-        params.put("transformation", transformation);
-        if (user.getAvatar() != null && !user.getAvatar().equals(userMapper.getDefaultAvatarUrl())) {
-            params.put("public_id", user.getAvatarId());
-        } else {
-            params.put("folder", "avatars");
-        }
-
-        return params;
-    }
-
-    private static void mapAvatar(User user, FileUploadResponse response) {
-        user.setAvatar(response.getUrl());
+    private void mapAvatarToUser(User user, FileUploadResponse response) {
+        user.setAvatar(response.getFileId() == null ? userMapper.getDefaultAvatarUrl() : response.getUrl());
         user.setAvatarId(response.getFileId());
     }
 }
