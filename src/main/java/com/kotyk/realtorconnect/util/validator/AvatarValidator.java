@@ -13,7 +13,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Slf4j
-@Component
+@Component("avatarValidator")
 @AllArgsConstructor
 public class AvatarValidator implements Validator<MultipartFile> {
 

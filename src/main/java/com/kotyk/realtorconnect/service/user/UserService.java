@@ -79,15 +79,19 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
+    protected User findById(long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format(NOT_FOUND_BY_ID_MSG, id)));
+    }
+
+    @Transactional(readOnly = true)
     public UserDto readById(long id) {
-        return userMapper.toDto(userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(String.format(NOT_FOUND_BY_ID_MSG, id))));
+        return userMapper.toDto(findById(id));
     }
 
     @Transactional(readOnly = true)
     public UserFullDto readFullById(long id) {
-        return userMapper.toFullDto(userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(String.format(NOT_FOUND_BY_ID_MSG, id))));
+        return userMapper.toFullDto(findById(id));
     }
 
     @Transactional(readOnly = true)
@@ -110,15 +114,13 @@ public class UserService {
 
     @Transactional
     public UserFullDto update(long id, UserAddDto dto) {
-        User toUpdate = userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(String.format(NOT_FOUND_BY_ID_MSG, id)));
+        User toUpdate = findById(id);
         return userMapper.toFullDto(userMapper.update(toUpdate, dto));
     }
 
     @Transactional
     public void delete(long id) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(String.format(NOT_FOUND_BY_ID_MSG, id)));
+        User user = findById(id);
         boolean canDeleteAdmins = permissionService.isCurrentHasPermission(Permission.MANAGE_ADMINS);
         if (user.getRole() == CHIEF_ADMIN || (user.getRole() == ADMIN && !canDeleteAdmins)) {
             throw new ActionNotAllowedException("You can't delete an user with this role");
@@ -130,8 +132,7 @@ public class UserService {
 
     @Transactional
     public boolean updateBlocked(long id, boolean blocked) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(String.format(NOT_FOUND_BY_ID_MSG, id)));
+        User user = findById(id);
         if (user.getRole() == ADMIN || user.getRole() == CHIEF_ADMIN) {
             throw new ActionNotAllowedException("You cannot change 'blocked' for this user");
         }
@@ -158,8 +159,7 @@ public class UserService {
 
     @Transactional
     public String setAvatar(long id, MultipartFile avatar) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(String.format(NOT_FOUND_BY_ID_MSG, id)));
+        User user = findById(id);
         validateAvatar(avatar);
         Map<String, Object> params = fileParamsGenerator.generateParamsForAvatar(user);
         FileUploadResponse response = fileUploaderService.uploadFile(avatar, params);
@@ -169,8 +169,7 @@ public class UserService {
 
     @Transactional
     public void deleteAvatar(long id) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(String.format(NOT_FOUND_BY_ID_MSG, id)));
+        User user = findById(id);
         fileUploaderService.deleteFile(user.getAvatarId());
         user.setAvatar(userMapper.getDefaultAvatarUrl());
     }
