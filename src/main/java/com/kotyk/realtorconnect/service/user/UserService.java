@@ -1,6 +1,9 @@
 package com.kotyk.realtorconnect.service.user;
 
+import com.cloudinary.EagerTransformation;
+import com.kotyk.realtorconnect.config.FileConfiguration;
 import com.kotyk.realtorconnect.config.UserConfiguration;
+import com.kotyk.realtorconnect.dto.file.FileUploadResponse;
 import com.kotyk.realtorconnect.dto.user.UserAddDto;
 import com.kotyk.realtorconnect.dto.user.UserDto;
 import com.kotyk.realtorconnect.dto.user.UserFilter;
@@ -12,9 +15,12 @@ import com.kotyk.realtorconnect.mapper.UserMapper;
 import com.kotyk.realtorconnect.repository.UserRepository;
 import com.kotyk.realtorconnect.service.auth.PermissionService;
 import com.kotyk.realtorconnect.service.email.EmailFacade;
+import com.kotyk.realtorconnect.service.file.FileService;
 import com.kotyk.realtorconnect.specification.UserFilterSpecifications;
 import com.kotyk.realtorconnect.util.exception.ActionNotAllowedException;
 import com.kotyk.realtorconnect.util.exception.ResourceNotFoundException;
+import com.kotyk.realtorconnect.util.exception.ValidationFailedException;
+import com.kotyk.realtorconnect.util.validator.Validator;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -23,9 +29,12 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.Instant;
 import java.time.ZonedDateTime;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,6 +55,9 @@ public class UserService {
     private final EmailFacade emailFacade;
     private final ConfirmationTokenService tokenService;
     private final PermissionService permissionService;
+    private final Validator<MultipartFile> avatarValidator;
+    private final FileConfiguration fileConfiguration;
+    private final FileService fileService;
 
     @Transactional
     public void updateLastLogin(User user) {
@@ -112,6 +124,8 @@ public class UserService {
         if (user.getRole() == CHIEF_ADMIN || (user.getRole() == ADMIN && !canDeleteAdmins)) {
             throw new ActionNotAllowedException("You can't delete an user with this role");
         }
+
+        deleteAvatar(id);
         userRepository.deleteById(id);
     }
 
@@ -143,4 +157,52 @@ public class UserService {
         userRepository.deleteAllByCreatedIsBeforeAndEmailVerifiedFalse(time);
     }
 
+    @Transactional
+    public String setAvatar(long id, MultipartFile avatar) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format(NOT_FOUND_BY_ID_MSG, id)));
+        validateAvatar(avatar);
+        FileUploadResponse response = fileService.uploadFile(avatar, genAvatarUploadParams(user));
+        mapAvatar(user, response);
+        if (response.getFileId() == null) {
+            user.setAvatar(userMapper.getDefaultAvatarUrl());
+        }
+        return user.getAvatar();
+    }
+
+    @Transactional
+    public void deleteAvatar(long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format(NOT_FOUND_BY_ID_MSG, id)));
+        fileService.deleteFile(user.getAvatarId());
+        user.setAvatar(userMapper.getDefaultAvatarUrl());
+    }
+
+    private void validateAvatar(MultipartFile avatar) {
+        List<String> errors = avatarValidator.validate(avatar);
+        if (!CollectionUtils.isEmpty(errors)) {
+            throw new ValidationFailedException("Avatar not valid, errors: " + String.join("; ", errors));
+        }
+    }
+
+    private HashMap<Object, Object> genAvatarUploadParams(User user) {
+        int sizeForSave = fileConfiguration.getAvatar().getWidthHeightForSave();
+        EagerTransformation transformation = new EagerTransformation().height(sizeForSave).width(sizeForSave).crop("fill").gravity("auto");
+
+        var params = new HashMap<>();
+        params.put("tags", "avatar");
+        params.put("transformation", transformation);
+        if (user.getAvatar() != null && !user.getAvatar().equals(userMapper.getDefaultAvatarUrl())) {
+            params.put("public_id", user.getAvatarId());
+        } else {
+            params.put("folder", "avatars");
+        }
+
+        return params;
+    }
+
+    private static void mapAvatar(User user, FileUploadResponse response) {
+        user.setAvatar(response.getUrl());
+        user.setAvatarId(response.getFileId());
+    }
 }

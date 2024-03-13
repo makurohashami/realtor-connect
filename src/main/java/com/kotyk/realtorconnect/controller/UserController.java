@@ -14,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import static com.kotyk.realtorconnect.util.ApiResponseUtil.ok;
 
@@ -59,6 +60,22 @@ public class UserController {
     @Operation(summary = "Verify email of anonymous user")
     public ResponseEntity<ApiSuccess<Boolean>> verifyEmail(@PathVariable String token) {
         return ok(service.verifyEmail(token));
+    }
+
+    @IsSameUser
+    @PostMapping(value = "/{id}/avatar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @Operation(summary = "Set avatar to user")
+    public ResponseEntity<ApiSuccess<String>> setAvatar(@PathVariable long id,
+                                                        @RequestPart MultipartFile avatar) {
+        return ok(service.setAvatar(id, avatar));
+    }
+
+    @IsSameUser
+    @DeleteMapping("/{id}/avatar")
+    @Operation(summary = "Delete avatar from user")
+    public ResponseEntity<Void> deleteAvatar(@PathVariable long id) {
+        service.deleteAvatar(id);
+        return ResponseEntity.noContent().build();
     }
 
 }

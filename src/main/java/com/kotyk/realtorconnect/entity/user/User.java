@@ -30,6 +30,8 @@ public class User implements UserDetails {
     private String username;
     private String password;
     private String avatar;
+    @Column(name = "avatar_id")
+    private String avatarId;
     private String phone;
     @Column(name = "role_id")
     private Role role;

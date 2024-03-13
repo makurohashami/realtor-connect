@@ -69,6 +69,20 @@ email:
         host: localhost
         port: 1025
 
+files:
+  allowedContentTypes: [ image/jpeg, image/png ]
+  avatar:
+    minWidthHeight: 128 # in px
+    maxWidthHeight: 512 # in px
+    widthHeightForSave: 256 # in px
+  multipart:
+    maxFileSize: 1MB
+    maxRequestSize: 25MB
+
+cloudinary:
+  enabled: true
+  cloudinaryUrl: ${CLOUDINARY_URL}
+
 user:
   timeToVerifyEmailInDays: 7
   scheduler:
