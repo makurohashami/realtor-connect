@@ -1,6 +1,7 @@
 package com.kotyk.realtorconnect.service.user;
 
 import com.kotyk.realtorconnect.config.UserConfiguration;
+import com.kotyk.realtorconnect.dto.file.FileUploadResponse;
 import com.kotyk.realtorconnect.dto.user.UserAddDto;
 import com.kotyk.realtorconnect.dto.user.UserDto;
 import com.kotyk.realtorconnect.dto.user.UserFilter;
@@ -12,9 +13,13 @@ import com.kotyk.realtorconnect.mapper.UserMapper;
 import com.kotyk.realtorconnect.repository.UserRepository;
 import com.kotyk.realtorconnect.service.auth.PermissionService;
 import com.kotyk.realtorconnect.service.email.EmailFacade;
+import com.kotyk.realtorconnect.service.file.FileParamsGenerator;
+import com.kotyk.realtorconnect.service.file.FileUploaderService;
 import com.kotyk.realtorconnect.specification.UserFilterSpecifications;
 import com.kotyk.realtorconnect.util.exception.ActionNotAllowedException;
 import com.kotyk.realtorconnect.util.exception.ResourceNotFoundException;
+import com.kotyk.realtorconnect.util.exception.ValidationFailedException;
+import com.kotyk.realtorconnect.util.validator.Validator;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -23,10 +28,13 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static com.kotyk.realtorconnect.entity.user.Role.ADMIN;
@@ -46,6 +54,9 @@ public class UserService {
     private final EmailFacade emailFacade;
     private final ConfirmationTokenService tokenService;
     private final PermissionService permissionService;
+    private final Validator<MultipartFile> avatarValidator;
+    private final FileParamsGenerator fileParamsGenerator;
+    private final FileUploaderService fileUploaderService;
 
     @Transactional
     public void updateLastLogin(User user) {
@@ -68,15 +79,19 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
+    protected User findById(long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format(NOT_FOUND_BY_ID_MSG, id)));
+    }
+
+    @Transactional(readOnly = true)
     public UserDto readById(long id) {
-        return userMapper.toDto(userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(String.format(NOT_FOUND_BY_ID_MSG, id))));
+        return userMapper.toDto(findById(id));
     }
 
     @Transactional(readOnly = true)
     public UserFullDto readFullById(long id) {
-        return userMapper.toFullDto(userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(String.format(NOT_FOUND_BY_ID_MSG, id))));
+        return userMapper.toFullDto(findById(id));
     }
 
     @Transactional(readOnly = true)
@@ -99,26 +114,25 @@ public class UserService {
 
     @Transactional
     public UserFullDto update(long id, UserAddDto dto) {
-        User toUpdate = userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(String.format(NOT_FOUND_BY_ID_MSG, id)));
+        User toUpdate = findById(id);
         return userMapper.toFullDto(userMapper.update(toUpdate, dto));
     }
 
     @Transactional
     public void delete(long id) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(String.format(NOT_FOUND_BY_ID_MSG, id)));
+        User user = findById(id);
         boolean canDeleteAdmins = permissionService.isCurrentHasPermission(Permission.MANAGE_ADMINS);
         if (user.getRole() == CHIEF_ADMIN || (user.getRole() == ADMIN && !canDeleteAdmins)) {
             throw new ActionNotAllowedException("You can't delete an user with this role");
         }
+
+        deleteAvatar(id);
         userRepository.deleteById(id);
     }
 
     @Transactional
     public boolean updateBlocked(long id, boolean blocked) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(String.format(NOT_FOUND_BY_ID_MSG, id)));
+        User user = findById(id);
         if (user.getRole() == ADMIN || user.getRole() == CHIEF_ADMIN) {
             throw new ActionNotAllowedException("You cannot change 'blocked' for this user");
         }
@@ -143,4 +157,32 @@ public class UserService {
         userRepository.deleteAllByCreatedIsBeforeAndEmailVerifiedFalse(time);
     }
 
+    @Transactional
+    public String setAvatar(long id, MultipartFile avatar) {
+        User user = findById(id);
+        validateAvatar(avatar);
+        Map<String, Object> params = fileParamsGenerator.generateParamsForAvatar(user);
+        FileUploadResponse response = fileUploaderService.uploadFile(avatar, params);
+        mapAvatarToUser(user, response);
+        return user.getAvatar();
+    }
+
+    @Transactional
+    public void deleteAvatar(long id) {
+        User user = findById(id);
+        fileUploaderService.deleteFile(user.getAvatarId());
+        user.setAvatar(userMapper.getDefaultAvatarUrl());
+    }
+
+    private void validateAvatar(MultipartFile avatar) {
+        List<String> errors = avatarValidator.validate(avatar);
+        if (!CollectionUtils.isEmpty(errors)) {
+            throw new ValidationFailedException("Avatar not valid, errors: " + String.join("; ", errors));
+        }
+    }
+
+    private void mapAvatarToUser(User user, FileUploadResponse response) {
+        user.setAvatar(response.getFileId() == null ? userMapper.getDefaultAvatarUrl() : response.getUrl());
+        user.setAvatarId(response.getFileId());
+    }
 }

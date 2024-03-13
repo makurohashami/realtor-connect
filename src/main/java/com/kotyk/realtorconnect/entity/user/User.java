@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
+@EntityListeners(EventListener.class)
 public class User implements UserDetails {
 
     @Id
@@ -30,6 +31,8 @@ public class User implements UserDetails {
     private String username;
     private String password;
     private String avatar;
+    @Column(name = "avatar_id")
+    private String avatarId;
     private String phone;
     @Column(name = "role_id")
     private Role role;

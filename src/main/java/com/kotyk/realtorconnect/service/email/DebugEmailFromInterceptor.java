@@ -1,7 +1,7 @@
 package com.kotyk.realtorconnect.service.email;
 
 import com.kotyk.realtorconnect.config.EmailConfiguration;
-import com.kotyk.realtorconnect.config.EmailDebugModeEnabled;
+import com.kotyk.realtorconnect.config.EmailConfiguration.EmailDebugModeEnabled;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.AllArgsConstructor;

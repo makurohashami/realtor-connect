@@ -51,6 +51,18 @@ public class GlobalExceptionHandler {
         return badRequest(error);
     }
 
+    @ExceptionHandler(ValidationFailedException.class)
+    public ResponseEntity<ApiError<Error>> validationFailedException(ValidationFailedException ex, WebRequest request) {
+        Error error = new Error(
+                Instant.now(),
+                "Validation failed",
+                ex.getMessage(),
+                request.getDescription(false)
+        );
+        log.error("", ex);
+        return badRequest(error);
+    }
+
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<ApiError<Error>> methodAccessDeniedException(AccessDeniedException ex, WebRequest request) {
         Error error = new Error(

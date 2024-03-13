@@ -6,6 +6,7 @@ create table if not exists users
     username       varchar(50)   not null unique,
     password       varchar(255)  not null,
     avatar         varchar(2048) null,
+    avatar_id      varchar(512)  null,
     phone          varchar(20)   null unique,
     role_id        integer       not null,
     is_blocked     boolean       not null,

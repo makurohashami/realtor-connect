@@ -3,9 +3,9 @@ package com.kotyk.realtorconnect.controller;
 import com.kotyk.realtorconnect.dto.apiresponse.ApiSuccess;
 import com.kotyk.realtorconnect.dto.user.UserFilter;
 import com.kotyk.realtorconnect.dto.user.UserFullDto;
+import com.kotyk.realtorconnect.service.realestate.RealEstateService;
 import com.kotyk.realtorconnect.service.realtor.RealtorService;
 import com.kotyk.realtorconnect.service.user.UserService;
-import com.kotyk.realtorconnect.service.realestate.RealEstateService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.Max;
@@ -59,7 +59,7 @@ public class AdminPanelController {
         return ok(realtorService.givePremiumToRealtor(realtorId, durationInMonths));
     }
 
-    @GetMapping
+    @GetMapping("/users")
     @Operation(summary = "Get page of users")
     public ResponseEntity<ApiSuccess<Page<UserFullDto>>> readAllUsers(@RequestParam(defaultValue = "0") int page,
                                                                       @RequestParam(defaultValue = "15") int size,
