@@ -1,6 +1,6 @@
 package com.kotyk.realtorconnect.config;
 
-import com.kotyk.realtorconnect.entity.realtor.SubscriptionType;
+import com.kotyk.realtorconnect.entity.realtor.enumeration.SubscriptionType;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;

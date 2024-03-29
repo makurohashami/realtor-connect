@@ -1,5 +1,6 @@
 package com.kotyk.realtorconnect.entity.user;
 
+import com.kotyk.realtorconnect.entity.user.listener.EventListener;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

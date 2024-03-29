@@ -1,4 +1,4 @@
-package com.kotyk.realtorconnect.dto.realestate;
+package com.kotyk.realtorconnect.dto.realestate.photo;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,10 +9,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RealEstatePhotoDto {
+public class RealEstatePhotoUpdateDto {
 
-    private Long id;
-    private String photo;
     private boolean isPrivate;
 
 }

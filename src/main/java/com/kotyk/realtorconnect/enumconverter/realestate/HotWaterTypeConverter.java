@@ -1,6 +1,6 @@
 package com.kotyk.realtorconnect.enumconverter.realestate;
 
-import com.kotyk.realtorconnect.entity.realestate.enums.HotWaterType;
+import com.kotyk.realtorconnect.entity.realestate.enumeration.HotWaterType;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 

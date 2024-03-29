@@ -12,5 +12,12 @@ import org.springframework.stereotype.Component;
 public class RealEstateConfiguration {
 
     private long daysForExpireCalled;
+    private Photo photo;
+
+    @Getter
+    @Setter
+    public static class Photo {
+        private long maxPhotosCount;
+    }
 
 }

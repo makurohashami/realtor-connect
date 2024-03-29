@@ -36,7 +36,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class RealEstateService {
 
-    private static final String NOT_FOUND_BY_ID_MSG = "Real Estate with id '%d' not found";
+    public static final String NOT_FOUND_BY_ID_MSG = "Real Estate with id '%d' not found";
 
     private final RealEstateMapper realEstateMapper;
     private final RealEstateRepository realEstateRepository;

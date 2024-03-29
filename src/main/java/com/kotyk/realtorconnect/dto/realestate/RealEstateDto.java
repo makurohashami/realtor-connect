@@ -1,9 +1,10 @@
 package com.kotyk.realtorconnect.dto.realestate;
 
+import com.kotyk.realtorconnect.dto.realestate.photo.RealEstatePhotoDto;
 import com.kotyk.realtorconnect.entity.realestate.embedded.Area;
 import com.kotyk.realtorconnect.entity.realestate.embedded.Bathroom;
 import com.kotyk.realtorconnect.entity.realestate.embedded.Loggia;
-import com.kotyk.realtorconnect.entity.realestate.enums.*;
+import com.kotyk.realtorconnect.entity.realestate.enumeration.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

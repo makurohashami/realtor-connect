@@ -3,6 +3,7 @@ package com.kotyk.realtorconnect.service.file;
 import com.cloudinary.EagerTransformation;
 import com.kotyk.realtorconnect.config.CloudinaryConfiguration.CloudinaryEnabled;
 import com.kotyk.realtorconnect.config.FileConfiguration;
+import com.kotyk.realtorconnect.entity.realestate.RealEstate;
 import com.kotyk.realtorconnect.entity.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,6 +38,14 @@ public class CloudinaryFileParamsGenerator implements FileParamsGenerator {
             params.put("folder", "avatars");
         }
 
+        return params;
+    }
+
+    @Override
+    public Map<String, Object> generateParamsForRealEstatePhoto(RealEstate realEstate) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("tags", "realEstatePhoto");
+        params.put("folder", "realestates/" + realEstate.getId());
         return params;
     }
 }

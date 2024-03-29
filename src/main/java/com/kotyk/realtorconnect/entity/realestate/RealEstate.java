@@ -1,7 +1,8 @@
 package com.kotyk.realtorconnect.entity.realestate;
 
 import com.kotyk.realtorconnect.entity.realestate.embedded.*;
-import com.kotyk.realtorconnect.entity.realestate.enums.*;
+import com.kotyk.realtorconnect.entity.realestate.enumeration.*;
+import com.kotyk.realtorconnect.entity.realestate.listener.RealEstateListener;
 import com.kotyk.realtorconnect.entity.realtor.Realtor;
 import jakarta.persistence.*;
 import lombok.*;
@@ -19,6 +20,7 @@ import java.util.Set;
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
+@EntityListeners(RealEstateListener.class)
 public class RealEstate {
 
     @Id
@@ -59,8 +61,6 @@ public class RealEstate {
     private double ceilingHeight;
     private String documents;
     private boolean isPrivate;
-    private short countPublicPhotos;
-    private short countPhotos;
     @Column(name = "is_called")
     private boolean called;
     private Instant calledAt;

@@ -1,4 +1,4 @@
-package com.kotyk.realtorconnect.entity.realtor;
+package com.kotyk.realtorconnect.entity.realtor.enumeration;
 
 import lombok.Getter;
 

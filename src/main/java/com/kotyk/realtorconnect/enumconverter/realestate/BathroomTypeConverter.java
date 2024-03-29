@@ -1,6 +1,6 @@
 package com.kotyk.realtorconnect.enumconverter.realestate;
 
-import com.kotyk.realtorconnect.entity.realestate.enums.BathroomType;
+import com.kotyk.realtorconnect.entity.realestate.enumeration.BathroomType;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 

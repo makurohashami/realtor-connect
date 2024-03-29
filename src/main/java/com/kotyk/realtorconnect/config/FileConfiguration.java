@@ -20,6 +20,7 @@ public class FileConfiguration {
     private String client;
     private List<String> allowedContentTypes;
     private AvatarConfig avatar;
+    private RealEstatePhotoConfig realEstatePhoto;
     private MultipartConfig multipart;
 
     @Getter
@@ -28,6 +29,13 @@ public class FileConfiguration {
         private int minWidthHeight;
         private int maxWidthHeight;
         private int widthHeightForSave;
+    }
+
+    @Getter
+    @Setter
+    public static class RealEstatePhotoConfig {
+        private int minWidthHeight;
+        private int maxWidthHeight;
     }
 
     @Getter

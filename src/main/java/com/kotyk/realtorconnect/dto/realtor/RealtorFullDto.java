@@ -1,7 +1,7 @@
 package com.kotyk.realtorconnect.dto.realtor;
 
 import com.kotyk.realtorconnect.dto.user.UserFullDto;
-import com.kotyk.realtorconnect.entity.realtor.SubscriptionType;
+import com.kotyk.realtorconnect.entity.realtor.enumeration.SubscriptionType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

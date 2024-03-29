@@ -1,6 +1,6 @@
 package com.kotyk.realtorconnect.enumconverter.realestate;
 
-import com.kotyk.realtorconnect.entity.realestate.enums.WindowsType;
+import com.kotyk.realtorconnect.entity.realestate.enumeration.WindowsType;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 

@@ -1,6 +1,6 @@
 package com.kotyk.realtorconnect.enumconverter.userrealtor;
 
-import com.kotyk.realtorconnect.entity.realtor.ContactType;
+import com.kotyk.realtorconnect.entity.realtor.enumeration.ContactType;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 

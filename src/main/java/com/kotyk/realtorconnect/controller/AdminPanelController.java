@@ -3,6 +3,7 @@ package com.kotyk.realtorconnect.controller;
 import com.kotyk.realtorconnect.dto.apiresponse.ApiSuccess;
 import com.kotyk.realtorconnect.dto.user.UserFilter;
 import com.kotyk.realtorconnect.dto.user.UserFullDto;
+import com.kotyk.realtorconnect.service.realestate.RealEstatePhotoService;
 import com.kotyk.realtorconnect.service.realestate.RealEstateService;
 import com.kotyk.realtorconnect.service.realtor.RealtorService;
 import com.kotyk.realtorconnect.service.user.UserService;
@@ -33,6 +34,7 @@ public class AdminPanelController {
     private final UserService userService;
     private final RealtorService realtorService;
     private final RealEstateService realEstateService;
+    private final RealEstatePhotoService realEstatePhotoService;
 
     @PostMapping("/block-user")
     @Operation(summary = "Block user")
@@ -66,5 +68,11 @@ public class AdminPanelController {
                                                                       @ModelAttribute UserFilter filter) {
         Pageable paging = PageRequest.of(page, size);
         return ok(userService.readAllFulls(filter, paging));
+    }
+
+    @PostMapping("/realestates/{realEstateId}/photos/validate-order")
+    @Operation(summary = "Validate order of real estate photos")
+    public void validateOrderOfRealEstatePhotos(@PathVariable Long realEstateId) {
+        realEstatePhotoService.validateOrder(realEstateId);
     }
 }

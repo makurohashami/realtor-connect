@@ -7,7 +7,7 @@ import com.kotyk.realtorconnect.dto.realtor.RealtorDto;
 import com.kotyk.realtorconnect.dto.realtor.RealtorFilter;
 import com.kotyk.realtorconnect.dto.realtor.RealtorFullDto;
 import com.kotyk.realtorconnect.entity.realtor.Realtor;
-import com.kotyk.realtorconnect.entity.realtor.SubscriptionType;
+import com.kotyk.realtorconnect.entity.realtor.enumeration.SubscriptionType;
 import com.kotyk.realtorconnect.mapper.RealtorMapper;
 import com.kotyk.realtorconnect.repository.RealEstateRepository;
 import com.kotyk.realtorconnect.repository.RealtorRepository;
