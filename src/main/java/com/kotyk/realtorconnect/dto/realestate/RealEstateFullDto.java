@@ -1,5 +1,6 @@
 package com.kotyk.realtorconnect.dto.realestate;
 
+import com.kotyk.realtorconnect.dto.realestate.photo.RealEstatePhotoDto;
 import com.kotyk.realtorconnect.entity.realestate.embedded.*;
 import com.kotyk.realtorconnect.entity.realestate.enumeration.*;
 import lombok.AllArgsConstructor;
@@ -38,8 +39,6 @@ public class RealEstateFullDto {
     private double ceilingHeight;
     private String documents;
     private boolean isPrivate;
-    private short countPublicPhotos;
-    private short countPhotos;
     private boolean called;
     private Instant calledAt;
     private List<RealEstatePhotoDto> photos = new ArrayList<>();

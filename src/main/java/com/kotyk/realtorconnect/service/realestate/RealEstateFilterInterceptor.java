@@ -1,6 +1,7 @@
 package com.kotyk.realtorconnect.service.realestate;
 
 import com.kotyk.realtorconnect.dto.realestate.RealEstateDto;
+import com.kotyk.realtorconnect.dto.realestate.photo.RealEstatePhotoDto;
 import com.kotyk.realtorconnect.entity.user.Permission;
 import com.kotyk.realtorconnect.service.auth.PermissionService;
 import lombok.AllArgsConstructor;
@@ -13,6 +14,7 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 
@@ -38,7 +40,7 @@ public class RealEstateFilterInterceptor {
             }
         }
 
-        log.debug("Cannot filter real estates because returned unsupported type");
+        log.error("Cannot filter real estates because returned unsupported type");
         return result;
     }
 
@@ -63,8 +65,12 @@ public class RealEstateFilterInterceptor {
             if (pageResult.hasContent() && pageResult.getContent().get(0) instanceof RealEstateDto) {
                 filterRealEstatePhotosDtoPage((Page<RealEstateDto>) pageResult);
             }
+        } else if (result instanceof List<?> listResult) {
+            if (!CollectionUtils.isEmpty(listResult)) {
+                filterRealEstatePhotosDtoList((List<RealEstatePhotoDto>) listResult);
+            }
         } else {
-            log.debug("Cannot filter real estates photos because returned unsupported type");
+            log.error("Cannot filter real estates photos because returned unsupported type");
         }
     }
 
@@ -80,5 +86,12 @@ public class RealEstateFilterInterceptor {
 
     private void filterRealEstatePhotosDtoPage(Page<RealEstateDto> realEstatePage) {
         realEstatePage.getContent().forEach(this::filterPhotosInRealEstateDto);
+    }
+
+
+    private void filterRealEstatePhotosDtoList(List<RealEstatePhotoDto> photos) {
+        if (!permissionService.isCurrentHasPermission(Permission.SEE_PRIVATE_PHOTOS)) {
+            photos.removeIf(RealEstatePhotoDto::isPrivate);
+        }
     }
 }

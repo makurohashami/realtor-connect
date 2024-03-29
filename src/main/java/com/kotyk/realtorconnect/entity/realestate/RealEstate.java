@@ -61,8 +61,6 @@ public class RealEstate {
     private double ceilingHeight;
     private String documents;
     private boolean isPrivate;
-    private short countPublicPhotos;
-    private short countPhotos;
     @Column(name = "is_called")
     private boolean called;
     private Instant calledAt;

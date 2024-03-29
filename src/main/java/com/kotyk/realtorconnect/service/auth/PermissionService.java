@@ -1,10 +1,12 @@
 package com.kotyk.realtorconnect.service.auth;
 
 import com.kotyk.realtorconnect.entity.realestate.RealEstate;
+import com.kotyk.realtorconnect.entity.realestate.RealEstatePhoto;
 import com.kotyk.realtorconnect.entity.realtor.Contact;
 import com.kotyk.realtorconnect.entity.user.Permission;
 import com.kotyk.realtorconnect.entity.user.User;
 import com.kotyk.realtorconnect.repository.ContactRepository;
+import com.kotyk.realtorconnect.repository.RealEstatePhotoRepository;
 import com.kotyk.realtorconnect.repository.RealEstateRepository;
 import com.kotyk.realtorconnect.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -21,6 +23,7 @@ public class PermissionService {
 
     private final UserRepository userRepository;
     private final RealEstateRepository realEstateRepository;
+    private final RealEstatePhotoRepository realEstatePhotoRepository;
     private final ContactRepository contactRepository;
 
     private User getUser(String username) {
@@ -53,7 +56,7 @@ public class PermissionService {
     @Transactional(readOnly = true)
     public boolean isContactOwner(long contactId) {
         Optional<Contact> contact = contactRepository.findById(contactId);
-        return contact.isPresent() && isSameUser(contact.get().getId());
+        return contact.isPresent() && isSameUser(contact.get().getRealtor().getId());
     }
 
     @Transactional(readOnly = true)
@@ -61,5 +64,12 @@ public class PermissionService {
         Optional<RealEstate> realEstate = realEstateRepository.findById(realEstateId);
         return realEstate.isPresent() && !realEstate.get().isPrivate();
     }
+
+    @Transactional(readOnly = true)
+    public boolean isRealEstatePhotoOwner(long realEstatePhotoId) {
+        Optional<RealEstatePhoto> photo = realEstatePhotoRepository.findById(realEstatePhotoId);
+        return photo.isPresent() && isSameUser(photo.get().getRealEstate().getRealtor().getId());
+    }
+
 
 }

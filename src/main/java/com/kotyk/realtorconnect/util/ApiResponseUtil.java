@@ -26,16 +26,16 @@ public class ApiResponseUtil {
         return wrapSuccess(body, HttpStatus.CREATED);
     }
 
-    public static <T> ResponseEntity<ApiSuccess<T>> noContent(T body) {
-        return wrapSuccess(body, HttpStatus.NO_CONTENT);
-    }
-
     public static <T> ResponseEntity<ApiError<T>> badRequest(T body) {
         return wrapError(body, HttpStatus.BAD_REQUEST);
     }
 
     public static <T> ResponseEntity<ApiError<T>> notFound(T body) {
         return wrapError(body, HttpStatus.NOT_FOUND);
+    }
+
+    public static ResponseEntity<Void> noContent() {
+        return ResponseEntity.noContent().build();
     }
 
 }

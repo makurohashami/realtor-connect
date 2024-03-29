@@ -1,12 +1,14 @@
 package com.kotyk.realtorconnect.service.file;
 
 import com.cloudinary.Cloudinary;
+import com.cloudinary.api.exceptions.NotFound;
 import com.cloudinary.utils.ObjectUtils;
 import com.kotyk.realtorconnect.config.CloudinaryConfiguration.CloudinaryEnabled;
 import com.kotyk.realtorconnect.dto.file.FileUploadResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Conditional;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -36,6 +38,7 @@ public class CloudinaryFileUploaderService implements FileUploaderService {
         }
     }
 
+    @Async
     @Override
     public void deleteFile(String path) {
         try {
@@ -46,11 +49,14 @@ public class CloudinaryFileUploaderService implements FileUploaderService {
         }
     }
 
+    @Async
     @Override
     public void deleteFolder(String folder) {
         try {
             cloudinary.api().deleteResourcesByPrefix(folder, ObjectUtils.emptyMap());
             cloudinary.api().deleteFolder(folder, ObjectUtils.emptyMap());
+        } catch (NotFound ignored) {
+
         } catch (Exception ex) {
             log.error("Error while deleting folder", ex);
         }

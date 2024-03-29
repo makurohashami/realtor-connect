@@ -76,6 +76,9 @@ files:
     minWidthHeight: 128 # in px
     maxWidthHeight: 512 # in px
     widthHeightForSave: 256 # in px
+  realEstatePhoto:
+    minWidthHeight: 256 # in px
+    maxWidthHeight: 5000 # in px
   multipart:
     maxFileSize: 1MB
     maxRequestSize: 25MB
@@ -103,6 +106,8 @@ real-estate:
   daysForExpireCalled: 14
   scheduler:
     check-called: 60000 # every minute
+  photo:
+    maxPhotosCount: 24
 
 network:
   app-domain: ${APP_DOMAIN:http://localhost:8080}

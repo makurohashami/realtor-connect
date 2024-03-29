@@ -28,8 +28,6 @@ public interface RealEstateMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(source = "realtorId", target = "realtor", qualifiedByName = "fromId")
     @Mapping(target = "verified", constant = "false")
-    @Mapping(target = "countPublicPhotos", constant = "0")
-    @Mapping(target = "countPhotos", constant = "0")
     @Mapping(target = "called", constant = "true")
     @Mapping(target = "calledAt", expression = "java( java.time.Instant.now() )")
     @Mapping(target = "createdAt", expression = "java( java.time.Instant.now() )")

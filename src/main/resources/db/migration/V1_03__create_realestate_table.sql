@@ -37,8 +37,6 @@ create table if not exists real_estates
     rooms_count          smallint         not null,
     ceiling_height       double precision null,
     documents            varchar(512)     null,
-    count_photos         smallint         not null,
-    count_public_photos  smallint         not null,
     is_private           boolean          not null,
     is_called            boolean          not null,
     called_at            timestamp(6)     null,
@@ -54,6 +52,7 @@ create table if not exists real_estates_photos
     is_private     boolean       not null,
     photo          varchar(2048) null,
     photo_id       varchar(512)  null,
+    order_num      bigint        not null,
     real_estate_id bigint        not null
         constraint to_real_estate_id
             references real_estates
