@@ -39,6 +39,24 @@ openapi:
   title: Realtor Connect
   version: 0.1
   description: An application that helps realtors to more easily control their objects and find clients
+  groups:
+    userAPIs:
+      - /auth/login/**
+      - /auth/current/**
+      - /auth/register/user/**
+      - /users/**
+    realtorAPIs:
+      - /auth/login/**
+      - /auth/current/**
+      - /auth/register/realtor/**
+      - /realtors/**
+      - /users/{id}/avatar
+    adminAPIs:
+      - /auth/login/**
+      - /auth/current/**
+      - /users/**
+      - /admins/**
+      - /admin-panel/**
 
 security.jwt:
   token-ttl: 18000000 # 5 hours
