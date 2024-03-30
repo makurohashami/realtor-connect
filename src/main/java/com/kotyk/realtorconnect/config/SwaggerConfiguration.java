@@ -45,7 +45,7 @@ public class SwaggerConfiguration {
     @Bean
     public GroupedOpenApi allAPIs() {
         return GroupedOpenApi.builder()
-                .group("All APIs")
+                .group("1. All APIs")
                 .pathsToMatch("/**")
                 .build();
     }
@@ -53,7 +53,7 @@ public class SwaggerConfiguration {
     @Bean
     public GroupedOpenApi userAPIs() {
         return GroupedOpenApi.builder()
-                .group("User APIs")
+                .group("2. User APIs")
                 .pathsToMatch(groups.get("userAPIs"))
                 .build();
     }
@@ -61,7 +61,7 @@ public class SwaggerConfiguration {
     @Bean
     public GroupedOpenApi realtorAPIs() {
         return GroupedOpenApi.builder()
-                .group("Realtor APIs")
+                .group("3. Realtor APIs")
                 .pathsToMatch(groups.get("realtorAPIs"))
                 .build();
     }
@@ -69,7 +69,7 @@ public class SwaggerConfiguration {
     @Bean
     public GroupedOpenApi adminAPIs() {
         return GroupedOpenApi.builder()
-                .group("Admin APIs")
+                .group("4. Admin APIs")
                 .pathsToMatch(groups.get("adminAPIs"))
                 .build();
     }
