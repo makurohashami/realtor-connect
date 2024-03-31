@@ -1,10 +1,11 @@
-package com.kotyk.realtorconnect.service.file;
+package com.kotyk.realtorconnect.service.file.cloudinary;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.api.exceptions.NotFound;
 import com.cloudinary.utils.ObjectUtils;
 import com.kotyk.realtorconnect.config.CloudinaryConfiguration.CloudinaryEnabled;
 import com.kotyk.realtorconnect.dto.file.FileUploadResponse;
+import com.kotyk.realtorconnect.service.file.FileUploaderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Conditional;

@@ -1,6 +1,7 @@
-package com.kotyk.realtorconnect.service.file;
+package com.kotyk.realtorconnect.service.file.placeholder;
 
 import com.kotyk.realtorconnect.dto.file.FileUploadResponse;
+import com.kotyk.realtorconnect.service.file.FileUploaderService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Primary;

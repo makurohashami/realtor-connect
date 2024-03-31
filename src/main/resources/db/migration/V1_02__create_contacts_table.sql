@@ -1,9 +1,9 @@
-create table realtors_contacts
+CREATE TABLE IF NOT EXISTS realtors_contacts
 (
-    id         bigserial     not null primary key,
-    contact    varchar(2048) not null,
-    type_id    integer       not null,
-    realtor_id bigint        not null
-        constraint fk_to_realtor_id
-            references realtors_info
+    id         BIGSERIAL     NOT NULL PRIMARY KEY,
+    contact    VARCHAR(2048) NOT NULL,
+    type_id    INTEGER       NOT NULL,
+    realtor_id BIGINT        NOT NULL
+        CONSTRAINT fk_to_realtor_id
+            REFERENCES realtors_info
 );

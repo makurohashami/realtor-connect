@@ -1,10 +1,11 @@
-package com.kotyk.realtorconnect.service.file;
+package com.kotyk.realtorconnect.service.file.cloudinary;
 
 import com.cloudinary.EagerTransformation;
 import com.kotyk.realtorconnect.config.CloudinaryConfiguration.CloudinaryEnabled;
 import com.kotyk.realtorconnect.config.FileConfiguration;
 import com.kotyk.realtorconnect.entity.realestate.RealEstate;
 import com.kotyk.realtorconnect.entity.user.User;
+import com.kotyk.realtorconnect.service.file.FileParamsGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Conditional;

@@ -1,7 +1,8 @@
-package com.kotyk.realtorconnect.service.file;
+package com.kotyk.realtorconnect.service.file.placeholder;
 
 import com.kotyk.realtorconnect.entity.realestate.RealEstate;
 import com.kotyk.realtorconnect.entity.user.User;
+import com.kotyk.realtorconnect.service.file.FileParamsGenerator;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
