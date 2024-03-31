@@ -82,6 +82,16 @@ real estate object.
 - This application is a back end API communication with which goes through the HTTP protocol.
 - The visual component of the application is the Swagger UI page, which forms the dynamic documentation of the project.
 
+#### List of permissions based on role
+
+| Role        | Permissions                                                                                                                                                                                                                           |
+|-------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Anonymous   | - Can't see realtors contacts. - Only GET methods                                                                                                                                                                                     |
+| User        | - Can see only public real estates with only public photos. - Can see a limited number of fields on real estates                                                                                                                      |
+| Realtor     | - Can manage own contacts, real estates and photos. - Can see only public real estates of other realtors, but with their private photos. - Can see a limited number of fields on real estates of other realtors but all fields on own |
+| Admin       | - Have access to admin panel - Can manage other users, real estates... - Can see all field on these objects                                                                                                                           |
+| Chief Admin | - Can be created only from DB. - Have the same permissions as Admin, but also can manage Admins                                                                                                                                       |
+
 #### Examples
 
 **1. Registration**
@@ -323,13 +333,3 @@ Now let's add photos. Go to `Real Estate Photo Controller` and open POST `/realt
 Response:
 
 ![photos-upload-response](https://res.cloudinary.com/dhseztjx1/image/upload/v1711897283/samples/photos-upload-response.jpg)
-
-#### List of permissions based on role
-
-| Role        | Permissions                                                                                                                                                                                                                           |
-|-------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Anonymous   | - Can't see realtors contacts. - Only GET methods                                                                                                                                                                                     |
-| User        | - Can see only public real estates with only public photos. - Can see a limited number of fields on real estates                                                                                                                      |
-| Realtor     | - Can manage own contacts, real estates and photos. - Can see only public real estates of other realtors, but with their private photos. - Can see a limited number of fields on real estates of other realtors but all fields on own |
-| Admin       | - Have access to admin panel - Can manage other users, real estates... - Can see all field on these objects                                                                                                                           |
-| Chief Admin | - Can be created only from DB. - Have the same permissions as Admin, but also can manage Admins                                                                                                                                       |
