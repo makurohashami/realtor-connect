@@ -22,6 +22,9 @@ import com.kotyk.realtorconnect.util.exception.ValidationFailedException;
 import com.kotyk.realtorconnect.util.validator.Validator;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -43,10 +46,13 @@ import static com.kotyk.realtorconnect.entity.user.Role.CHIEF_ADMIN;
 @Slf4j
 @Service
 @AllArgsConstructor
+@Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class UserService {
 
     private static final String NOT_FOUND_BY_ID_MSG = "User with id '%d' not found";
     private static final String NOT_FOUND_BY_USERNAME_MSG = "User with username '%s' not found";
+
+    private final UserService proxy;
 
     private final UserMapper userMapper;
     private final UserRepository userRepository;
@@ -79,34 +85,40 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    protected User findById(long id) {
+    @Cacheable(value = "getUser", key = "#id")
+    public User findById(long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format(NOT_FOUND_BY_ID_MSG, id)));
     }
 
     @Transactional(readOnly = true)
+    @Cacheable(value = "getUserDto", key = "#id")
     public UserDto readById(long id) {
         return userMapper.toDto(findById(id));
     }
 
     @Transactional(readOnly = true)
+    @Cacheable(value = "getUserFullDto", key = "#id")
     public UserFullDto readFullById(long id) {
         return userMapper.toFullDto(findById(id));
     }
 
     @Transactional(readOnly = true)
+    @Cacheable(value = "getUserFullDto", key = "#username")
     public UserFullDto readFullByUsername(String username) {
         return userMapper.toFullDto(userRepository.findByUsername(username)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format(NOT_FOUND_BY_USERNAME_MSG, username))));
     }
 
     @Transactional(readOnly = true)
+    @Cacheable(value = "getAllUserFullDto", key = "#filter+'-'+#pageable")
     public Page<UserFullDto> readAllFulls(UserFilter filter, Pageable pageable) {
         Specification<User> spec = UserFilterSpecifications.withFilter(filter);
         return userRepository.findAll(spec, pageable).map(userMapper::toFullDto);
     }
 
     @Transactional(readOnly = true)
+    @Cacheable(value = "getAllUserFullDto", key = "#filter")
     public List<UserFullDto> readAllFulls(UserFilter filter) {
         Specification<User> spec = UserFilterSpecifications.withFilter(filter);
         return userMapper.toListFullDto(userRepository.findAll(spec));
@@ -114,13 +126,13 @@ public class UserService {
 
     @Transactional
     public UserFullDto update(long id, UserAddDto dto) {
-        User toUpdate = findById(id);
+        User toUpdate = proxy.findById(id);
         return userMapper.toFullDto(userMapper.update(toUpdate, dto));
     }
 
     @Transactional
     public void delete(long id) {
-        User user = findById(id);
+        User user = proxy.findById(id);
         boolean canDeleteAdmins = permissionService.isCurrentHasPermission(Permission.MANAGE_ADMINS);
         if (user.getRole() == CHIEF_ADMIN || (user.getRole() == ADMIN && !canDeleteAdmins)) {
             throw new ActionNotAllowedException("You can't delete an user with this role");
@@ -132,7 +144,7 @@ public class UserService {
 
     @Transactional
     public boolean updateBlocked(long id, boolean blocked) {
-        User user = findById(id);
+        User user = proxy.findById(id);
         if (user.getRole() == ADMIN || user.getRole() == CHIEF_ADMIN) {
             throw new ActionNotAllowedException("You cannot change 'blocked' for this user");
         }
@@ -159,7 +171,7 @@ public class UserService {
 
     @Transactional
     public String setAvatar(long id, MultipartFile avatar) {
-        User user = findById(id);
+        User user = proxy.findById(id);
         validateAvatar(avatar);
         Map<String, Object> params = fileParamsGenerator.generateParamsForAvatar(user);
         FileUploadResponse response = fileUploaderService.uploadFile(avatar, params);
@@ -169,7 +181,7 @@ public class UserService {
 
     @Transactional
     public void deleteAvatar(long id) {
-        User user = findById(id);
+        User user = proxy.findById(id);
         fileUploaderService.deleteFile(user.getAvatarId());
         user.setAvatar(userMapper.getDefaultAvatarUrl());
     }

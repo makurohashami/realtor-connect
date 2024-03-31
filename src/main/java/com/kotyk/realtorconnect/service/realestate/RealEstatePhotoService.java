@@ -17,6 +17,7 @@ import com.kotyk.realtorconnect.util.exception.ResourceNotFoundException;
 import com.kotyk.realtorconnect.util.exception.ValidationFailedException;
 import com.kotyk.realtorconnect.util.validator.Validator;
 import lombok.AllArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -91,6 +92,7 @@ public class RealEstatePhotoService {
 
     @RealEstatesPhotoFiltered
     @Transactional(readOnly = true)
+    @Cacheable(value = "getListRealEstatePhotoDto", key = "#realEstateId")
     public List<RealEstatePhotoDto> readAll(long realEstateId) {
         return realEstatePhotoMapper.toListDto(
                 realEstatePhotoRepository.findAllByRealEstateId(realEstateId)

@@ -17,6 +17,7 @@ import com.kotyk.realtorconnect.specification.RealtorFilterSpecifications;
 import com.kotyk.realtorconnect.util.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -52,6 +53,7 @@ public class RealtorService {
     }
 
     @Transactional(readOnly = true)
+    @Cacheable(value = "getRealtorFullDto", key = "#id")
     public RealtorFullDto readFullById(long id) {
         return realtorMapper.toFullDto(realtorRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format(NOT_FOUND_BY_ID_MSG, id))));
@@ -59,12 +61,14 @@ public class RealtorService {
 
     @ContactsFiltered
     @Transactional(readOnly = true)
+    @Cacheable(value = "getRealtorDto", key = "#id")
     public RealtorDto readShortById(long id) {
         return realtorMapper.toDto(realtorRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format(NOT_FOUND_BY_ID_MSG, id))));
     }
 
     @ContactsFiltered
+    @Cacheable(value = "getAllRealtorDto", key = "#filter+'-'+#pageable")
     public Page<RealtorDto> getAllShorts(RealtorFilter filter, Pageable pageable) {
         Specification<Realtor> spec = RealtorFilterSpecifications.withFilter(filter);
         return realtorRepository.findAll(spec, pageable).map(realtorMapper::toDto);

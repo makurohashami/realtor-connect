@@ -19,6 +19,7 @@ import com.kotyk.realtorconnect.util.exception.ActionNotAllowedException;
 import com.kotyk.realtorconnect.util.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -66,12 +67,14 @@ public class RealEstateService {
 
     @RealEstatesPhotoFiltered
     @Transactional(readOnly = true)
+    @Cacheable(value = "getRealEstateDto", key = "#realEstateId")
     public RealEstateDto readShortById(long realEstateId) {
         return realEstateMapper.toDto(realEstateRepository.findById(realEstateId)
                 .orElseThrow(() -> new ResourceNotFoundException(getExMessage(realEstateId))));
     }
 
     @Transactional(readOnly = true)
+    @Cacheable(value = "getRealEstateFullDto", key = "#realEstateId")
     public RealEstateFullDto readFullById(long realEstateId) {
         return realEstateMapper.toFullDto(realEstateRepository.findById(realEstateId)
                 .orElseThrow(() -> new ResourceNotFoundException(getExMessage(realEstateId)))
@@ -81,12 +84,14 @@ public class RealEstateService {
     @RealEstatesFiltered
     @RealEstatesPhotoFiltered
     @Transactional(readOnly = true)
+    @Cacheable(value = "getListRealEstateDto", key = "#filter+'-'+#pageable")
     public Page<RealEstateDto> readAllShorts(RealEstateFilter filter, Pageable pageable) {
         Specification<RealEstate> spec = RealEstateSpecifications.withFilter(filter);
         return realEstateRepository.findAll(spec, pageable).map(realEstateMapper::toDto);
     }
 
     @Transactional(readOnly = true)
+    @Cacheable(value = "getListRealEstateFullDto", key = "#filter+'-'+#pageable")
     public Page<RealEstateFullDto> readAllFulls(RealEstateFilter filter, Pageable pageable) {
         Specification<RealEstate> spec = RealEstateSpecifications.withFilter(filter);
         return realEstateRepository.findAll(spec, pageable).map(realEstateMapper::toFullDto);

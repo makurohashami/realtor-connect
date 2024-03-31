@@ -127,6 +127,32 @@ real-estate:
   photo:
     maxPhotosCount: 24
 
+cache:
+  enabled: true
+  settings:
+    # User
+    getUser: 20000
+    getUserDto: 20000
+    getUserFullDto: 20000
+    getListUserFullDto: 10000
+    # Realtor
+    getRealtorDto: 20000
+    getRealtorFullDto: 20000
+    getAllRealtorDto: 20000
+    # Contact
+    getContact: 10000
+    getContactDto: 10000
+    getListContactDto: 10000
+    # Real Estate
+    getRealEstate: 20000
+    getRealEstateDto: 20000
+    getRealEstateFullDto: 20000
+    getListRealEstateDto: 10000
+    getListRealEstateFullDto: 10000
+    # Real Estate Photo
+    getPhoto: 10000
+    getListRealEstatePhotoDto: 10000
+
 network:
   app-domain: ${APP_DOMAIN:http://localhost:8080}
   swagger-ui-url: ${network.app-domain}/swagger-ui/index.html
