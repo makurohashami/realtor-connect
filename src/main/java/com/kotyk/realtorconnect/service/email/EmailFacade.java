@@ -26,24 +26,20 @@ public class EmailFacade {
     }
 
     public void sendVerifyEmail(User user, String token) {
-        Email email = emailGeneratorService.generateVerifyEmail(user, token);
-        sendEmail(email);
+        sendEmail(emailGeneratorService.generateVerifyEmail(user, token));
     }
 
     public void sendStartPremiumEmail(Realtor realtor, int durationInMonths) {
-        Email email = emailGeneratorService.generateStartPremiumEmail(realtor, durationInMonths);
-        sendEmail(email);
+        sendEmail(emailGeneratorService.generateStartPremiumEmail(realtor, durationInMonths));
     }
 
 
     public void sendPremiumExpiresEmail(Realtor realtor) {
-        Email email = emailGeneratorService.generatePremiumExpiresEmail(realtor);
-        sendEmail(email);
+        sendEmail(emailGeneratorService.generatePremiumExpiresEmail(realtor));
     }
 
     public void sendPremiumExpiredEmail(Realtor realtor) {
-        Email email = emailGeneratorService.generatePremiumExpiredEmail(realtor);
-        sendEmail(email);
+        sendEmail(emailGeneratorService.generatePremiumExpiredEmail(realtor));
     }
 
 }

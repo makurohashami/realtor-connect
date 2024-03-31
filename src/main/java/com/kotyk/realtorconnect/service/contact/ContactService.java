@@ -7,6 +7,7 @@ import com.kotyk.realtorconnect.repository.ContactRepository;
 import com.kotyk.realtorconnect.util.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,12 +30,14 @@ public class ContactService {
     }
 
     @Transactional(readOnly = true)
+    @Cacheable(value = "getContactDto", key = "#contactId")
     public ContactDto readById(long contactId) {
         return contactMapper.toDto(contactRepository.findById(contactId)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format(NOT_FOUND_BY_ID_MSG, contactId))));
     }
 
     @Transactional(readOnly = true)
+    @Cacheable(value = "getListContactDto", key = "#realtorId")
     public List<ContactDto> readAll(long realtorId) {
         return contactMapper.toListDto(contactRepository.findAllByRealtorId(realtorId));
     }
