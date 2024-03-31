@@ -1,59 +1,59 @@
-create table if not exists real_estates
+CREATE TABLE IF NOT EXISTS real_estates
 (
-    id                   bigserial        not null primary key,
-    name                 varchar(255)     not null,
-    description          varchar(512)     not null,
-    price                numeric(20, 2)   not null,
-    verified             boolean          not null,
-    owner_name           varchar(255)     not null,
-    owner_phone          varchar(20)      not null,
-    owner_email          varchar(320)     null,
-    city                 varchar(255)     not null,
-    district             varchar(255)     not null,
-    residential_area     varchar(255)     not null,
-    street               varchar(255)     not null,
-    housing_estate       varchar(255)     null,
-    house_number         integer          not null,
-    block                varchar(50)      null,
-    apartment_number     integer          null,
-    landmark             varchar(255)     null,
-    loggia_type_id       integer          null,
-    loggias_count        smallint         null,
-    is_loggia_glassed    boolean          null,
-    bathroom_type_id     integer          not null,
-    bathrooms_count      smallint         not null,
-    is_bathroom_combined boolean          not null,
-    total_area           double precision not null,
-    living_area          double precision not null,
-    kitchen_area         double precision not null,
-    floor                smallint         not null,
-    floors_in_building   smallint         not null,
-    building_type_id     integer          not null,
-    heating_type_id      integer          not null,
-    windows_type_id      integer          not null,
-    hot_water_type_id    integer          not null,
-    state_type_id        integer          not null,
-    announcement_type_id integer          not null,
-    rooms_count          smallint         not null,
-    ceiling_height       double precision null,
-    documents            varchar(512)     null,
-    is_private           boolean          not null,
-    is_called            boolean          not null,
-    called_at            timestamp(6)     null,
-    created_at           timestamp(6)     null,
-    realtor_id           bigint           not null
-        constraint to_realtor_id
-            references realtors_info
+    id                   BIGSERIAL        NOT NULL PRIMARY KEy,
+    name                 VARCHAR(255)     NOT NULL,
+    description          VARCHAR(512)     NOT NULL,
+    price                NUMERIC(20, 2)   NOT NULL,
+    verified             BOOLEAN          NOT NULL,
+    owner_name           VARCHAR(255)     NOT NULL,
+    owner_phone          VARCHAR(20)      NOT NULL,
+    owner_email          VARCHAR(320)     NULL,
+    city                 VARCHAR(255)     NOT NULL,
+    district             VARCHAR(255)     NOT NULL,
+    residential_area     VARCHAR(255)     NOT NULL,
+    street               VARCHAR(255)     NOT NULL,
+    housing_estate       VARCHAR(255)     NULL,
+    house_number         INTEGER          NOT NULL,
+    block                VARCHAR(50)      NULL,
+    apartment_number     INTEGER          NULL,
+    landmark             VARCHAR(255)     NULL,
+    loggia_type_id       INTEGER          NULL,
+    loggias_count        SMALLINT         NULL,
+    is_loggia_glassed    BOOLEAN          NULL,
+    bathroom_type_id     INTEGER          NOT NULL,
+    bathrooms_count      SMALLINT         NOT NULL,
+    is_bathroom_combined BOOLEAN          NOT NULL,
+    total_area           DOUBLE PRECISION NOT NULL,
+    living_area          DOUBLE PRECISION NOT NULL,
+    kitchen_area         DOUBLE PRECISION NOT NULL,
+    floor                SMALLINT         NOT NULL,
+    floors_in_building   SMALLINT         NOT NULL,
+    building_type_id     INTEGER          NOT NULL,
+    heating_type_id      INTEGER          NOT NULL,
+    windows_type_id      INTEGER          NOT NULL,
+    hot_water_type_id    INTEGER          NOT NULL,
+    state_type_id        INTEGER          NOT NULL,
+    announcement_type_id INTEGER          NOT NULL,
+    rooms_count          SMALLINT         NOT NULL,
+    ceiling_height       DOUBLE PRECISION NULL,
+    documents            VARCHAR(512)     NULL,
+    is_private           BOOLEAN          NOT NULL,
+    is_called            BOOLEAN          NOT NULL,
+    called_at            TIMESTAMP(6)     NULL,
+    created_at           TIMESTAMP(6)     NULL,
+    realtor_id           BIGINT           NOT NULL
+        CONSTRAINT to_realtor_id
+            REFERENCES realtors_info
 );
 
-create table if not exists real_estates_photos
+CREATE TABLE IF NOT EXISTS real_estates_photos
 (
-    id             bigserial     not null primary key,
-    is_private     boolean       not null,
-    photo          varchar(2048) null,
-    photo_id       varchar(512)  null,
-    order_num      bigint        not null,
-    real_estate_id bigint        not null
-        constraint to_real_estate_id
-            references real_estates
+    id             BIGSERIAL     NOT NULL PRIMARY KEY,
+    is_private     BOOLEAN       NOT NULL,
+    photo          VARCHAR(2048) NULL,
+    photo_id       VARCHAR(512)  NULL,
+    order_num      BIGINT        NOT NULL,
+    real_estate_id BIGINT        NOT NULL
+        CONSTRAINT to_real_estate_id
+            REFERENCES real_estates
 );

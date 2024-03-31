@@ -88,7 +88,7 @@ email:
         port: 1025
 
 files:
-  client: ${CDN_CLIENT:cloudinary}
+  client: ${CDN_CLIENT:placeholder}
   allowedContentTypes: [ image/jpeg, image/png ]
   avatar:
     minWidthHeight: 128 # in px
@@ -131,7 +131,7 @@ network:
   app-domain: ${APP_DOMAIN:http://localhost:8080}
   swagger-ui-url: ${network.app-domain}/swagger-ui/index.html
   verify-email-url: ${network.app-domain}/users/verifyEmail/
-  defaultAvatarUrl: https://i.imgur.com/meePOPU.png
+  defaultAvatarUrl: https://res.cloudinary.com/dhseztjx1/image/upload/v1711873406/logos/realtor_connect_logo_jpg.jpg
 
 scheduler:
   enabled: ${SCHEDULER_ENABLED:true}

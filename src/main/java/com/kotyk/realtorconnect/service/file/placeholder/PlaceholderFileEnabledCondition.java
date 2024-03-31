@@ -1,4 +1,4 @@
-package com.kotyk.realtorconnect.service.file;
+package com.kotyk.realtorconnect.service.file.placeholder;
 
 import org.springframework.boot.autoconfigure.condition.AllNestedConditions;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;

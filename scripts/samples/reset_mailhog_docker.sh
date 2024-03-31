@@ -1,6 +1,6 @@
 #!/bin/bash
 
-container_name="mail-hog"
+container_name="rc-mail-hog"
 
 if docker ps -a --format '{{.Names}}' | grep -q "^$container_name$"; then
     docker rm -f $container_name
