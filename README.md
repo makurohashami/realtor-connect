@@ -119,10 +119,10 @@ Next fill a request body with next JSON and press `Execute` button:
 {
   "name": "Joe Doe",
   "email": "joedoe@mail.com",
-  "username": "joedoe1",
-  "password": "password",
+  "username": "joedoe",
+  "password": "pass",
   "phone": "+380711844542",
-  "agency": "Joe Doe Realtors Agency",
+  "agency": "Joe Doe Private Realtor",
   "agencySite": "joedoerealtor.com"
 }
 ```
@@ -159,8 +159,8 @@ request body following JSON and press `Execute` button:
 
 ```json
 {
-  "username": "joedoe1",
-  "password": "password"
+  "username": "joedoe",
+  "password": "pass"
 }
 ```
 
