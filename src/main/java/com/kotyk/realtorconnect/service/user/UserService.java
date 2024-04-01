@@ -28,6 +28,7 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -64,10 +65,10 @@ public class UserService {
     private final FileParamsGenerator fileParamsGenerator;
     private final FileUploaderService fileUploaderService;
 
+    @Async
     @Transactional
-    public void updateLastLogin(User user) {
-        user.setLastLogin(Instant.now());
-        userRepository.save(user);
+    public void updateLastLogin(Long id) {
+        userRepository.updateLastLogin(id, Instant.now());
     }
 
     @Transactional(readOnly = true)
@@ -166,7 +167,7 @@ public class UserService {
         Instant time = ZonedDateTime.now()
                 .minusDays(userConfiguration.getTimeToVerifyEmailInDays())
                 .toInstant();
-        userRepository.deleteAllByCreatedIsBeforeAndEmailVerifiedFalse(time);
+        userRepository.deleteAllByCreatedAtIsBeforeAndEmailVerifiedFalse(time);
     }
 
     @Transactional

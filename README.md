@@ -57,7 +57,7 @@ start. [Install Docker](https://docs.docker.com/get-docker/).
    | POSTGRES_USER       | User of the PostgreSQL server                                                                                                                                                                                                                                                                                          |                         |
    | POSTGRES_PASSWORD   | Password to PostgreSQL server                                                                                                                                                                                                                                                                                          |                         |
    | EMAIL_ENABLED       | Enables or disables sending emails from the app                                                                                                                                                                                                                                                                        | `true`                  |
-   | DEBUG_EMAIL_ENABLED | To use MailHog to capture all emails, set it to `true', otherwise the SMTP server will be used                                                                                                                                                                                                                         | `false`                 |
+   | DEBUG_EMAIL_ENABLED | To use MailHog to intercept all emails, set it to `true', otherwise the SMTP server will be used                                                                                                                                                                                                                       | `false`                 |
    | EMAIL_USERNAME      | At the moment, the application is configured with the Gmail SMTP server, so here you need to specify the Gmail address from which emails will be sent                                                                                                                                                                  |                         |
    | EMAIL_PASSWORD      | Put here your Google App Password. [How to generate Google App Password](https://support.google.com/mail/answer/185833?hl=en).                                                                                                                                                                                         |                         |
    | JWT_SECRET          | Generate your own JWT secret. For example, it will be a string of 32 random characters                                                                                                                                                                                                                                 |                         |
@@ -94,7 +94,14 @@ real estate object.
 
 #### Examples
 
-**1. Registration**
+**List of content**
+
+1. [Registration](#1-registration)
+2. [Login](#2-login)
+3. [Create contact](#3-create-a-contact)
+4. [Create real estate and add photos](#4-create-real-estate-and-add-photos)
+
+#### 1. Registration
 
 Let's create a Realtor.
 
@@ -112,10 +119,10 @@ Next fill a request body with next JSON and press `Execute` button:
 {
   "name": "Joe Doe",
   "email": "joedoe@mail.com",
-  "username": "joedoe1",
-  "password": "password",
+  "username": "joedoe",
+  "password": "pass",
   "phone": "+380711844542",
-  "agency": "Joe Doe Realtors Agency",
+  "agency": "Joe Doe Private Realtor",
   "agencySite": "joedoerealtor.com"
 }
 ```
@@ -145,15 +152,15 @@ and now can successfully log in Realtor Connect.
 
 ![email-verification-response](https://res.cloudinary.com/dhseztjx1/image/upload/v1711897282/samples/email-verification-response.jpg)
 
-**2. Login**
+#### 2. Login
 
 Got to the app and go to `Auth Controller`, open the `/auth/login` endpoint and press `Try it out` button. Next put in
 request body following JSON and press `Execute` button:
 
 ```json
 {
-  "username": "joedoe1",
-  "password": "password"
+  "username": "joedoe",
+  "password": "pass"
 }
 ```
 
@@ -170,7 +177,7 @@ button.
 
 Now we can use app!
 
-**3. Create a contact**
+### 3. Create a contact
 
 Go to `Contact Controller` and open a POST `/realtors/{realtorId}/contacts`, put there our id and next request:
 
@@ -205,7 +212,7 @@ Additional information:
   page. This applies to any object in the app.
   ![schemas-example](https://res.cloudinary.com/dhseztjx1/image/upload/v1711897283/samples/schemas-example.jpg)
 
-**4. Create real estate and add photos**
+#### 4. Create real estate and add photos
 
 Go to `Real Estate Controller` and open POST `/realtors/{realtorId}/real-estates` with request body:
 
@@ -333,3 +340,5 @@ Now let's add photos. Go to `Real Estate Photo Controller` and open POST `/realt
 Response:
 
 ![photos-upload-response](https://res.cloudinary.com/dhseztjx1/image/upload/v1711897283/samples/photos-upload-response.jpg)
+
+<p align="center"><b>Enjoy!</b></p>

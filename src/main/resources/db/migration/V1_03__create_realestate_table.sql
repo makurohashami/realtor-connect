@@ -40,10 +40,13 @@ CREATE TABLE IF NOT EXISTS real_estates
     is_private           BOOLEAN          NOT NULL,
     is_called            BOOLEAN          NOT NULL,
     called_at            TIMESTAMP(6)     NULL,
-    created_at           TIMESTAMP(6)     NULL,
-    realtor_id           BIGINT           NOT NULL
-        CONSTRAINT to_realtor_id
-            REFERENCES realtors_info
+    realtor_id           BIGINT           NOT NULL,
+    created_at           TIMESTAMP(6)     NOT NULL,
+    created_by           VARCHAR(50)      NOT NULL,
+    updated_at           TIMESTAMP(6)     NULL,
+    updated_by           VARCHAR(50)      NULL,
+    CONSTRAINT fk_to_realtor_id
+        FOREIGN KEY (realtor_id) REFERENCES realtors_info (id)
 );
 
 CREATE TABLE IF NOT EXISTS real_estates_photos
@@ -53,7 +56,11 @@ CREATE TABLE IF NOT EXISTS real_estates_photos
     photo          VARCHAR(2048) NULL,
     photo_id       VARCHAR(512)  NULL,
     order_num      BIGINT        NOT NULL,
-    real_estate_id BIGINT        NOT NULL
-        CONSTRAINT to_real_estate_id
-            REFERENCES real_estates
+    real_estate_id BIGINT        NOT NULL,
+    created_at     TIMESTAMP(6)  NOT NULL,
+    created_by     VARCHAR(50)   NOT NULL,
+    updated_at     TIMESTAMP(6)  NULL,
+    updated_by     VARCHAR(50)   NULL,
+    CONSTRAINT to_real_estate_id
+        FOREIGN KEY (real_estate_id) REFERENCES real_estates (id)
 );

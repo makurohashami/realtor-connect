@@ -6,6 +6,11 @@ import com.kotyk.realtorconnect.entity.realestate.listener.RealEstateListener;
 import com.kotyk.realtorconnect.entity.realtor.Realtor;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -20,7 +25,7 @@ import java.util.Set;
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-@EntityListeners(RealEstateListener.class)
+@EntityListeners({RealEstateListener.class, AuditingEntityListener.class})
 public class RealEstate {
 
     @Id
@@ -64,11 +69,22 @@ public class RealEstate {
     @Column(name = "is_called")
     private boolean called;
     private Instant calledAt;
-    private Instant createdAt;
     @ManyToOne
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @JoinColumn(name = "realtor_id", nullable = false)
     private Realtor realtor;
+    @CreatedDate
+    @Column(name = "created_at", updatable = false)
+    private Instant createdAt;
+    @LastModifiedDate
+    @Column(name = "updated_at")
+    private Instant updatedAt;
+    @CreatedBy
+    @Column(name = "created_by", updatable = false)
+    private String createdBy;
+    @LastModifiedBy
+    @Column(name = "updated_by")
+    private String updatedBy;
 
 }

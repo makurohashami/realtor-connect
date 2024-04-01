@@ -34,6 +34,7 @@ public class AuthController {
     private final UserService userService;
     private final RealtorService realtorService;
 
+    @PreAuthorize("isAnonymous()")
     @PostMapping("/login")
     @Operation(summary = "Login into Realtor Connect")
     public ResponseEntity<ApiSuccess<AuthResponse>> authenticate(@RequestBody AuthRequest request) {

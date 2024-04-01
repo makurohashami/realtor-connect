@@ -20,11 +20,11 @@ public interface RealtorMapper {
     @Mapping(target = "role", constant = "REALTOR")
     @Mapping(target = "blocked", constant = "false")
     @Mapping(target = "emailVerified", constant = "false")
-    @Mapping(target = "created", expression = "java( java.time.Instant.now() )")
     @Mapping(target = "subscriptionType", constant = "FREE")
     @Mapping(target = "publicRealEstatesCount", constant = "0")
     Realtor toEntity(RealtorAddDto dto);
 
+    @Mapping(target = "id", ignore = true)
     @Mapping(source = "password", target = "password", qualifiedByName = "encodePassword")
     Realtor update(@MappingTarget Realtor realtor, RealtorAddDto dto);
 }
