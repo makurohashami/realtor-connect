@@ -151,7 +151,7 @@ cache:
     getListRealEstateFullDto: 10000
     # Real Estate Photo
     getPhoto: 10000
-    getListRealEstatePhotoDto: 10000
+    getListPhotoDto: 10000
 
 network:
   app-domain: ${APP_DOMAIN:http://localhost:8080}

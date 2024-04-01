@@ -27,6 +27,7 @@ public interface ContactMapper {
     @Mapping(source = "realtorId", target = "realtor", qualifiedByName = "fromId")
     Contact toEntity(ContactDto dto, long realtorId);
 
+    @Mapping(target = "id", ignore = true)
     Contact update(@MappingTarget Contact contact, ContactDto dto);
 
 }

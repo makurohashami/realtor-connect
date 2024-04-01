@@ -11,8 +11,11 @@ CREATE TABLE IF NOT EXISTS users
     role_id        INTEGER       NOT NULL,
     is_blocked     BOOLEAN       NOT NULL,
     last_login     TIMESTAMP     NULL,
-    created        TIMESTAMP     NULL,
-    email_verified BOOLEAN       NOT NULL
+    email_verified BOOLEAN       NOT NULL,
+    created_at     TIMESTAMP(6)  NOT NULL,
+    created_by     VARCHAR(50)   NOT NULL,
+    updated_at     TIMESTAMP(6)  NULL,
+    updated_by     VARCHAR(50)   NULL
 );
 
 CREATE INDEX IF NOT EXISTS username_idx ON users (username);

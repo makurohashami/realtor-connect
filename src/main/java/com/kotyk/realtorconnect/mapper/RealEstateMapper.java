@@ -30,8 +30,8 @@ public interface RealEstateMapper {
     @Mapping(target = "verified", constant = "false")
     @Mapping(target = "called", constant = "true")
     @Mapping(target = "calledAt", expression = "java( java.time.Instant.now() )")
-    @Mapping(target = "createdAt", expression = "java( java.time.Instant.now() )")
     RealEstate toEntity(RealEstateAddDto dto, long realtorId);
 
+    @Mapping(target = "id", ignore = true)
     RealEstate update(@MappingTarget RealEstate toUpdate, RealEstateAddDto dto);
 }

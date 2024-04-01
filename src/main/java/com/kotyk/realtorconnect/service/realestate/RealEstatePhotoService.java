@@ -92,7 +92,7 @@ public class RealEstatePhotoService {
 
     @RealEstatesPhotoFiltered
     @Transactional(readOnly = true)
-    @Cacheable(value = "getListRealEstatePhotoDto", key = "#realEstateId")
+    @Cacheable(value = "getListPhotoDto", key = "#realEstateId")
     public List<RealEstatePhotoDto> readAll(long realEstateId) {
         return realEstatePhotoMapper.toListDto(
                 realEstatePhotoRepository.findAllByRealEstateId(realEstateId)

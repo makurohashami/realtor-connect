@@ -37,9 +37,9 @@ public abstract class UserMapper {
     @Mapping(target = "avatar", expression = "java( this.getDefaultAvatarUrl() )")
     @Mapping(target = "blocked", constant = "false")
     @Mapping(target = "emailVerified", constant = "false")
-    @Mapping(target = "created", expression = "java( java.time.Instant.now() )")
     public abstract User toEntity(UserAddDto dto);
 
+    @Mapping(target = "id", ignore = true)
     @Mapping(source = "password", target = "password", qualifiedByName = "encodePassword")
     public abstract User update(@MappingTarget User user, UserAddDto dto);
 }

@@ -6,6 +6,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,7 +26,7 @@ import java.util.stream.Collectors;
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-@EntityListeners(EventListener.class)
+@EntityListeners({EventListener.class, AuditingEntityListener.class})
 public class User implements UserDetails {
 
     @Id
@@ -40,10 +45,21 @@ public class User implements UserDetails {
     @Column(name = "is_blocked")
     private Boolean blocked;
     private Instant lastLogin;
-    private Instant created;
     private Boolean emailVerified;
     @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE)
     private ConfirmationToken confirmationToken;
+    @CreatedDate
+    @Column(name = "created_at", updatable = false)
+    private Instant createdAt;
+    @LastModifiedDate
+    @Column(name = "updated_at")
+    private Instant updatedAt;
+    @CreatedBy
+    @Column(name = "created_by", updatable = false)
+    private String createdBy;
+    @LastModifiedBy
+    @Column(name = "updated_by")
+    private String updatedBy;
 
     public User(String username, Role role) {
         this.username = username;
