@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS real_estates
     created_by           VARCHAR(50)      NOT NULL,
     updated_at           TIMESTAMP(6)     NULL,
     updated_by           VARCHAR(50)      NULL,
-    CONSTRAINT fk_to_realtor_id
+    CONSTRAINT fk_real_estate_to_realtor_id
         FOREIGN KEY (realtor_id) REFERENCES realtors_info (id)
 );
 
@@ -61,6 +61,6 @@ CREATE TABLE IF NOT EXISTS real_estates_photos
     created_by     VARCHAR(50)   NOT NULL,
     updated_at     TIMESTAMP(6)  NULL,
     updated_by     VARCHAR(50)   NULL,
-    CONSTRAINT to_real_estate_id
+    CONSTRAINT to_photo_real_estate_id
         FOREIGN KEY (real_estate_id) REFERENCES real_estates (id)
 );

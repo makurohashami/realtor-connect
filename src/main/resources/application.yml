@@ -2,6 +2,8 @@ spring:
   application:
     name: realtor-connect
     time-zone: UTC
+  profiles:
+    active: dev
   jpa:
     open-in-view: false
     hibernate:
@@ -35,6 +37,24 @@ management:
     configprops:
       show-values: ALWAYS
 
+server:
+  port: 8080
+
+security.jwt:
+  token-ttl: 18000000 # 5 hours
+  secret: ${JWT_SECRET}
+
+network:
+  app-domain: ${APP_DOMAIN:http://localhost:${server.port}}
+  swagger-ui-url: ${network.app-domain}/swagger-ui/index.html
+  verify-email-url: ${network.app-domain}/users/verifyEmail/
+  defaultAvatarUrl: https://res.cloudinary.com/dhseztjx1/image/upload/v1711873406/logos/realtor_connect_logo_jpg.jpg
+
+scheduler:
+  enabled: ${SCHEDULER_ENABLED:true}
+  task-pool-size: 10
+  thread-name-prefix: rc-scheduled-thread-
+
 openapi:
   title: Realtor Connect
   version: 0.1
@@ -57,10 +77,6 @@ openapi:
       - /users/**
       - /admins/**
       - /admin-panel/**
-
-security.jwt:
-  token-ttl: 18000000 # 5 hours
-  secret: ${JWT_SECRET}
 
 email:
   enabled: ${EMAIL_ENABLED:true}
@@ -152,14 +168,3 @@ cache:
     # Real Estate Photo
     getPhoto: 10000
     getListPhotoDto: 10000
-
-network:
-  app-domain: ${APP_DOMAIN:http://localhost:8080}
-  swagger-ui-url: ${network.app-domain}/swagger-ui/index.html
-  verify-email-url: ${network.app-domain}/users/verifyEmail/
-  defaultAvatarUrl: https://res.cloudinary.com/dhseztjx1/image/upload/v1711873406/logos/realtor_connect_logo_jpg.jpg
-
-scheduler:
-  enabled: ${SCHEDULER_ENABLED:true}
-  task-pool-size: 10
-  thread-name-prefix: rc-scheduled-thread-

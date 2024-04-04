@@ -18,7 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ContactService {
 
-    private static final String NOT_FOUND_BY_ID_MSG = "Contact with id '%d' not found";
+    public static final String NOT_FOUND_BY_ID_MSG = "Contact with id '%d' not found";
 
     private final ContactMapper contactMapper;
     private final ContactRepository contactRepository;

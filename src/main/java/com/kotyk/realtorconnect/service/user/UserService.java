@@ -14,7 +14,7 @@ import com.kotyk.realtorconnect.repository.UserRepository;
 import com.kotyk.realtorconnect.service.auth.PermissionService;
 import com.kotyk.realtorconnect.service.email.EmailFacade;
 import com.kotyk.realtorconnect.service.file.FileParamsGenerator;
-import com.kotyk.realtorconnect.service.file.FileUploaderService;
+import com.kotyk.realtorconnect.service.file.FileService;
 import com.kotyk.realtorconnect.specification.UserFilterSpecifications;
 import com.kotyk.realtorconnect.util.exception.ActionNotAllowedException;
 import com.kotyk.realtorconnect.util.exception.ResourceNotFoundException;
@@ -63,7 +63,7 @@ public class UserService {
     private final PermissionService permissionService;
     private final Validator<MultipartFile> avatarValidator;
     private final FileParamsGenerator fileParamsGenerator;
-    private final FileUploaderService fileUploaderService;
+    private final FileService fileService;
 
     @Async
     @Transactional
@@ -175,7 +175,7 @@ public class UserService {
         User user = proxy.findById(id);
         validateAvatar(avatar);
         Map<String, Object> params = fileParamsGenerator.generateParamsForAvatar(user);
-        FileUploadResponse response = fileUploaderService.uploadFile(avatar, params);
+        FileUploadResponse response = fileService.uploadFile(avatar, params);
         mapAvatarToUser(user, response);
         return user.getAvatar();
     }
@@ -183,7 +183,7 @@ public class UserService {
     @Transactional
     public void deleteAvatar(long id) {
         User user = proxy.findById(id);
-        fileUploaderService.deleteFile(user.getAvatarId());
+        fileService.deleteFile(user.getAvatarId());
         user.setAvatar(userMapper.getDefaultAvatarUrl());
     }
 

@@ -8,6 +8,6 @@ CREATE TABLE IF NOT EXISTS realtors_contacts
     created_by VARCHAR(50)   NOT NULL,
     updated_at TIMESTAMP(6)  NULL,
     updated_by VARCHAR(50)   NULL,
-    CONSTRAINT fk_to_realtor_id
+    CONSTRAINT fk_contact_to_realtor_id
         FOREIGN KEY (realtor_id) REFERENCES realtors_info (id)
 );

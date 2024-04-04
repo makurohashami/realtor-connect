@@ -11,7 +11,7 @@ import com.kotyk.realtorconnect.mapper.RealEstatePhotoMapper;
 import com.kotyk.realtorconnect.repository.RealEstatePhotoRepository;
 import com.kotyk.realtorconnect.repository.RealEstateRepository;
 import com.kotyk.realtorconnect.service.file.FileParamsGenerator;
-import com.kotyk.realtorconnect.service.file.FileUploaderService;
+import com.kotyk.realtorconnect.service.file.FileService;
 import com.kotyk.realtorconnect.util.exception.ActionNotAllowedException;
 import com.kotyk.realtorconnect.util.exception.ResourceNotFoundException;
 import com.kotyk.realtorconnect.util.exception.ValidationFailedException;
@@ -40,7 +40,7 @@ public class RealEstatePhotoService {
     private final RealEstateRepository realEstateRepository;
     private final Validator<MultipartFile> realEstatePhotoValidator;
     private final FileParamsGenerator fileParamsGenerator;
-    private final FileUploaderService fileUploaderService;
+    private final FileService fileService;
 
     private String getExMessage(long id) {
         return String.format(NOT_FOUND_BY_ID_MSG, id);
@@ -59,7 +59,7 @@ public class RealEstatePhotoService {
         }
         Map<String, Object> params = fileParamsGenerator.generateParamsForRealEstatePhoto(realEstate);
         photosToAdd.parallelStream().forEach(file -> {
-            FileUploadResponse response = fileUploaderService.uploadFile(file, params);
+            FileUploadResponse response = fileService.uploadFile(file, params);
             photos.add(toRealEstatePhoto(response, realEstate));
         });
         validateOrder(new ArrayList<>(photos));

@@ -9,12 +9,14 @@ import com.kotyk.realtorconnect.service.file.FileParamsGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Conditional;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @Service
+@Profile("!test")
 @RequiredArgsConstructor
 @Conditional(CloudinaryEnabled.class)
 public class CloudinaryFileParamsGenerator implements FileParamsGenerator {

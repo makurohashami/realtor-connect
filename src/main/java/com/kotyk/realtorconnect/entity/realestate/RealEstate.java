@@ -22,6 +22,7 @@ import java.util.Set;
 @Getter
 @Setter
 @ToString
+@Builder
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
