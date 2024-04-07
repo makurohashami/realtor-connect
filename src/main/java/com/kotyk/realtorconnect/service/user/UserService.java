@@ -14,7 +14,7 @@ import com.kotyk.realtorconnect.repository.UserRepository;
 import com.kotyk.realtorconnect.service.auth.PermissionService;
 import com.kotyk.realtorconnect.service.email.EmailFacade;
 import com.kotyk.realtorconnect.service.file.FileParamsGenerator;
-import com.kotyk.realtorconnect.service.file.FileUploaderService;
+import com.kotyk.realtorconnect.service.file.FileService;
 import com.kotyk.realtorconnect.specification.UserFilterSpecifications;
 import com.kotyk.realtorconnect.util.exception.ActionNotAllowedException;
 import com.kotyk.realtorconnect.util.exception.ResourceNotFoundException;
@@ -40,6 +40,7 @@ import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 import static com.kotyk.realtorconnect.entity.user.Role.ADMIN;
 import static com.kotyk.realtorconnect.entity.user.Role.CHIEF_ADMIN;
@@ -63,7 +64,7 @@ public class UserService {
     private final PermissionService permissionService;
     private final Validator<MultipartFile> avatarValidator;
     private final FileParamsGenerator fileParamsGenerator;
-    private final FileUploaderService fileUploaderService;
+    private final FileService fileService;
 
     @Async
     @Transactional
@@ -81,7 +82,7 @@ public class UserService {
         User user = userMapper.toEntity(dto);
         user.setRole(role);
         UserFullDto userFullDto = userMapper.toFullDto(userRepository.save(user));
-        emailFacade.sendVerifyEmail(user, tokenService.createToken(user));
+        emailFacade.sendVerifyEmail(user, tokenService.createToken(user).toString());
         return userFullDto;
     }
 
@@ -128,7 +129,7 @@ public class UserService {
     @Transactional
     public UserFullDto update(long id, UserAddDto dto) {
         User toUpdate = proxy.findById(id);
-        return userMapper.toFullDto(userMapper.update(toUpdate, dto));
+        return userMapper.toFullDto(userRepository.save(userMapper.update(toUpdate, dto)));
     }
 
     @Transactional
@@ -154,7 +155,7 @@ public class UserService {
     }
 
     @Transactional
-    public boolean verifyEmail(String token) {
+    public boolean verifyEmail(UUID token) {
         User user = tokenService.getUserByToken(token);
         user.setEmailVerified(true);
         tokenService.deleteToken(token);
@@ -175,7 +176,7 @@ public class UserService {
         User user = proxy.findById(id);
         validateAvatar(avatar);
         Map<String, Object> params = fileParamsGenerator.generateParamsForAvatar(user);
-        FileUploadResponse response = fileUploaderService.uploadFile(avatar, params);
+        FileUploadResponse response = fileService.uploadFile(avatar, params);
         mapAvatarToUser(user, response);
         return user.getAvatar();
     }
@@ -183,7 +184,7 @@ public class UserService {
     @Transactional
     public void deleteAvatar(long id) {
         User user = proxy.findById(id);
-        fileUploaderService.deleteFile(user.getAvatarId());
+        fileService.deleteFile(user.getAvatarId());
         user.setAvatar(userMapper.getDefaultAvatarUrl());
     }
 

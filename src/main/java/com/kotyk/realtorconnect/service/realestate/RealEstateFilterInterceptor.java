@@ -75,6 +75,9 @@ public class RealEstateFilterInterceptor {
     }
 
     private void filterPhotosInRealEstateDto(RealEstateDto realEstateDto) {
+        if (realEstateDto.getPhotos() == null) {
+            return;
+        }
         if (!permissionService.isCurrentHasPermission(Permission.SEE_PRIVATE_PHOTOS)) {
             realEstateDto.setPhotos(
                     realEstateDto.getPhotos().stream()

@@ -48,7 +48,7 @@ public class RealtorService {
     @Transactional
     public RealtorFullDto create(RealtorAddDto dto) {
         Realtor realtor = realtorRepository.save(realtorMapper.toEntity(dto));
-        emailFacade.sendVerifyEmail(realtor, tokenService.createToken(realtor));
+        emailFacade.sendVerifyEmail(realtor, tokenService.createToken(realtor).toString());
         return realtorMapper.toFullDto(realtor);
     }
 

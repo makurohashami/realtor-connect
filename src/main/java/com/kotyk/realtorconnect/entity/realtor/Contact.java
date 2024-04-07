@@ -2,9 +2,7 @@ package com.kotyk.realtorconnect.entity.realtor;
 
 import com.kotyk.realtorconnect.entity.realtor.enumeration.ContactType;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -17,6 +15,9 @@ import java.time.Instant;
 @Entity
 @Table(name = "realtors_contacts")
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 public class Contact {
 
