@@ -13,7 +13,6 @@ import java.util.Map;
 
 @Primary
 @Component
-@Profile("test")
 @Conditional(PlaceholderFileEnabledCondition.class)
 public class PlaceholderFileService implements FileService {
 

@@ -51,7 +51,7 @@ public class RealEstatePhotoService {
         validatePhotos(photosToAdd);
         RealEstate realEstate = realEstateRepository.findById(realEstateId)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format(RealEstateService.NOT_FOUND_BY_ID_MSG, realEstateId)));
-        Set<RealEstatePhoto> photos = realEstate.getPhotos();
+        Set<RealEstatePhoto> photos = realEstate.getPhotos() == null ? new HashSet<>() : realEstate.getPhotos();
         long maxPhotosCount = realEstateConfiguration.getPhoto().getMaxPhotosCount();
         long sum = photos.size() + photosToAdd.size();
         if (sum > maxPhotosCount) {

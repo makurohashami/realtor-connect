@@ -16,6 +16,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.UUID;
+
 import static com.kotyk.realtorconnect.util.ApiResponseUtil.ok;
 
 @RestController
@@ -58,7 +60,7 @@ public class UserController {
     @GetMapping("/verifyEmail/{token}")
     @PreAuthorize("isAnonymous()")
     @Operation(summary = "Verify email of anonymous user")
-    public ResponseEntity<ApiSuccess<Boolean>> verifyEmail(@PathVariable String token) {
+    public ResponseEntity<ApiSuccess<Boolean>> verifyEmail(@PathVariable UUID token) {
         return ok(service.verifyEmail(token));
     }
 

@@ -40,6 +40,7 @@ import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 import static com.kotyk.realtorconnect.entity.user.Role.ADMIN;
 import static com.kotyk.realtorconnect.entity.user.Role.CHIEF_ADMIN;
@@ -81,7 +82,7 @@ public class UserService {
         User user = userMapper.toEntity(dto);
         user.setRole(role);
         UserFullDto userFullDto = userMapper.toFullDto(userRepository.save(user));
-        emailFacade.sendVerifyEmail(user, tokenService.createToken(user));
+        emailFacade.sendVerifyEmail(user, tokenService.createToken(user).toString());
         return userFullDto;
     }
 
@@ -128,7 +129,7 @@ public class UserService {
     @Transactional
     public UserFullDto update(long id, UserAddDto dto) {
         User toUpdate = proxy.findById(id);
-        return userMapper.toFullDto(userMapper.update(toUpdate, dto));
+        return userMapper.toFullDto(userRepository.save(userMapper.update(toUpdate, dto)));
     }
 
     @Transactional
@@ -154,7 +155,7 @@ public class UserService {
     }
 
     @Transactional
-    public boolean verifyEmail(String token) {
+    public boolean verifyEmail(UUID token) {
         User user = tokenService.getUserByToken(token);
         user.setEmailVerified(true);
         tokenService.deleteToken(token);

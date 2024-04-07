@@ -1,29 +1,127 @@
 spring:
-  application.name: realtor-connect
-  jpa:
-    open-in-view: false
-    hibernate:
-      ddl-auto: validate
-    database-platform: org.hibernate.dialect.H2Dialect
+  application:
+    name: realtor-connect
+    time-zone: UTC
+  profiles:
+    active: test
+  jackson:
+    date-format: yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
+    serialization:
+      write_dates_as_timestamps: false
   datasource:
-    url: jdbc:h2:mem:testDB;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    url: jdbc:h2:mem:${spring.application.name};MODE=PostgreSQL
+    driver-class-name: org.h2.Driver
     username: sa
     password:
-    driver-class-name: org.h2.Driver
+  jpa:
+    open-in-view: false
+    show-sql: false
+    generate-ddl: false
+    hibernate.ddl-auto: none
+    database-platform: org.hibernate.dialect.H2Dialect
   flyway:
     enabled: true
     baseline-on-migrate: true
     clean-disabled: false
 
-server:
-  port: 8080
+security.jwt:
+  token-ttl: 100000
+  secret: 096E8C3B89C1E0FD82110B0EC40557BAF8A537ED61CFBFBB5CCF02F0D87A99D7
+
+network:
+  app-domain: http://localhost:8080
+  swagger-ui-url: ${network.app-domain}/swagger-ui/index.html
+  verify-email-url: ${network.app-domain}/users/verifyEmail/
+  defaultAvatarUrl: http://localhost:8080
+
+scheduler:
+  enabled: false
+  task-pool-size: 10
+  thread-name-prefix: rc-scheduled-thread-
 
 openapi:
   title: Realtor Connect
-  version: 1.0
-  description: An application that helps realtors to more easily control their objects and find clients
+  version: 0.1
+  description: Test description
+  groups:
+    userAPIs:
+      - /auth/login/**
+      - /auth/current/**
+      - /auth/register/user/**
+      - /users/**
+    realtorAPIs:
+      - /auth/login/**
+      - /auth/current/**
+      - /auth/register/realtor/**
+      - /realtors/**
+      - /users/{id}/avatar
+    adminAPIs:
+      - /auth/login/**
+      - /auth/current/**
+      - /users/**
+      - /admins/**
+      - /admin-panel/**
 
-security.jwt:
-  token-ttl: 18000000 # 5h
-  secret: 1111111111111111111111111111111111111111111111111111111111111111
+email:
+  enabled: false
+  debugMode:
+    enabled: false
 
+files:
+  client: placeholder
+  allowedContentTypes: [ image/jpeg, image/png ]
+  avatar:
+    minWidthHeight: 128 # in px
+    maxWidthHeight: 512 # in px
+    widthHeightForSave: 256 # in px
+  realEstatePhoto:
+    minWidthHeight: 256 # in px
+    maxWidthHeight: 5000 # in px
+  multipart:
+    maxFileSize: 1MB
+    maxRequestSize: 25MB
+
+user:
+  timeToVerifyEmailInDays: 7
+  scheduler:
+    delete-unverified-users-cron: "* * */1 * * *" # every hour
+
+realtor:
+  plan-configuration:
+    free:
+      maxPublicRealEstates: 10
+    premium:
+      maxPublicRealEstates: 25
+  daysToNotifyExpiresPremium: [ 1, 7 ]
+  scheduler:
+    reset-plan-cron: "1 0 0 * * *" # every day at 00:00:01 AM
+    send-email-when-premium-expires-cron: "0 0 10 * * *" # every day at 10 AM
+
+real-estate:
+  daysForExpireCalled: 14
+  scheduler:
+    check-called: 60000 # every minute
+  photo:
+    maxPhotosCount: 24
+
+cache:
+  enabled: true
+  settings:
+    getUser: 20000
+    getUserDto: 20000
+    getUserFullDto: 20000
+    getAllUserFullDto: 10000
+    getListUserFullDto: 10000
+    getRealtorDto: 20000
+    getRealtorFullDto: 20000
+    getAllRealtorDto: 20000
+    getContact: 10000
+    getContactDto: 10000
+    getListContactDto: 10000
+    getRealEstate: 20000
+    getRealEstateDto: 20000
+    getRealEstateFullDto: 20000
+    getListRealEstateDto: 10000
+    getListRealEstateFullDto: 10000
+    getPhoto: 10000
+    getListPhotoDto: 10000

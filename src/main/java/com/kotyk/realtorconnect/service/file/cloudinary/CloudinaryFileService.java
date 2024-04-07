@@ -20,7 +20,6 @@ import java.util.Map;
 
 @Slf4j
 @Service
-@Profile("!test")
 @RequiredArgsConstructor
 @Conditional(CloudinaryEnabled.class)
 public class CloudinaryFileService implements FileService {
