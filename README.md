@@ -16,8 +16,14 @@ In turn, users can easily search for the properties they want and communicate wi
 
 ---
 
-- Get an overview of the application here: [Deployed application](https://www.google.com).
+- Get an overview of the application here: [Deployed application](http://realtorconnect.online).
 - Run the application on a local machine. For instructions, read [Local startup guide](#local-startup-guide).
+
+### Latest release
+
+---
+
+Latest release version of the Realtor Connect: 1.0
 
 ### Documentation
 
@@ -26,7 +32,7 @@ The documentation is written in OpenApi and uses SwaggerUI.
 
 To read it:
 
-- Open the deployed application here: [Documentation](https://www.google.com).
+- Open the deployed application here: [Documentation](http://realtorconnect.online).
 - Run the project locally and follow the link: [Documentation](http://localhost:8080/swagger-ui/index.html).
 - You can also read the [Quick Start](#quick-start) article to get basic information about the app and see examples of
   how to use the app.
