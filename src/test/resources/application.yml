@@ -29,9 +29,9 @@ security.jwt:
   secret: 096E8C3B89C1E0FD82110B0EC40557BAF8A537ED61CFBFBB5CCF02F0D87A99D7
 
 network:
-  app-domain: http://localhost:8080
-  swagger-ui-url: ${network.app-domain}/swagger-ui/index.html
-  verify-email-url: ${network.app-domain}/users/verifyEmail/
+  hostname: http://localhost:8080
+  swagger-ui-url: ${network.hostname}/swagger-ui/index.html
+  verify-email-url: ${network.hostname}/users/verifyEmail/
   defaultAvatarUrl: http://localhost:8080
 
 scheduler:

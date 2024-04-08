@@ -45,9 +45,9 @@ security.jwt:
   secret: ${JWT_SECRET}
 
 network:
-  app-domain: ${APP_DOMAIN:http://localhost:${server.port}}
-  swagger-ui-url: ${network.app-domain}/swagger-ui/index.html
-  verify-email-url: ${network.app-domain}/users/verifyEmail/
+  hostname: ${APP_DOMAIN:http://localhost:${server.port}}
+  swagger-ui-url: ${network.hostname}/swagger-ui/index.html
+  verify-email-url: ${network.hostname}/users/verifyEmail/
   defaultAvatarUrl: https://res.cloudinary.com/dhseztjx1/image/upload/v1711873406/logos/realtor_connect_logo_jpg.jpg
 
 scheduler:
@@ -57,7 +57,7 @@ scheduler:
 
 openapi:
   title: Realtor Connect
-  version: 0.1
+  version: 1.0
   description: An application that helps realtors to more easily control their objects and find clients
   groups:
     userAPIs:
