@@ -21,7 +21,7 @@ import static com.kotyk.realtorconnect.util.ApiResponseUtil.ok;
 @RestController
 @AllArgsConstructor
 @RequestMapping(value = "/realtors", produces = MediaType.APPLICATION_JSON_VALUE)
-@Tag(name = "Contact Controller")
+@Tag(name = "Contact Controller", description = "Allows you manage your own contacts, and see other's contacts")
 public class ContactController {
 
     private final ContactService service;

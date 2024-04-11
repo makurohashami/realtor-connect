@@ -23,7 +23,7 @@ import static com.kotyk.realtorconnect.util.ApiResponseUtil.ok;
 @RestController
 @AllArgsConstructor
 @RequestMapping(value = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
-@Tag(name = "User Controller")
+@Tag(name = "User Controller", description = "Allows you manage your own information")
 public class UserController {
 
     private final UserService service;

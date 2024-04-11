@@ -27,7 +27,7 @@ import static com.kotyk.realtorconnect.util.ApiResponseUtil.ok;
 @RestController
 @AllArgsConstructor
 @RequestMapping(value = "/auth", produces = MediaType.APPLICATION_JSON_VALUE)
-@Tag(name = "Auth Controller")
+@Tag(name = "Auth Controller", description = "Authentication endpoints")
 public class AuthController {
 
     private final AuthService authService;

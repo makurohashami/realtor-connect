@@ -24,7 +24,7 @@ import static com.kotyk.realtorconnect.util.ApiResponseUtil.ok;
 @RestController
 @AllArgsConstructor
 @RequestMapping(value = "/realtors", produces = MediaType.APPLICATION_JSON_VALUE)
-@Tag(name = "Real Estate Controller")
+@Tag(name = "Real Estate Controller", description = "Allows you manage your own real estates, and see other's real estates")
 public class RealEstateController {
 
     private final RealEstateService service;
