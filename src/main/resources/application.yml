@@ -58,20 +58,23 @@ scheduler:
 openapi:
   title: Realtor Connect
   version: 1.0
-  description: An application that helps realtors to more easily control their objects and find clients
+  description: It is a tool that gives you, as a realtor, the ability to store your own properties, easily manage them, and share them with potential clients. In turn, users can easily search for the properties they want and communicate with realtors.
   groups:
     userAPIs:
+      - /settings/**
       - /auth/login/**
       - /auth/current/**
       - /auth/register/user/**
       - /users/**
     realtorAPIs:
+      - /settings/**
       - /auth/login/**
       - /auth/current/**
       - /auth/register/realtor/**
       - /realtors/**
       - /users/{id}/avatar
     adminAPIs:
+      - /settings/**
       - /auth/login/**
       - /auth/current/**
       - /users/**
@@ -118,6 +121,7 @@ files:
     maxRequestSize: 25MB
 
 cloudinary:
+  appPrefix: ${CLOUDINARY_APP_PREFIX:}
   cloudinaryUrl: ${CLOUDINARY_URL}
 
 user:

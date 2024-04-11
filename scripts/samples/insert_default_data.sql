@@ -15,7 +15,7 @@ INSERT INTO realtors_info (id, agency, agency_site, subscription_type, public_re
                            notified_days_to_expire_prem)
 VALUES ((SELECT id FROM users WHERE username = 'realtor'), 'agency', 'agency.com', 0, 0, NULL);
 
-INSERT INTO realtors_contacts(contact, type_id, realtor_id)
-VALUES ('https://t.me/realtor', 1, (SELECT id FROM users WHERE username = 'realtor')),
-       ('realtor@mail.com', 4, (SELECT id FROM users WHERE username = 'realtor')),
-       ('+380990000002', 0, (SELECT id FROM users WHERE username = 'realtor'));
+INSERT INTO realtors_contacts(contact, type_id, realtor_id, created_at, created_by)
+VALUES ('https://t.me/realtor', 1, (SELECT id FROM users WHERE username = 'realtor'), NOW() AT TIME ZONE 'UTC', 'defaultUser'),
+       ('realtor@mail.com', 4, (SELECT id FROM users WHERE username = 'realtor'), NOW() AT TIME ZONE 'UTC', 'defaultUser'),
+       ('+380990000002', 0, (SELECT id FROM users WHERE username = 'realtor'), NOW() AT TIME ZONE 'UTC', 'defaultUser');
