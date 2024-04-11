@@ -61,25 +61,24 @@ openapi:
   description: It is a tool that gives you, as a realtor, the ability to store your own properties, easily manage them, and share them with potential clients. In turn, users can easily search for the properties they want and communicate with realtors.
   groups:
     userAPIs:
-      - /settings/**
       - /auth/login/**
       - /auth/current/**
       - /auth/register/user/**
       - /users/**
     realtorAPIs:
-      - /settings/**
       - /auth/login/**
       - /auth/current/**
       - /auth/register/realtor/**
       - /realtors/**
       - /users/{id}/avatar
     adminAPIs:
-      - /settings/**
       - /auth/login/**
       - /auth/current/**
       - /users/**
       - /admins/**
       - /admin-panel/**
+    otherAPI:
+      - /settings/**
 
 email:
   enabled: ${EMAIL_ENABLED:true}
