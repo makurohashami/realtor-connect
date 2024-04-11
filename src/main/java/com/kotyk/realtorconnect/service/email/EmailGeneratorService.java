@@ -19,7 +19,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class EmailGeneratorService {
 
-    @Value("${network.verify-email-url}")
+    @Value("${network.verifyEmailUrl}")
     private String verifyEmailUrl;
 
     private final SpringTemplateEngine templateEngine;

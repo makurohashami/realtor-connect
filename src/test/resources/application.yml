@@ -30,8 +30,8 @@ security.jwt:
 
 network:
   hostname: http://localhost:8080
-  swagger-ui-url: ${network.hostname}/swagger-ui/index.html
-  verify-email-url: ${network.hostname}/users/verifyEmail/
+  swaggerUrl: ${network.hostname}/swagger-ui/index.html
+  verifyEmailUrl: ${network.hostname}/users/verifyEmail/
   defaultAvatarUrl: http://localhost:8080
 
 scheduler:
@@ -61,6 +61,8 @@ openapi:
       - /users/**
       - /admins/**
       - /admin-panel/**
+    otherAPIs:
+      - /settings/**
 
 email:
   enabled: false

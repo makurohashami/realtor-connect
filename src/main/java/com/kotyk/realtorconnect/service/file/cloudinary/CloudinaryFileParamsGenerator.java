@@ -21,8 +21,14 @@ public class CloudinaryFileParamsGenerator implements FileParamsGenerator {
 
     @Value("${network.defaultAvatarUrl}")
     private String defaultAvatarUrl;
+    @Value("${cloudinary.appPrefix}")
+    private String cloudinaryAppPrefix;
 
     private final FileConfiguration fileConfiguration;
+
+    private String getAppPrefix() {
+        return cloudinaryAppPrefix.isBlank() ? "" : cloudinaryAppPrefix.endsWith("/") ? cloudinaryAppPrefix : cloudinaryAppPrefix + "/";
+    }
 
     @Override
     public Map<String, Object> generateParamsForAvatar(User user) {
@@ -36,7 +42,7 @@ public class CloudinaryFileParamsGenerator implements FileParamsGenerator {
         if (user.getAvatar() != null && !user.getAvatar().equals(defaultAvatarUrl)) {
             params.put("public_id", user.getAvatarId());
         } else {
-            params.put("folder", "avatars");
+            params.put("folder", getAppPrefix() + "avatars");
         }
 
         return params;
@@ -46,7 +52,7 @@ public class CloudinaryFileParamsGenerator implements FileParamsGenerator {
     public Map<String, Object> generateParamsForRealEstatePhoto(RealEstate realEstate) {
         Map<String, Object> params = new HashMap<>();
         params.put("tags", "realEstatePhoto");
-        params.put("folder", "realestates/" + realEstate.getId());
+        params.put("folder", getAppPrefix() + "realestates/" + realEstate.getId());
         return params;
     }
 }

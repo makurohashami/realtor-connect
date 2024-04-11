@@ -35,7 +35,7 @@ public class RealtorConnectApplication {
                         \tApplication is running!
                         \tSwagger: \t{}\s
                         ----------------------------------------------------------""",
-                env.getProperty("network.swagger-ui-url")
+                env.getProperty("network.swaggerUrl")
         );
     }
 
