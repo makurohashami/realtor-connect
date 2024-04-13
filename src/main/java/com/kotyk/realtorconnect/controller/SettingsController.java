@@ -5,6 +5,7 @@ import com.kotyk.realtorconnect.config.RealEstateConfiguration;
 import com.kotyk.realtorconnect.config.RealtorConfiguration;
 import com.kotyk.realtorconnect.config.UserConfiguration;
 import com.kotyk.realtorconnect.dto.apiresponse.ApiSuccess;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,21 +33,25 @@ public class SettingsController {
     public final RealEstateConfiguration realEstateConfiguration;
 
     @GetMapping("/file")
+    @Operation(summary = "Get app file settings")
     public ResponseEntity<ApiSuccess<FileConfigurationDto>> getFileConfiguration() {
         return ok(toFileConfigurationDto(fileConfiguration));
     }
 
     @GetMapping("/user")
+    @Operation(summary = "Get app user settings")
     public ResponseEntity<ApiSuccess<UserConfiguration>> getUserConfiguration() {
         return ok(userConfiguration);
     }
 
     @GetMapping("/realtor")
+    @Operation(summary = "Get app realtor settings")
     public ResponseEntity<ApiSuccess<RealtorConfiguration>> getRealtorConfiguration() {
         return ok(realtorConfiguration);
     }
 
     @GetMapping("/real-estate")
+    @Operation(summary = "Get app real estate settings")
     public ResponseEntity<ApiSuccess<RealEstateConfiguration>> getRealEstateConfiguration() {
         return ok(realEstateConfiguration);
     }
