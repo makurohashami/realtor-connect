@@ -150,11 +150,11 @@ up: [MailHog Page](http://localhost:8025/)).
 
 Here we can see welcome email. Let's open it.
 
-![mail-hog-main-page](https://res.cloudinary.com/dhseztjx1/image/upload/v1711897283/samples/mail-hog-main.jpg)
+![mail-hog-main-page](https://res.cloudinary.com/dhseztjx1/image/upload/v1711897283/realtor-connect-common/samples/mail-hog-main.jpg)
 
 Let's press `Confirm Email` button.
 
-![mail-hog-welcome-email](https://res.cloudinary.com/dhseztjx1/image/upload/v1711897283/samples/mail-hog-welcome-email.jpg)
+![mail-hog-welcome-email](https://res.cloudinary.com/dhseztjx1/image/upload/v1711897283/realtor-connect-common/samples/mail-hog-welcome-email.jpg)
 
 We've redirected on new page with json result. As you can see, success and result is `true`. We just confirmed email,
 and now can successfully log in Realtor Connect.
@@ -182,7 +182,7 @@ Result. We've successfully authenticated.
 Let's copy an auth token, go to top of app page, press `Autorize` button, put there auth token and press `Autorize`
 button.
 
-![swagger-authorize-window](https://res.cloudinary.com/dhseztjx1/image/upload/v1711897284/samples/swagger-authorize-window.jpg)
+![swagger-authorize-window](https://res.cloudinary.com/dhseztjx1/image/upload/v1711897284/realtor-connect-common/samples/swagger-authorize-window.jpg)
 
 Now we can use app!
 
@@ -219,7 +219,7 @@ Additional information:
 - Only authenticated users can see your contacts, otherwise they will have an empty list.
 - You can find information about the possible types of contacts in the Schemas section at the bottom of the Swagger
   page. This applies to any object in the app.
-  ![schemas-example](https://res.cloudinary.com/dhseztjx1/image/upload/v1711897283/samples/schemas-example.jpg)
+![schemas-example](https://res.cloudinary.com/dhseztjx1/image/upload/v1711897283/realtor-connect-common/samples/schemas-example.jpg)
 
 #### 4. Create real estate and add photos
 
@@ -344,10 +344,10 @@ As we can se from response, real estate was created
 
 Now let's add photos. Go to `Real Estate Photo Controller` and open POST `/realtors/real-estates/{realEstateId}/photos`:
 
-![photos-upload-example](https://res.cloudinary.com/dhseztjx1/image/upload/v1711897283/samples/photos-upload-example.jpg)
+![photos-upload-example](https://res.cloudinary.com/dhseztjx1/image/upload/v1711897283/realtor-connect-common/samples/photos-upload-example.jpg)
 
 Response:
 
-![photos-upload-response](https://res.cloudinary.com/dhseztjx1/image/upload/v1711897283/samples/photos-upload-response.jpg)
+![photos-upload-response](https://res.cloudinary.com/dhseztjx1/image/upload/v1711897283/realtor-connect-common/samples/photos-upload-response.jpg)
 
 <p align="center"><b>Enjoy!</b></p>
