@@ -164,7 +164,7 @@ cache:
     # Realtor
     getRealtorDto: 20000
     getRealtorFullDto: 20000
-    getAllRealtorDto: 20000
+    getListRealtorDto: 20000
     # Contact
     getContact: 10000
     getContactDto: 10000

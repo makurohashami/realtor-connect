@@ -70,7 +70,7 @@ public class RealtorService {
     }
 
     @ContactsFiltered
-    @Cacheable(value = "getAllRealtorDto", key = "#filter+'-'+#pageable")
+    @Cacheable(value = "getListRealtorDto", key = "#filter+'-'+#pageable")
     public Page<RealtorDto> getAllShorts(RealtorFilter filter, Pageable pageable) {
         Specification<Realtor> spec = RealtorFilterSpecifications.withFilter(filter);
         return realtorRepository.findAll(spec, pageable).map(realtorMapper::toDto);
