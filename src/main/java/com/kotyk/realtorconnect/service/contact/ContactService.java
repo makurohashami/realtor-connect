@@ -1,5 +1,6 @@
 package com.kotyk.realtorconnect.service.contact;
 
+import com.kotyk.realtorconnect.annotation.Loggable;
 import com.kotyk.realtorconnect.dto.realtor.ContactDto;
 import com.kotyk.realtorconnect.entity.realtor.Contact;
 import com.kotyk.realtorconnect.mapper.ContactMapper;
@@ -15,6 +16,7 @@ import java.util.List;
 
 @Slf4j
 @Service
+@Loggable
 @RequiredArgsConstructor
 public class ContactService {
 

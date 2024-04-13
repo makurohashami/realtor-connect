@@ -1,5 +1,6 @@
 package com.kotyk.realtorconnect.service.realestate;
 
+import com.kotyk.realtorconnect.annotation.Loggable;
 import com.kotyk.realtorconnect.annotation.datafilter.RealEstatesPhotoFiltered;
 import com.kotyk.realtorconnect.config.RealEstateConfiguration;
 import com.kotyk.realtorconnect.dto.file.FileUploadResponse;
@@ -28,6 +29,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
+@Loggable
 @AllArgsConstructor
 public class RealEstatePhotoService {
 

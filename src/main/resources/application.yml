@@ -19,12 +19,17 @@ spring:
       write_dates_as_timestamps: false
   flyway:
     baseline-on-migrate: true
-  logging:
-    level:
-      com.kotyk.realtorconnect: info
-      org.springframework: info
-      org.hibernate: info
-      org.flywaydb: info
+
+logging:
+  customLogger:
+    level: ${CUSTOM_LOGGER_LEVEL:DEBUG}
+  file:
+    name: log/realtor-connect.log
+  level:
+    com.kotyk.realtorconnect: info
+    org.springframework: info
+    org.hibernate: info
+    org.flywaydb: info
 
 management:
   endpoints:

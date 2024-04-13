@@ -40,7 +40,7 @@ public class RealEstateFilterInterceptor {
             }
         }
 
-        log.error("Cannot filter real estates because returned unsupported type");
+        log.error("Cannot filter real estates because returned unsupported type: " + result.getClass().getSimpleName());
         return result;
     }
 
@@ -70,7 +70,7 @@ public class RealEstateFilterInterceptor {
                 filterRealEstatePhotosDtoList((List<RealEstatePhotoDto>) listResult);
             }
         } else {
-            log.error("Cannot filter real estates photos because returned unsupported type");
+            log.error("Cannot filter real estates photos because returned unsupported type: " + result.getClass().getSimpleName());
         }
     }
 

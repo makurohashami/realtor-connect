@@ -1,5 +1,6 @@
 package com.kotyk.realtorconnect.service.realestate;
 
+import com.kotyk.realtorconnect.annotation.Loggable;
 import com.kotyk.realtorconnect.annotation.datafilter.RealEstatesFiltered;
 import com.kotyk.realtorconnect.annotation.datafilter.RealEstatesPhotoFiltered;
 import com.kotyk.realtorconnect.config.RealEstateConfiguration;
@@ -34,6 +35,7 @@ import java.util.Optional;
 
 @Slf4j
 @Service
+@Loggable
 @RequiredArgsConstructor
 public class RealEstateService {
 

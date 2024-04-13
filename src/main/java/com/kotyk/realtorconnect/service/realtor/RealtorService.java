@@ -1,5 +1,6 @@
 package com.kotyk.realtorconnect.service.realtor;
 
+import com.kotyk.realtorconnect.annotation.Loggable;
 import com.kotyk.realtorconnect.annotation.datafilter.ContactsFiltered;
 import com.kotyk.realtorconnect.config.RealtorConfiguration;
 import com.kotyk.realtorconnect.dto.realtor.RealtorAddDto;
@@ -33,6 +34,7 @@ import java.util.concurrent.CompletableFuture;
 
 @Slf4j
 @Service
+@Loggable
 @RequiredArgsConstructor
 public class RealtorService {
 

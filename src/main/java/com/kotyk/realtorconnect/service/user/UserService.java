@@ -1,5 +1,6 @@
 package com.kotyk.realtorconnect.service.user;
 
+import com.kotyk.realtorconnect.annotation.Loggable;
 import com.kotyk.realtorconnect.config.UserConfiguration;
 import com.kotyk.realtorconnect.dto.file.FileUploadResponse;
 import com.kotyk.realtorconnect.dto.user.*;
@@ -46,6 +47,7 @@ import static com.kotyk.realtorconnect.entity.user.Role.CHIEF_ADMIN;
 @Slf4j
 @Service
 @AllArgsConstructor
+@Loggable
 @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class UserService {
 
@@ -66,11 +68,13 @@ public class UserService {
 
     @Async
     @Transactional
+    @Loggable.Exclude
     public void updateLastLogin(Long id) {
         userRepository.updateLastLogin(id, Instant.now());
     }
 
     @Transactional(readOnly = true)
+    @Loggable.Exclude
     public Optional<User> findByUsername(String username) {
         return userRepository.findByUsername(username);
     }

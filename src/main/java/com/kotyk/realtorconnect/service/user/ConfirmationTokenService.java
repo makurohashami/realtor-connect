@@ -1,5 +1,6 @@
 package com.kotyk.realtorconnect.service.user;
 
+import com.kotyk.realtorconnect.annotation.Loggable;
 import com.kotyk.realtorconnect.entity.user.ConfirmationToken;
 import com.kotyk.realtorconnect.entity.user.User;
 import com.kotyk.realtorconnect.repository.ConfirmationTokenRepository;
@@ -13,6 +14,7 @@ import java.util.UUID;
 
 @Slf4j
 @Service
+@Loggable
 @AllArgsConstructor
 public class ConfirmationTokenService {
 

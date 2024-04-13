@@ -10,6 +10,7 @@ import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
+@ToString
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
