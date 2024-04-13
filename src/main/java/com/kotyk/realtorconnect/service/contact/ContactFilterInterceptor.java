@@ -34,7 +34,7 @@ public class ContactFilterInterceptor {
                 filterPageRealtorDto((Page<RealtorDto>) pageResult);
             }
         } else {
-            log.debug("Cannot filter contacts because returned unsupported type: " + result.getClass().getSimpleName());
+            log.warn("Cannot filter contacts because returned unsupported type: {}", result.getClass().getSimpleName());
         }
     }
 
