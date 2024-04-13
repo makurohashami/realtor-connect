@@ -24,6 +24,17 @@ spring:
     baseline-on-migrate: true
     clean-disabled: false
 
+logging:
+  customLogger:
+    level: ${CUSTOM_LOGGER_LEVEL:DEBUG}
+  file:
+    name: log/realtor-connect.log
+  level:
+    com.kotyk.realtorconnect: ${APP_LOGGER_LEVEL:info}
+    org.springframework: info
+    org.hibernate: info
+    org.flywaydb: info
+
 security.jwt:
   token-ttl: 100000
   secret: 096E8C3B89C1E0FD82110B0EC40557BAF8A537ED61CFBFBB5CCF02F0D87A99D7
@@ -85,8 +96,10 @@ files:
 
 user:
   timeToVerifyEmailInDays: 7
+  tokenTtlInDays: 7
   scheduler:
     delete-unverified-users-cron: "* * */1 * * *" # every hour
+    delete-unused-tokens-cron: "* * */1 * * *" # every hour
 
 realtor:
   plan-configuration:

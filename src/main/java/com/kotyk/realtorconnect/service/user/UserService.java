@@ -158,7 +158,7 @@ public class UserService {
 
     @Transactional
     public boolean verifyEmail(UUID token) {
-        User user = confirmationTokenService.getUserByToken(token);
+        User user = confirmationTokenService.findUserByToken(token);
         user.setEmailVerified(true);
         confirmationTokenService.deleteToken(token);
         return user.getEmailVerified();
@@ -209,6 +209,7 @@ public class UserService {
         if (!user.getEmailVerified()) {
             throw new ActionNotAllowedException("Can't reset password for an unverified user");
         }
+        confirmationTokenService.deleteByUserId(user.getId());
         emailFacade.sendResetPasswordEmail(user, confirmationTokenService.createToken(user).toString());
         return true;
     }
@@ -219,7 +220,7 @@ public class UserService {
             throw new ActionNotAllowedException("Passwords do not match");
         }
         try {
-            User user = confirmationTokenService.getUserByToken(changePasswordDto.getToken());
+            User user = confirmationTokenService.findUserByToken(changePasswordDto.getToken());
             user.setPassword(new BCryptPasswordEncoder().encode(changePasswordDto.getPassword()));
             confirmationTokenService.deleteToken(changePasswordDto.getToken());
             userRepository.save(user);

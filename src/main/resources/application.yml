@@ -130,8 +130,10 @@ cloudinary:
 
 user:
   timeToVerifyEmailInDays: 7
+  tokenTtlInDays: 7
   scheduler:
     delete-unverified-users-cron: "* * */1 * * *" # every hour
+    delete-unused-tokens-cron: "* * */1 * * *" # every hour
 
 realtor:
   plan-configuration:

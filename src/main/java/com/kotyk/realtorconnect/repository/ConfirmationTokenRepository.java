@@ -4,6 +4,7 @@ import com.kotyk.realtorconnect.entity.user.ConfirmationToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.Instant;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -13,5 +14,7 @@ public interface ConfirmationTokenRepository extends JpaRepository<ConfirmationT
     void deleteByUserId(Long userId);
 
     Optional<ConfirmationToken> findByUserId(Long userId);
+
+    void deleteAllByCreatedAtBefore(Instant createdAt);
 
 }

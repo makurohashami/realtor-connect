@@ -31,11 +31,11 @@ public class AppLoggerInterceptor {
     public void methodNotAnnotatedWithLoggableExclude() {
     }
 
-    @Pointcut("execution(public * *(..))")
-    public void publicMethod() {
+    @Pointcut("execution(private * *(..))")
+    public void privateMethod() {
     }
 
-    @Pointcut("publicMethod() && beanAnnotatedWithLoggable() && !methodNotAnnotatedWithLoggableExclude()")
+    @Pointcut("!privateMethod() && beanAnnotatedWithLoggable() && !methodNotAnnotatedWithLoggableExclude()")
     public void publicMethodInsideAClassMarkedWithLoggable() {
     }
 
