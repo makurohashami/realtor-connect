@@ -122,21 +122,25 @@ real-estate:
 cache:
   enabled: true
   settings:
+    # User
     getUser: 20000
     getUserDto: 20000
     getUserFullDto: 20000
-    getAllUserFullDto: 10000
     getListUserFullDto: 10000
+    # Realtor
     getRealtorDto: 20000
     getRealtorFullDto: 20000
-    getAllRealtorDto: 20000
+    getListRealtorDto: 20000
+    # Contact
     getContact: 10000
     getContactDto: 10000
     getListContactDto: 10000
+    # Real Estate
     getRealEstate: 20000
     getRealEstateDto: 20000
     getRealEstateFullDto: 20000
     getListRealEstateDto: 10000
     getListRealEstateFullDto: 10000
+    # Real Estate Photo
     getPhoto: 10000
     getListPhotoDto: 10000

@@ -115,14 +115,14 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    @Cacheable(value = "getAllUserFullDto", key = "#filter+'-'+#pageable")
+    @Cacheable(value = "getListUserFullDto", key = "#filter+'-'+#pageable")
     public Page<UserFullDto> readAllFulls(UserFilter filter, Pageable pageable) {
         Specification<User> spec = UserFilterSpecifications.withFilter(filter);
         return userRepository.findAll(spec, pageable).map(userMapper::toFullDto);
     }
 
     @Transactional(readOnly = true)
-    @Cacheable(value = "getAllUserFullDto", key = "#filter")
+    @Cacheable(value = "getListUserFullDto", key = "#filter")
     public List<UserFullDto> readAllFulls(UserFilter filter) {
         Specification<User> spec = UserFilterSpecifications.withFilter(filter);
         return userMapper.toListFullDto(userRepository.findAll(spec));
