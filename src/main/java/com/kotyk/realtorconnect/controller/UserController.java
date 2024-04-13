@@ -2,6 +2,7 @@ package com.kotyk.realtorconnect.controller;
 
 import com.kotyk.realtorconnect.annotation.security.IsSameUser;
 import com.kotyk.realtorconnect.dto.apiresponse.ApiSuccess;
+import com.kotyk.realtorconnect.dto.user.ChangePasswordDto;
 import com.kotyk.realtorconnect.dto.user.UserAddDto;
 import com.kotyk.realtorconnect.dto.user.UserDto;
 import com.kotyk.realtorconnect.dto.user.UserFullDto;
@@ -9,10 +10,14 @@ import com.kotyk.realtorconnect.service.user.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,6 +25,7 @@ import java.util.UUID;
 
 import static com.kotyk.realtorconnect.util.ApiResponseUtil.ok;
 
+@Validated
 @RestController
 @AllArgsConstructor
 @RequestMapping(value = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -78,6 +84,20 @@ public class UserController {
     public ResponseEntity<Void> deleteAvatar(@PathVariable long id) {
         service.deleteAvatar(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/passwords/reset")
+    @PreAuthorize("isAnonymous()")
+    @Operation(summary = "Send request to reset password")
+    public ResponseEntity<ApiSuccess<Boolean>> resetPassword(@RequestParam @Email @NotNull @Size(min = 3, max = 255) String email) {
+        return ok(service.resetPassword(email));
+    }
+
+    @PostMapping("/passwords/change")
+    @PreAuthorize("isAnonymous()")
+    @Operation(summary = "Change password")
+    public ResponseEntity<ApiSuccess<Boolean>> changePassword(@RequestBody @Valid ChangePasswordDto changePasswordDto) {
+        return ok(service.changePassword(changePasswordDto));
     }
 
 }

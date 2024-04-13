@@ -1,10 +1,7 @@
 package com.kotyk.realtorconnect.user;
 
 
-import com.kotyk.realtorconnect.dto.user.UserAddDto;
-import com.kotyk.realtorconnect.dto.user.UserDto;
-import com.kotyk.realtorconnect.dto.user.UserFilter;
-import com.kotyk.realtorconnect.dto.user.UserFullDto;
+import com.kotyk.realtorconnect.dto.user.*;
 import com.kotyk.realtorconnect.entity.user.ConfirmationToken;
 import com.kotyk.realtorconnect.entity.user.Role;
 import com.kotyk.realtorconnect.entity.user.User;
@@ -24,6 +21,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -53,7 +51,7 @@ public class UserServiceITest {
     User user1 = User.builder()
             .name("user1")
             .username("user1")
-            .password("pass1")
+            .password(new BCryptPasswordEncoder().encode("pass1"))
             .email("email1")
             .blocked(false)
             .emailVerified(true)
@@ -63,7 +61,7 @@ public class UserServiceITest {
     User user2 = User.builder()
             .name("user2")
             .username("user2")
-            .password("pass2")
+            .password(new BCryptPasswordEncoder().encode("pass2"))
             .email("email2")
             .blocked(false)
             .emailVerified(true)
@@ -73,7 +71,7 @@ public class UserServiceITest {
     User user3 = User.builder()
             .name("user3")
             .username("user3")
-            .password("pass3")
+            .password(new BCryptPasswordEncoder().encode("pass3"))
             .email("email3")
             .blocked(false)
             .emailVerified(true)
@@ -548,6 +546,55 @@ public class UserServiceITest {
         long countAfter = userRepository.count();
         assertThat(countAfter, is(countBefore));
         assertThat(exception.getMessage(), notNullValue());
+    }
+
+    @Test
+    public void resetPasswordTest() {
+        //given
+        long countTokensBefore = confirmationTokenRepository.count();
+
+        //when
+        Boolean emailSent = userService.resetPassword(user1.getEmail());
+
+
+        //then
+        long countTokensAfter = confirmationTokenRepository.count();
+        assertThat(countTokensAfter, is(countTokensBefore + 1));
+        assertThat(emailSent, notNullValue());
+        assertThat(emailSent, is(true));
+
+        confirmationTokenRepository.deleteByUserId(user1.getId());
+    }
+
+    @Test
+    public void changePasswordTest() {
+        //given
+        long countTokensBefore = confirmationTokenRepository.count();
+        userService.resetPassword(user3.getEmail());
+        long countTokensAfter = confirmationTokenRepository.count();
+        assertThat(countTokensAfter, is(countTokensBefore + 1));
+        Optional<ConfirmationToken> confirmationToken = confirmationTokenRepository.findByUserId(user3.getId());
+        assertThat(confirmationToken.isPresent(), is(true));
+        String password = "new_pass";
+        ChangePasswordDto dto = ChangePasswordDto.builder()
+                .token(confirmationToken.get().getToken())
+                .password(password)
+                .passwordConfirm(password)
+                .build();
+        countTokensBefore = confirmationTokenRepository.count();
+
+        //when
+        Boolean updated = userService.changePassword(dto);
+
+
+        //then
+        countTokensAfter = confirmationTokenRepository.count();
+        assertThat(countTokensAfter, is(countTokensBefore - 1));
+        assertThat(updated, notNullValue());
+        assertThat(updated, is(true));
+        Optional<User> user = userRepository.findById(user3.getId());
+        assertThat(user.isPresent(), is(true));
+        assertThat(new BCryptPasswordEncoder().matches(password, user.get().getPassword()), is(true));
     }
 
 }

@@ -42,4 +42,8 @@ public class EmailFacade {
         sendEmail(emailGeneratorService.generatePremiumExpiredEmail(realtor));
     }
 
+    public void sendResetPasswordEmail(User user, String token) {
+        sendEmail(emailGeneratorService.generateResetPasswordEmail(user, token));
+    }
+
 }

@@ -2,6 +2,8 @@ package com.kotyk.realtorconnect.util.exception;
 
 import com.kotyk.realtorconnect.dto.Error;
 import com.kotyk.realtorconnect.dto.apiresponse.ApiError;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -16,6 +18,7 @@ import org.springframework.web.context.request.WebRequest;
 
 import java.time.Instant;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.kotyk.realtorconnect.util.ApiResponseUtil.*;
 
@@ -47,7 +50,19 @@ public class GlobalExceptionHandler {
                 String.format("%s %s", fieldError.getField(), fieldError.getDefaultMessage()),
                 request.getDescription(false)
         );
-        log.error("", ex);
+        log.debug("{}: {}", ex.getClass().getSimpleName(), ex.getMessage());
+        return badRequest(error);
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<ApiError<Error>> methodConstraintViolationException(ConstraintViolationException ex, WebRequest request) {
+        Error error = new Error(
+                Instant.now(),
+                "Validation failed",
+                ex.getConstraintViolations().stream().map(ConstraintViolation::getMessage).collect(Collectors.joining(", ")),
+                request.getDescription(false)
+        );
+        log.debug("{}: {}", ex.getClass().getSimpleName(), ex.getMessage());
         return badRequest(error);
     }
 
@@ -59,7 +74,7 @@ public class GlobalExceptionHandler {
                 ex.getMessage(),
                 request.getDescription(false)
         );
-        log.error("", ex);
+        log.debug("{}: {}", ex.getClass().getSimpleName(), ex.getMessage());
         return badRequest(error);
     }
 
@@ -71,7 +86,7 @@ public class GlobalExceptionHandler {
                 ex.getMessage(),
                 request.getDescription(false)
         );
-        log.error("", ex);
+        log.debug("{}: {}", ex.getClass().getSimpleName(), ex.getMessage());
         return wrapError(error, HttpStatus.FORBIDDEN);
     }
 
@@ -83,7 +98,7 @@ public class GlobalExceptionHandler {
                 ex.getMessage(),
                 request.getDescription(false)
         );
-        log.error("", ex);
+        log.debug("{}: {}", ex.getClass().getSimpleName(), ex.getMessage());
         return wrapError(error, HttpStatus.UNAUTHORIZED);
     }
 
@@ -95,7 +110,7 @@ public class GlobalExceptionHandler {
                 ex.getMessage(),
                 request.getDescription(false)
         );
-        log.error("", ex);
+        log.debug("{}: {}", ex.getClass().getSimpleName(), ex.getMessage());
         return notFound(error);
     }
 
@@ -107,7 +122,7 @@ public class GlobalExceptionHandler {
                 ex.getMessage(),
                 request.getDescription(false)
         );
-        log.error("", ex);
+        log.debug("{}: {}", ex.getClass().getSimpleName(), ex.getMessage());
         return badRequest(error);
     }
 
@@ -119,7 +134,7 @@ public class GlobalExceptionHandler {
                 ex.getMessage(),
                 request.getDescription(false)
         );
-        log.error("", ex);
+        log.debug("{}: {}", ex.getClass().getSimpleName(), ex.getMessage());
         return badRequest(error);
     }
 

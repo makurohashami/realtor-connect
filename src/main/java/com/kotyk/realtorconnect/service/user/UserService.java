@@ -2,10 +2,7 @@ package com.kotyk.realtorconnect.service.user;
 
 import com.kotyk.realtorconnect.config.UserConfiguration;
 import com.kotyk.realtorconnect.dto.file.FileUploadResponse;
-import com.kotyk.realtorconnect.dto.user.UserAddDto;
-import com.kotyk.realtorconnect.dto.user.UserDto;
-import com.kotyk.realtorconnect.dto.user.UserFilter;
-import com.kotyk.realtorconnect.dto.user.UserFullDto;
+import com.kotyk.realtorconnect.dto.user.*;
 import com.kotyk.realtorconnect.entity.user.Permission;
 import com.kotyk.realtorconnect.entity.user.Role;
 import com.kotyk.realtorconnect.entity.user.User;
@@ -30,6 +27,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -60,7 +58,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserConfiguration userConfiguration;
     private final EmailFacade emailFacade;
-    private final ConfirmationTokenService tokenService;
+    private final ConfirmationTokenService confirmationTokenService;
     private final PermissionService permissionService;
     private final Validator<MultipartFile> avatarValidator;
     private final FileParamsGenerator fileParamsGenerator;
@@ -82,7 +80,7 @@ public class UserService {
         User user = userMapper.toEntity(dto);
         user.setRole(role);
         UserFullDto userFullDto = userMapper.toFullDto(userRepository.save(user));
-        emailFacade.sendVerifyEmail(user, tokenService.createToken(user).toString());
+        emailFacade.sendVerifyEmail(user, confirmationTokenService.createToken(user).toString());
         return userFullDto;
     }
 
@@ -156,9 +154,9 @@ public class UserService {
 
     @Transactional
     public boolean verifyEmail(UUID token) {
-        User user = tokenService.getUserByToken(token);
+        User user = confirmationTokenService.getUserByToken(token);
         user.setEmailVerified(true);
-        tokenService.deleteToken(token);
+        confirmationTokenService.deleteToken(token);
         return user.getEmailVerified();
     }
 
@@ -199,4 +197,32 @@ public class UserService {
         user.setAvatar(response.getFileId() == null ? userMapper.getDefaultAvatarUrl() : response.getUrl());
         user.setAvatarId(response.getFileId());
     }
+
+    @Transactional
+    public boolean resetPassword(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ActionNotAllowedException("The user with the same email is not registered"));
+        if (!user.getEmailVerified()) {
+            throw new ActionNotAllowedException("Can't reset password for an unverified user");
+        }
+        emailFacade.sendResetPasswordEmail(user, confirmationTokenService.createToken(user).toString());
+        return true;
+    }
+
+    @Transactional
+    public boolean changePassword(ChangePasswordDto changePasswordDto) {
+        if (!changePasswordDto.passwordsMatch()) {
+            throw new ActionNotAllowedException("Passwords do not match");
+        }
+        try {
+            User user = confirmationTokenService.getUserByToken(changePasswordDto.getToken());
+            user.setPassword(new BCryptPasswordEncoder().encode(changePasswordDto.getPassword()));
+            confirmationTokenService.deleteToken(changePasswordDto.getToken());
+            userRepository.save(user);
+            return true;
+        } catch (ResourceNotFoundException ex) {
+            throw new ActionNotAllowedException("Could bot update password. Bad token");
+        }
+    }
+
 }
