@@ -32,15 +32,16 @@ logging:
     org.flywaydb: info
 
 management:
+  show-values: ${ACTUATOR_SHOW_VALUES:NEVER}
   endpoints:
     web:
       exposure:
         include: "*"
   endpoint:
     env:
-      show-values: ALWAYS
+      show-values: ${management.show-values}
     configprops:
-      show-values: ALWAYS
+      show-values: ${management.show-values}
 
 server:
   port: 8080

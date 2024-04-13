@@ -72,6 +72,7 @@ start. [Install Docker](https://docs.docker.com/get-docker/).
    | CLOUDINARY_URL        | Enter the Cloudinary URL here after setting up your own Cloudinary storage. Optional if another CDN_CLIENT is configured                                                                                                                                                                                                                                      |                         |
    | CLOUDINARY_APP_PREFIX | To save files to a separate folder instead of the storage root, specify its name. For example `realtor-connect-prod`                                                                                                                                                                                                                                          | Empty String            |
    | SCHEDULER_ENABLED     | Enables or disables application scheduled tasks                                                                                                                                                                                                                                                                                                               | `true`                  |
+   | ACTUATOR_SHOW_VALUES  | Enables or disables showing env variables in actuator. Possible values: `NEVER`, `ALWAYS` and `WHEN_AUTHORIZED`                                                                                                                                                                                                                                               | `NEVER`                 |
    | APP_LOGGER_LEVEL      | Set logger level for application source code. Possible values: `ERROR`, `WARN`, `INFO`, `DEBUG` and `TRACE`                                                                                                                                                                                                                                                   | `INFO`                  |
    | CUSTOM_LOGGER_LEVEL   | Some classes and methods in the application are automatically logged at the start and end. The `AppLoggerInterceptor` is used for this. Specify the level at which this class will be written. If the level is higher than or equal to the current level in the application, you will see logs. Possible values: `ERROR`, `WARN`, `INFO`, `DEBUG` and `TRACE` | `DEBUG`                 |
 
@@ -219,7 +220,7 @@ Additional information:
 - Only authenticated users can see your contacts, otherwise they will have an empty list.
 - You can find information about the possible types of contacts in the Schemas section at the bottom of the Swagger
   page. This applies to any object in the app.
-![schemas-example](https://res.cloudinary.com/dhseztjx1/image/upload/v1711897283/realtor-connect-common/samples/schemas-example.jpg)
+  ![schemas-example](https://res.cloudinary.com/dhseztjx1/image/upload/v1711897283/realtor-connect-common/samples/schemas-example.jpg)
 
 #### 4. Create real estate and add photos
 
