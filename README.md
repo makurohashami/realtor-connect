@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://res.cloudinary.com/dhseztjx1/image/upload/v1711873407/logos/realtor_connect_logo_png.png" alt="RC_logo" width="100" />
+  <img src="https://res.cloudinary.com/dhseztjx1/image/upload/v1711873407/realtor-connect-common/logos/realtor_connect_logo_png.png" alt="RC_logo" width="100" />
 </p>
 <h1 align="center">Realtor Connect</h1>
 
@@ -57,20 +57,23 @@ start. [Install Docker](https://docs.docker.com/get-docker/).
 
    Some variables have default values. You do not need to set a variable if you are satisfied with the default value.
 
-   | Variable            | Description                                                                                                                                                                                                                                                                                                            | Default value           |
-   |---------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------|
-   | POSTGRES_HOST       | Host of the PostgreSQL server                                                                                                                                                                                                                                                                                          |                         |
-   | POSTGRES_USER       | User of the PostgreSQL server                                                                                                                                                                                                                                                                                          |                         |
-   | POSTGRES_PASSWORD   | Password to PostgreSQL server                                                                                                                                                                                                                                                                                          |                         |
-   | EMAIL_ENABLED       | Enables or disables sending emails from the app                                                                                                                                                                                                                                                                        | `true`                  |
-   | DEBUG_EMAIL_ENABLED | To use MailHog to intercept all emails, set it to `true', otherwise the SMTP server will be used                                                                                                                                                                                                                       | `false`                 |
-   | EMAIL_USERNAME      | At the moment, the application is configured with the Gmail SMTP server, so here you need to specify the Gmail address from which emails will be sent                                                                                                                                                                  |                         |
-   | EMAIL_PASSWORD      | Put here your Google App Password. [How to generate Google App Password](https://support.google.com/mail/answer/185833?hl=en).                                                                                                                                                                                         |                         |
-   | JWT_SECRET          | Generate your own JWT secret. For example, it will be a string of 32 random characters                                                                                                                                                                                                                                 |                         |
-   | APP_DOMAIN          | If the application is deployed on a server, enter the server domain here to create URLs correctly (for example, to check user email)                                                                                                                                                                                   | `http://localhost:8080` |
-   | CDN_CLIENT          | The program uses CND to store user files. By default, there is a `placeholder` client that simply simulates file operations, but currently the program has an implementation for the Cloudinary service ([Cloudinary home](https://cloudinary.com/)). If you want to enable Cloudinary, set the variable `cloudinary`. | `placeholder`           |
-   | CLOUDINARY_URL      | Enter the Cloudinary URL here after setting up your own Cloudinary storage. Optional if another CDN_CLIENT is configured                                                                                                                                                                                               |                         |
-   | SCHEDULER_ENABLED   | Enables or disables application scheduled tasks                                                                                                                                                                                                                                                                        | `true`                  |
+   | Variable              | Description                                                                                                                                                                                                                                                                                                                                                   | Default value           |
+   |-----------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------|
+   | POSTGRES_HOST         | Host of the PostgreSQL server                                                                                                                                                                                                                                                                                                                                 |                         |
+   | POSTGRES_USER         | User of the PostgreSQL server                                                                                                                                                                                                                                                                                                                                 |                         |
+   | POSTGRES_PASSWORD     | Password to PostgreSQL server                                                                                                                                                                                                                                                                                                                                 |                         |
+   | EMAIL_ENABLED         | Enables or disables sending emails from the app                                                                                                                                                                                                                                                                                                               | `true`                  |
+   | DEBUG_EMAIL_ENABLED   | To use MailHog to intercept all emails, set it to `true', otherwise the SMTP server will be used                                                                                                                                                                                                                                                              | `false`                 |
+   | EMAIL_USERNAME        | At the moment, the application is configured with the Gmail SMTP server, so here you need to specify the Gmail address from which emails will be sent                                                                                                                                                                                                         |                         |
+   | EMAIL_PASSWORD        | Put here your Google App Password. [How to generate Google App Password](https://support.google.com/mail/answer/185833?hl=en).                                                                                                                                                                                                                                |                         |
+   | JWT_SECRET            | Generate your own JWT secret. For example, it will be a string of 32 random characters                                                                                                                                                                                                                                                                        |                         |
+   | APP_DOMAIN            | If the application is deployed on a server, enter the server domain here to create URLs correctly (for example, to check user email)                                                                                                                                                                                                                          | `http://localhost:8080` |
+   | CDN_CLIENT            | The program uses CND to store user files. By default, there is a `placeholder` client that simply simulates file operations, but currently the program has an implementation for the Cloudinary service ([Cloudinary home](https://cloudinary.com/)). If you want to enable Cloudinary, set the variable `cloudinary`.                                        | `placeholder`           |
+   | CLOUDINARY_URL        | Enter the Cloudinary URL here after setting up your own Cloudinary storage. Optional if another CDN_CLIENT is configured                                                                                                                                                                                                                                      |                         |
+   | CLOUDINARY_APP_PREFIX | To save files to a separate folder instead of the storage root, specify its name. For example `realtor-connect-prod`                                                                                                                                                                                                                                          | Empty String            |
+   | SCHEDULER_ENABLED     | Enables or disables application scheduled tasks                                                                                                                                                                                                                                                                                                               | `true`                  |
+   | APP_LOGGER_LEVEL      | Set logger level for application source code. Possible values: `ERROR`, `WARN`, `INFO`, `DEBUG` and `TRACE`                                                                                                                                                                                                                                                   | `INFO`                  |
+   | CUSTOM_LOGGER_LEVEL   | Some classes and methods in the application are automatically logged at the start and end. The `AppLoggerInterceptor` is used for this. Specify the level at which this class will be written. If the level is higher than or equal to the current level in the application, you will see logs. Possible values: `ERROR`, `WARN`, `INFO`, `DEBUG` and `TRACE` | `DEBUG`                 |
 
 8. Launch the application through your IDE or open bash and
    run `java -jar {project_path}/build/libs/realtor-connect-{app_version}.jar`.
@@ -113,11 +116,11 @@ Let's create a Realtor.
 
 Go to the main page.
 
-![main-page](https://res.cloudinary.com/dhseztjx1/image/upload/v1711897282/samples/main-page.jpg)
+![main-page](https://res.cloudinary.com/dhseztjx1/image/upload/v1711897282/realtor-connect-common/samples/main-page.jpg)
 
 Go to `Auth Controller`, open the `/auth/register/realtor` endpoint and press `Try it out` button.
 
-![realtor-registration-request](https://res.cloudinary.com/dhseztjx1/image/upload/v1711897282/samples/realtor-reg.jpg)
+![realtor-registration-request](https://res.cloudinary.com/dhseztjx1/image/upload/v1711897282/realtor-connect-common/samples/realtor-reg.jpg)
 
 Next fill a request body with next JSON and press `Execute` button:
 
@@ -133,11 +136,11 @@ Next fill a request body with next JSON and press `Execute` button:
 }
 ```
 
-![realtor-registration-request-with-body](https://res.cloudinary.com/dhseztjx1/image/upload/v1711897282/samples/realtor-reg-with-body.jpg)
+![realtor-registration-request-with-body](https://res.cloudinary.com/dhseztjx1/image/upload/v1711897282/realtor-connect-common/samples/realtor-reg-with-body.jpg)
 
 In response, we get the following result:
 
-![realtor-registration-response](https://res.cloudinary.com/dhseztjx1/image/upload/v1711897282/samples/realtor-reg-response.jpg)
+![realtor-registration-response](https://res.cloudinary.com/dhseztjx1/image/upload/v1711897282/realtor-connect-common/samples/realtor-reg-response.jpg)
 
 That's great. We just signed up.
 
@@ -156,7 +159,7 @@ Let's press `Confirm Email` button.
 We've redirected on new page with json result. As you can see, success and result is `true`. We just confirmed email,
 and now can successfully log in Realtor Connect.
 
-![email-verification-response](https://res.cloudinary.com/dhseztjx1/image/upload/v1711897282/samples/email-verification-response.jpg)
+![email-verification-response](https://res.cloudinary.com/dhseztjx1/image/upload/v1711897282/realtor-connect-common/samples/email-verification-response.jpg)
 
 #### 2. Login
 
@@ -170,11 +173,11 @@ request body following JSON and press `Execute` button:
 }
 ```
 
-![auth-login-endpoint](https://res.cloudinary.com/dhseztjx1/image/upload/v1711897282/samples/auth-login-endpoint.jpg)
+![auth-login-endpoint](https://res.cloudinary.com/dhseztjx1/image/upload/v1711897282/realtor-connect-common/samples/auth-login-endpoint.jpg)
 
 Result. We've successfully authenticated.
 
-![auth-login-response](https://res.cloudinary.com/dhseztjx1/image/upload/v1711897282/samples/auth-login-response.jpg)
+![auth-login-response](https://res.cloudinary.com/dhseztjx1/image/upload/v1711897282/realtor-connect-common/samples/auth-login-response.jpg)
 
 Let's copy an auth token, go to top of app page, press `Autorize` button, put there auth token and press `Autorize`
 button.

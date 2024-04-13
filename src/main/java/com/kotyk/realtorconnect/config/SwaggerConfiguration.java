@@ -74,4 +74,12 @@ public class SwaggerConfiguration {
                 .build();
     }
 
+    @Bean
+    public GroupedOpenApi otherAPIs() {
+        return GroupedOpenApi.builder()
+                .group("5. Other APIs")
+                .pathsToMatch(groups.get("otherAPIs"))
+                .build();
+    }
+
 }

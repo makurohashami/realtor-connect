@@ -22,8 +22,9 @@ CREATE INDEX IF NOT EXISTS username_idx ON users (username);
 
 CREATE TABLE IF NOT EXISTS confirmation_tokens
 (
-    token   UUID NOT NULL PRIMARY KEY,
-    user_id BIGSERIAL UNIQUE REFERENCES users (id)
+    token      UUID         NOT NULL PRIMARY KEY,
+    user_id    BIGSERIAL UNIQUE REFERENCES users (id),
+    created_at TIMESTAMP(6) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS realtors_info

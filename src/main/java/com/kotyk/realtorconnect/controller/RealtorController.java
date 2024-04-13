@@ -23,7 +23,7 @@ import static com.kotyk.realtorconnect.util.ApiResponseUtil.ok;
 @RestController
 @AllArgsConstructor
 @RequestMapping(value = "/realtors", produces = MediaType.APPLICATION_JSON_VALUE)
-@Tag(name = "Realtor Controller")
+@Tag(name = "Realtor Controller", description = "Allows you manage your information(if you are realtor), and see other's realtors")
 public class RealtorController {
 
     private final RealtorService service;

@@ -23,7 +23,7 @@ import static com.kotyk.realtorconnect.util.ApiResponseUtil.*;
 @RestController
 @AllArgsConstructor
 @RequestMapping(value = "/realtors/real-estates", produces = MediaType.APPLICATION_JSON_VALUE)
-@Tag(name = "Real Estate Photo Controller")
+@Tag(name = "Real Estate Photo Controller", description = "Allows you manage your own real estates photos, and see other's real estates photos")
 public class RealEstatePhotoController {
 
     private final RealEstatePhotoService realEstatePhotoService;

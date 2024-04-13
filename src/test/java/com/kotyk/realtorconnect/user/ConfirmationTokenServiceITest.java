@@ -94,9 +94,9 @@ public class ConfirmationTokenServiceITest {
     }
 
     @Test
-    public void getUserByTokenTest() {
+    public void findUserByTokenTest() {
         //when
-        User userFromService = confirmationTokenService.getUserByToken(token.getToken());
+        User userFromService = confirmationTokenService.findUserByToken(token.getToken());
 
         //then
         assertThat(userFromService, notNullValue());
@@ -104,13 +104,13 @@ public class ConfirmationTokenServiceITest {
     }
 
     @Test
-    public void getUserByTokenWithErrorTest() {
+    public void findUserByTokenWithErrorTest() {
         //given
         UUID uuid = UUID.randomUUID();
 
         //when
         Exception exception = assertThrows(ResourceNotFoundException.class,
-                () -> confirmationTokenService.getUserByToken(uuid)
+                () -> confirmationTokenService.findUserByToken(uuid)
         );
 
         //then

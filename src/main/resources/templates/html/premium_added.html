@@ -19,7 +19,7 @@
             margin: 0 auto;
         }
 
-        .expired-img {
+        .logo {
             display: block;
             max-width: 25%;
             height: auto;
@@ -79,7 +79,9 @@
         </div>
 
         <div class="expired-body">
-            <img class="expired-img" src="https://res.cloudinary.com/dhseztjx1/image/upload/v1711873406/logos/realtor_connect_logo_jpg.jpg" alt="Realtor Connect Header Image">
+            <img class="logo"
+                 src="https://res.cloudinary.com/dhseztjx1/image/upload/v1711873406/realtor-connect-common/logos/realtor_connect_logo_jpg.jpg"
+                 alt="Realtor Connect Header Image">
             <p>Dear <span th:text="${name}">Realtor</span>,</p>
             <p>Congratulations on purchasing a premium subscription for <span th:text="${durationInMonths}">-1</span>
                 <span th:if="${durationInMonths == 1}">month</span><span th:if="${durationInMonths != 1}">months</span>.

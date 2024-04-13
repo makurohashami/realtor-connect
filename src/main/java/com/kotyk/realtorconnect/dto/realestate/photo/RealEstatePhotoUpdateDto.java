@@ -2,8 +2,7 @@ package com.kotyk.realtorconnect.dto.realestate.photo;
 
 import lombok.*;
 
-@Getter
-@Setter
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

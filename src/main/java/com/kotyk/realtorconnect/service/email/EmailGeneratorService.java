@@ -19,7 +19,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class EmailGeneratorService {
 
-    @Value("${network.verify-email-url}")
+    @Value("${network.verifyEmailUrl}")
     private String verifyEmailUrl;
 
     private final SpringTemplateEngine templateEngine;
@@ -52,6 +52,14 @@ public class EmailGeneratorService {
 
     protected Email generatePremiumExpiredEmail(Realtor realtor) {
         return generateEmail(realtor.getEmail(), EmailTemplate.PREMIUM_EXPIRED, Map.of("name", realtor.getName()));
+    }
+
+    protected Email generateResetPasswordEmail(User user, String token) {
+        Map<String, Object> templateVariables = new HashMap<>();
+        templateVariables.put("name", user.getName());
+        templateVariables.put("token", token);
+
+        return generateEmail(user.getEmail(), EmailTemplate.RESET_PASSWORD, templateVariables);
     }
 
     private Email generateEmail(String to, EmailTemplate template, Map<String, Object> templateVariables) {

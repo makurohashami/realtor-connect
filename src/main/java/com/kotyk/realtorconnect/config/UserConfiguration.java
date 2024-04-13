@@ -12,5 +12,6 @@ import org.springframework.stereotype.Component;
 public class UserConfiguration {
 
     private Integer timeToVerifyEmailInDays;
+    private Integer tokenTtlInDays;
 
 }

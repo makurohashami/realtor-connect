@@ -26,6 +26,11 @@ public enum EmailTemplate {
             "Your subscription has expired",
             "html/premium_expired.html",
             true
+    ),
+    RESET_PASSWORD(
+            "Reset password",
+            "html/reset_password.html",
+            true
     );
 
 
