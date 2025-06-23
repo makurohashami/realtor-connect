@@ -32,7 +32,7 @@ The documentation is written in OpenApi and uses SwaggerUI.
 
 To read it:
 
-- Open the deployed application here: [Documentation](http://realtorconnect.online).
+- Open the deployed application here: [Documentation](http://vps-d04848e7.vps.ovh.net).
 - Run the project locally and follow the link: [Documentation](http://localhost:8080/swagger-ui/index.html).
 - You can also read the [Quick Start](#quick-start) article to get basic information about the app and see examples of
   how to use the app.
