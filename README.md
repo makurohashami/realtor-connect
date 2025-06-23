@@ -16,7 +16,7 @@ In turn, users can easily search for the properties they want and communicate wi
 
 ---
 
-- Get an overview of the application here: [Deployed application](http://realtorconnect.online).
+- Get an overview of the application here: [Deployed application](http://vps-d04848e7.vps.ovh.net).
 - Run the application on a local machine. For instructions, read [Local startup guide](#local-startup-guide).
 
 ### Latest release
